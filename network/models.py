@@ -15,8 +15,8 @@ class Device(models.Model):
     and - and _ """
 
     device_name = models.CharField(
-            max_length=25
-            validator=[RegexValidator(
+            max_length=25,
+            validators=[RegexValidator(
                 regex="^[a-zA-Z0-9_−]{1,25}$",
                 message="Invalid name")])
     device_ip = models.GenericIPAddressField(
@@ -31,8 +31,7 @@ class Device(models.Model):
             auto_now_add=True)
     last_modified = models.DateTimeField(
             "Last update",
-            auto_now=True,
-            auto_now_add=True)
+            auto_now=True)
 
     def __str__(self):
         return self.device_name + " (" + self.description + ")"
@@ -51,10 +50,10 @@ class Interface(models.Model):
             choices=INTERFACE_TYPE_CHOICES,
             default=ETHERNET)
     mac_address = models.CharField(
-            max_length=17
-            validator=[RegexValidator(
+            max_length=17,
+            validators=[RegexValidator(
                 regex="^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$",
-                message="Invalid MAC address")]
+                message="Invalid MAC address")],
             unique=True)
 
     description = models.CharField(
@@ -65,8 +64,7 @@ class Interface(models.Model):
             auto_now_add=True)
     last_modified = models.DateTimeField(
             "Last update",
-            auto_now=True,
-            auto_now_add=True)
+            auto_now=True)
 
     def __str__(self):
         return (self.mac_address + " - " + self.interface_type
