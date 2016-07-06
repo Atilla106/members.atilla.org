@@ -102,6 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# TO DO : Remove hardcoded urls
+
+LOGIN_URL = "/accounts/login/"
+
+LOGIN_REDIRECT_URL = "/network/devices/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
