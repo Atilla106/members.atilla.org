@@ -1,0 +1,47 @@
+{% extends "base_network.html" %}
+
+{% block main %}
+
+{% if user_devices_list %}
+	<table>
+		<tr>
+			<th>
+				Nom
+			</th>
+			<th>
+				Description
+			</th>
+			<th>
+				Adresse IP
+			</th>
+			<th>
+				Interfaces
+			</th>
+			<th>
+				Options
+			</th>
+		</tr>
+		{% for device in user_devices_list %}
+			<tr>
+				<td>
+					{{ device.device_name }}
+				</td>
+				<td>
+					{{ device.description }}
+				</td>
+				<td>
+					{{ device.device_ip }}
+				</td>
+				<td>
+					{{ device.interface_set.all|length }}
+				</td>
+				<td>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% else %}
+	<p>Aucun appareil enregistré</p>
+{% endif %}
+
+{% endblock %}
