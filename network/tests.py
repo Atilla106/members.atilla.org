@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 
 from .models import Device, Interface
 
@@ -28,15 +29,13 @@ class DeviceTestCase(TestCase):
 
     def test_device_creation_different_names(self):
         """ User devices should have differents names """
-        with self.assertRaises(IntegrityError):
-            Device.objects.create(user=self.test1,
-                    device_name="device_1_test_user_1",
-                    device_ip="127.0.0.3")
+        with self.assertRaises(ValidationError):
+            Device(user=self.test1, device_name="device_1_test_user_1",
+                    device_ip="127.0.0.3").clean()
 
     def test_device_creation_name_format(self):
         """ A device should have a alphanumeric name
         (- and _ are also accepted) """
-        with self.assertRaises(IntegrityError):
-            Device.objects.create(user=self.test1,
-                    device_name="device with spaces",
-                    device_ip="127.0.0.3")
+        with self.assertRaises(ValidationError):
+            Device(user=self.test1, device_name="device with spaces",
+                    device_ip="127.0.0.3").full_clean()
