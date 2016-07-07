@@ -3,12 +3,21 @@ import re
 from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
-
 from django.contrib.auth.models import User
+
+from .settings import IP_NETWORK_PREFIX, IP_RANGE_START, IP_RANGE_END
 
 """ Models definition """
 
 class Device(models.Model):
+    def IPAddress():
+        def lastMember(device):
+            return int(device.device_ip.split(".")[3])
+
+        usedMembers = list(map(lastMember, Device.objects.all()))
+
+        return IP_NETWORK_PREFIX + str(0)
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     """ Only accept a device name composed of alphanumeric characters
@@ -21,8 +30,8 @@ class Device(models.Model):
                 message="Invalid name")])
     device_ip = models.GenericIPAddressField(
             protocol="IPv4",
-            unique=True)
-
+            unique=True,
+            default=IPAddress)
     description = models.CharField(
             max_length=255,
             blank=True)
