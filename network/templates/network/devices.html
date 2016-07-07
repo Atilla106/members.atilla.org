@@ -17,7 +17,7 @@
 			<th>
 				Interfaces
 			</th>
-			<th>
+			<th colspan="2">
 				Options
 			</th>
 		</tr>
@@ -36,6 +36,16 @@
 					{{ device.interface_set.all|length }}
 				</td>
 				<td>
+					<a href="{% url "network:deviceUpdate" device.id %}"
+							class="btn orange darken-3">
+						Modifier
+					</a>
+				</td>
+				<td>
+					<a href="{% url "network:deviceDelete" device.id %}"
+							class="btn orange darken-3">
+						Supprimer
+					</a>
 				</td>
 			</tr>
 		{% endfor %}
@@ -43,5 +53,9 @@
 {% else %}
 	<p>Aucun appareil enregistré</p>
 {% endif %}
+
+<a href="{% url "network:deviceCreate" %}" class="btn orange darken-3">
+	Ajouter un appareil
+</a>
 
 {% endblock %}
