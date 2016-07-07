@@ -1,3 +1,42 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
 
-# Create your tests here.
+from .models import Device, Interface
+
+class DeviceTestCase(TestCase):
+    def setUp(self):
+        self.test1 = User.objects.create_user('TestUser1', 'test1@example.com',
+                'We love HDM !')
+        self.test2 = User.objects.create_user('TestUser2', 'test2@example.com',
+                'We love HDM !')
+
+        Device.objects.create(user=self.test1,
+                device_name="device_1_test_user_1",
+                device_ip="127.0.0.1", description="Stardard description 1")
+
+        Device.objects.create(user=self.test2,
+                device_name="device_1_test_user_2",
+                device_ip="127.0.0.2", description="Stardard description 2")
+
+    def test_device_creation_different_IPs(self):
+        """ A device should have a unique IP address """
+        with self.assertRaises(IntegrityError):
+            Device.objects.create(user=self.test1,
+                    device_name="device_2_test_user_1",
+                    device_ip="127.0.0.1")
+
+    def test_device_creation_different_names(self):
+        """ User devices should have differents names """
+        with self.assertRaises(IntegrityError):
+            Device.objects.create(user=self.test1,
+                    device_name="device_1_test_user_1",
+                    device_ip="127.0.0.3")
+
+    def test_device_creation_name_format(self):
+        """ A device should have a alphanumeric name
+        (- and _ are also accepted) """
+        with self.assertRaises(IntegrityError):
+            Device.objects.create(user=self.test1,
+                    device_name="device with spaces",
+                    device_ip="127.0.0.3")
