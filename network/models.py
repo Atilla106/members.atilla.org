@@ -54,12 +54,14 @@ class Device(models.Model):
             auto_now=True)
 
     """ Check if the user has not another device with the same name, then assign
-    a new IP address """
+    a new IP address if needed """
     def clean(self):
-        """if (self.device_name
-            in [d.device_name for d in self.user.device_set.all()]):
-                raise ValidationError('Device name aleready taken')"""
-        self.device_ip = getNewIPAddress()
+        if ((self.user_id is not None)
+            and (self.device_name
+                in [d.device_name for d in self.user.device_set.all()])):
+                raise ValidationError('Device name aleready taken')
+        if (self.device_ip is None):
+            self.device_ip = getNewIPAddress()
 
     def __str__(self):
         return self.device_name + " (" + self.description + ")"

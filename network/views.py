@@ -24,6 +24,7 @@ class DeviceCreateView(generic.edit.CreateView):
     def form_valid(self, form):
         device = form.save(commit=False)
         device.user = self.request.user
+        device.full_clean();
         return super(DeviceCreateView, self).form_valid(form)
 
 class DeviceUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
