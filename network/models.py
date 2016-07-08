@@ -4,24 +4,28 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from .settings import IP_NETWORK_PREFIX, IP_RANGE_START, IP_RANGE_END
+from .settings import DNS_DOMAIN
 
-""" Custom validator to prevent a user to add another device with the same name
-as a previous one """
-"""def validate_device_name(value):"""
+""" Generates a new IP address for the device """
+def getNewIPAddress():
+    def lastMember(device):
+        return int(device.device_ip.split(".")[3])
+
+    usedMembers = list(map(lastMember, Device.objects.all()))
+    availableIPs = ([a for a in range(IP_RANGE_START, IP_RANGE_END)
+        if a not in usedMembers])
+
+    if len(availableIPs) == 0:
+        raise ValidationError("No more available IPs !")
+    return IP_NETWORK_PREFIX + str(0)
 
 """ Models definition """
 
 class Device(models.Model):
-
-    """ Generates a new IP address for the device """
-    def IPAddress():
-        def lastMember(device):
-            return int(device.device_ip.split(".")[3])
-        usedMembers = list(map(lastMember, Device.objects.all()))
-        return IP_NETWORK_PREFIX + str(0)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -35,8 +39,7 @@ class Device(models.Model):
 
     device_ip = models.GenericIPAddressField(
             protocol="IPv4",
-            unique=True,
-            default=IPAddress)
+            unique=True)
 
     description = models.CharField(
             max_length=255,
@@ -50,15 +53,21 @@ class Device(models.Model):
             "Last update",
             auto_now=True)
 
+    """ Check if the user has not another device with the same name, then assign
+    a new IP address """
     def clean(self):
-        if (self.device_name
+        """if (self.device_name
             in [d.device_name for d in self.user.device_set.all()]):
-                raise ValidationError('Device name aleready taken')
+                raise ValidationError('Device name aleready taken')"""
+        self.device_ip = getNewIPAddress()
 
     def __str__(self):
         return self.device_name + " (" + self.description + ")"
 
-    def GetFQDN(self):
+    def get_absolute_url(self):
+        return reverse('network:deviceDetail', kwargs={'pk': self.pk})
+
+    def getFQDN(self):
         return self.device_name + "." + self.user.username + "." + DNS_DOMAIN
 
 class Interface(models.Model):

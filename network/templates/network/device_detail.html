@@ -1,0 +1,8 @@
+{% extends "base_network.html" %}
+
+{% block main %}
+{{ object.device_name }}
+{{ device.description }}
+{{ device.device_ip }}
+{{ device.interface_set.all|length }}
+{% endblock %}

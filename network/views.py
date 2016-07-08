@@ -13,9 +13,18 @@ class DeviceView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return Device.objects.filter(user=self.request.user).values()
 
-class DeviceCreateView(generic.edit.CreateView):
+class DeviceDetailView(generic.DetailView):
         model = Device
-        fields = ['device_name', 'description']
+
+class DeviceCreateView(generic.edit.CreateView):
+    model = Device
+    fields = ['device_name', 'description']
+
+    """ Add the current user as device owner """
+    def form_valid(self, form):
+        device = form.save(commit=False)
+        device.user = self.request.user
+        return super(DeviceCreateView, self).form_valid(form)
 
 class DeviceUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
     success_url = reverse_lazy('network:index')
