@@ -21,7 +21,7 @@ def getNewIPAddress():
 
     if len(availableIPs) == 0:
         raise ValidationError("No more available IPs !")
-    return IP_NETWORK_PREFIX + str(0)
+    return IP_NETWORK_PREFIX + str(availableIPs[0])
 
 """ Models definition """
 
