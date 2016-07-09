@@ -22,6 +22,9 @@
 				<th>
 					Adresse MAC
 				</th>
+				<th colspan=2>
+					Options
+				</th>
 			</tr>
 			{% for interface in object.interface_set.all %}
 				<tr>
@@ -33,6 +36,18 @@
 					</td>
 					<td>
 						{{ interface.mac_address }}
+					</td>
+					<td>
+						<a href="{% url "network:interfaceUpdate" object.id interface.id %}"
+								class="btn orange darken-3">
+							Modifier
+						</a>
+					</td>
+					<td>
+						<a href="{% url "network:interfaceDelete" object.id interface.id %}"
+								class="btn orange darken-3">
+							Supprimer
+						</a>
 					</td>
 				</tr>
 			{% endfor %}

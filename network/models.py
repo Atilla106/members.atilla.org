@@ -110,3 +110,7 @@ class Interface(models.Model):
     def __str__(self):
         return (self.mac_address + " - " + self.interface_type
         + " (" + self.description + ")")
+
+    def get_absolute_url(self):
+        return reverse('network:deviceDetail', kwargs={'pk': self.device.pk})
+

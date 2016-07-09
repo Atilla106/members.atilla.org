@@ -24,4 +24,10 @@ urlpatterns = [
         url(r'^devices/(?P<pk>[0-9]+)/interfaces/add/$',
             views.InterfaceCreateView.as_view(),
             name='interfaceCreate'),
+        url(r'^devices/(?P<pk1>[0-9]+)/interfaces/(?P<pk2>[0-9]+)/edit/$',
+            views.InterfaceUpdateView.as_view(),
+            name='interfaceUpdate'),
+        url(r'^devices/(?P<pk1>[0-9]+)/interfaces/(?P<pk2>[0-9]+)/delete/$',
+            views.InterfaceDeleteView.as_view(),
+            name='interfaceDelete'),
 ]

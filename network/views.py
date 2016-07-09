@@ -42,10 +42,9 @@ class DeviceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
     template_name = 'network/device_confirm_delete.html'
 
     def get_object(self, queryset=None):
-        device = get_object_or_404(Device,
+        return get_object_or_404(Device,
                 pk=self.kwargs['pk'],
                 user=self.request.user)
-        return device
 
 class InterfaceCreateView(generic.edit.CreateView):
     model = Interface
@@ -60,5 +59,30 @@ class InterfaceCreateView(generic.edit.CreateView):
         interface.device = device
         interface.full_clean();
         return super(InterfaceCreateView, self).form_valid(form)
+
+class InterfaceUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
+    success_url = reverse_lazy('network:index')
+    fields = ['interface_type', 'description', 'mac_address']
+
+    def get_object(self, queryset=None):
+        device = get_object_or_404(Device,
+                pk=self.kwargs['pk1'],
+                user=self.request.user)
+        return get_object_or_404(Interface,
+                pk=self.kwargs['pk2'],
+                device=device)
+
+class InterfaceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+    success_url = reverse_lazy('network:index')
+    model = Interface
+    template_name = 'network/device_confirm_delete.html'
+
+    def get_object(self, queryset=None):
+        device = get_object_or_404(Device,
+                pk=self.kwargs['pk1'],
+                user=self.request.user)
+        return get_object_or_404(Interface,
+                pk=self.kwargs['pk2'],
+                device=device)
 
 
