@@ -38,9 +38,11 @@ class DeviceUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
 
 class DeviceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
     success_url = reverse_lazy('network:index')
+    model = Device
     template_name = 'network/device_confirm_delete.html'
 
     def get_object(self, queryset=None):
         device = get_object_or_404(Device,
                 pk=self.kwargs['pk'],
                 user=self.request.user)
+        return device
