@@ -46,3 +46,19 @@ class DeviceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
                 pk=self.kwargs['pk'],
                 user=self.request.user)
         return device
+
+class InterfaceCreateView(generic.edit.CreateView):
+    model = Interface
+    fields = ['interface_type', 'description', 'mac_address']
+
+    """ Add the device referenced in url as the interface owner """
+    def form_valid(self, form):
+        interface = form.save(commit=False)
+        device = get_object_or_404(Device,
+                pk=self.kwargs['pk'],
+                user=self.request.user)
+        interface.device = device
+        interface.full_clean();
+        return super(InterfaceCreateView, self).form_valid(form)
+
+

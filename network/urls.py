@@ -19,5 +19,9 @@ urlpatterns = [
             name='deviceUpdate'),
         url(r'^devices/(?P<pk>[0-9]+)/delete/$',
             views.DeviceDeleteView.as_view(),
-            name='deviceDelete')
+            name='deviceDelete'),
+
+        url(r'^devices/(?P<pk>[0-9]+)/interfaces/add/$',
+            views.InterfaceCreateView.as_view(),
+            name='interfaceCreate'),
 ]

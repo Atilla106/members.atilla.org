@@ -6,4 +6,45 @@
 	{{ form.as_p }}
 	<input type="submit" value="Sauvegarder" class="btn orange darken-3" />
 </form>
+
+{% if object %}
+	<hr/>
+	<h4>Interfaces</h4>
+	{% if object.interface_set.all %}
+		<table>
+			<tr>
+				<th>
+					Type
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Adresse MAC
+				</th>
+			</tr>
+			{% for interface in object.interface_set.all %}
+				<tr>
+					<td>
+						{{ interface.interface_type }}
+					</td>
+					<td>
+						{{ interface.description }}
+					</td>
+					<td>
+						{{ interface.mac_address }}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<a href="{% url "network:interfaceCreate" object.id %}"
+				class="btn orange darken-3">Ajouter une interface</a>
+	{% else %}
+		Aucune interface enregistrée,
+		<a href="{% url "network:interfaceCreate" object.id %}">
+				ajoutez-en une !
+		</a>
+	{% endif %}
+{% endif %}
+
 {% endblock %}

@@ -58,7 +58,7 @@ class Device(models.Model):
     def clean(self):
         if ((self.user_id is not None)
             and (self.device_name
-                in [d.device_name for d in self.user.device_set.all() 
+                in [d.device_name for d in self.user.device_set.all()
                     if d.id != self.id])):
                 raise ValidationError('Device name aleready taken')
         if (self.device_ip is None):
