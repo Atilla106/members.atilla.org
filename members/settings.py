@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'compressor',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -71,6 +72,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'members.wsgi.application'
+
+COMPRESS_PRECOMPILERS = (
+    ('text/scss', 'bundle exec sass --scss {infile} {outfile}'),
+)
+
+STATICFILES_FINDERS = (
+    'compressor.finders.CompressorFinder',
+)
 
 
 # Database
@@ -124,6 +133,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static/sass")
+
+COMPRESS_ENABLED = True
 
 STATIC_URL = '/static/'
 

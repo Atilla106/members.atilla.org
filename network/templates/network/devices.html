@@ -3,25 +3,28 @@
 {% block main %}
 
 {% if user_devices_list %}
-	<table>
-		<tr>
-			<th>
-				Nom
-			</th>
-			<th>
-				Description
-			</th>
-			<th>
-				Adresse IP
-			</th>
-			<th>
-				Interfaces
-			</th>
-			<th colspan="2">
-				Options
-			</th>
-		</tr>
-		{% for device in user_devices_list %}
+	<table class="highlight bordered">
+		<thead>
+			<tr>
+				<th>
+					Nom
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Adresse IP
+				</th>
+				<th>
+					Interfaces
+				</th>
+				<th colspan="2">
+					Options
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for device in user_devices_list %}
 			<tr>
 				<td>
 					{{ device.device_name }}
@@ -48,7 +51,8 @@
 					</a>
 				</td>
 			</tr>
-		{% endfor %}
+			{% endfor %}
+		</tbody>
 	</table>
 {% else %}
 	<p>Aucun appareil enregistré</p>

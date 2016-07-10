@@ -1,4 +1,5 @@
 {# I thied to respect the 80-chars rule … #}
+{% load compress %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
@@ -7,13 +8,12 @@
 		<link
 			href="http://fonts.googleapis.com/icon?family=Material+Icons"
 			rel="stylesheet"/>
-		<link type="text/css"
+		{% compress css %}
+		<link type="text/scss"
 			rel="stylesheet"
-			href="{% static "css/materialize.min.css" %}"
+			href="{% static "materialize.scss" %}"
 			media="screen,projection"/>
-		<link type="text/css"
-			rel="stylesheet"
-			href="{% static "css/base_style.css" %}"/>
+		{% endcompress %}
 		<meta name="viewport"
 			content="width=device-width, initial-scale=1.0"/>
 		<title>
@@ -30,11 +30,23 @@
 						class="brand-logo center">
 						>~/ATILLA
 					</a>
-					<ul id="nav-mobile"
-					      class="left hide-on-med-and-down">
+					<ul class="left hide-on-med-and-down">
 						<li>
+							<a href="#">
+								Mon compte
+							</a>
 							<a href="{% url "network:index" %}">
 								Réseau
+							</a>
+						</li>
+					</ul>
+					<ul class="right hide-on-med-and-down">
+						<li>
+							<a href="{% url "accounts:login" %}">
+								Connexion
+							</a>
+							<a href="#">
+								Inscription
 							</a>
 						</li>
 					</ul>
