@@ -69,8 +69,11 @@ class Device(models.Model):
     def get_absolute_url(self):
         return reverse('network:deviceDetail', kwargs={'pk': self.pk})
 
-    def getFQDN(self):
+    def get_FQDN(self):
         return self.device_name + "." + self.user.username + "." + DNS_DOMAIN
+
+    def get_last_ip_block(self):
+        return int(self.device_ip.split(".")[3])
 
     class Meta:
         permissions = (

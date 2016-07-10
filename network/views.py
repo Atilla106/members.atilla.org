@@ -154,7 +154,32 @@ class RenderDNSView(generic.base.View):
         return HttpResponse("OK")
 
 class RenderReverseDNSView(generic.base.View):
-    def get(self, request, *args, **kwargs):
-        return HttpResponse("OK")
+    def get_devices(self):
+        return Device.objects.filter(
+                user__in=users_with_perm("can_publish_device"))
 
+    def render_file(self, request):
+        device_list = self.get_devices()
+        template = loader.get_template('network/render_reverse_dns.conf')
+        context = {
+            'device_list': device_list,
+            'TTL': TTL,
+            'NEGATIVE_CACHE_TTL': NEGATIVE_CACHE_TTL,
+            'REFRESH': REFRESH,
+            'RETRY': RETRY,
+            'EXPIRE': EXPIRE,
+            'SERIAL': DNS_BASE_SERIAL + int(time.time() / 100),
+            'DNS_DOMAIN': DNS_DOMAIN,
+            'DOMAIN_MAIL_SERVER': DOMAIN_MAIL_SERVER,
+            'REV_DNS_ORIGIN': REV_DNS_ORIGIN,
+            'DNS_SERVER_1': DNS_SERVER_1,
+            'DNS_SERVER_2': DNS_SERVER_2,
+        }
+        output = open(REV_DNS_CONFIG_OUTPUT, "w")
+        output.write(template.render(context, request))
+        output.close()
+
+    def get(self, request, *args, **kwargs):
+        self.render_file(request)
+        return HttpResponse("OK")
 
