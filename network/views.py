@@ -1,3 +1,5 @@
+import time
+
 from django.contrib.auth.models import User, Permission
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -10,6 +12,14 @@ from django.views import generic
 from .settings import *
 from .models import Device, Interface
 
+""" Useful functions """
+def users_with_perm(perm_name):
+    return User.objects.filter(
+            Q(is_superuser=True) |
+            Q(user_permissions__codename=perm_name) |
+            Q(groups__permissions__codename=perm_name)).distinct()
+
+""" Views for the device model """
 class DeviceView(LoginRequiredMixin, generic.ListView):
     template_name = 'network/devices.html'
     context_object_name = 'user_devices_list'
@@ -50,6 +60,7 @@ class DeviceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
                 pk=self.kwargs['pk'],
                 user=self.request.user)
 
+""" Views for the interface model """
 class InterfaceCreateView(generic.edit.CreateView):
     model = Interface
     fields = ['interface_type', 'description', 'mac_address']
@@ -89,18 +100,11 @@ class InterfaceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
                 pk=self.kwargs['pk2'],
                 device=device)
 
+""" Config rendering views """
 class RenderDHCPView(generic.base.View):
-    interfaces_list = Interface.objects.all()
-
-    def users_with_perm(self, perm_name):
-        return User.objects.filter(
-                Q(is_superuser=True) |
-                Q(user_permissions__codename=perm_name) |
-                Q(groups__permissions__codename=perm_name)).distinct()
-
     def get_interfaces(self):
         return Interface.objects.filter(
-                device__user__in=self.users_with_perm("can_publish_device"))
+                device__user__in=users_with_perm("can_publish_device"))
 
     def render_file(self, request):
         interface_list = self.get_interfaces()
@@ -121,7 +125,32 @@ class RenderDHCPView(generic.base.View):
         return HttpResponse("OK")
 
 class RenderDNSView(generic.base.View):
+    def get_devices(self):
+        return Device.objects.filter(
+                user__in=users_with_perm("can_publish_device"))
+
+    def render_file(self, request):
+        device_list = self.get_devices()
+        template = loader.get_template('network/render_dns.conf')
+        context = {
+            'device_list': device_list,
+            'TTL': TTL,
+            'NEGATIVE_CACHE_TTL': NEGATIVE_CACHE_TTL,
+            'REFRESH': REFRESH,
+            'RETRY': RETRY,
+            'EXPIRE': EXPIRE,
+            'SERIAL': DNS_BASE_SERIAL + int(time.time() / 100),
+            'DNS_DOMAIN': DNS_DOMAIN,
+            'DOMAIN_MAIL_SERVER': DOMAIN_MAIL_SERVER,
+            'DNS_SERVER_1': DNS_SERVER_1,
+            'DNS_SERVER_2': DNS_SERVER_2,
+        }
+        output = open(DNS_CONFIG_OUTPUT, "w")
+        output.write(template.render(context, request))
+        output.close()
+
     def get(self, request, *args, **kwargs):
+        self.render_file(request)
         return HttpResponse("OK")
 
 class RenderReverseDNSView(generic.base.View):
