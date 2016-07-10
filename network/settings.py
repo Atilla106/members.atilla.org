@@ -1,14 +1,23 @@
-""" Network IP prefix """
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Configuration output
+DHCP_CONFIG_OUTPUT = os.path.join(BASE_DIR, 'dhcp.conf')
+DNS_CONFIG_OUTPUT = os.path.join(BASE_DIR, 'dns.conf')
+REV_DNS_CONFIG_OUTPUT = os.path.join(BASE_DIR, 'rev.dns.conf')
+
+# Network IP prefix
 IP_NETWORK_PREFIX = "192.168.253."
 IP_RANGE_START = 45
 IP_RANGE_END = 254
 
-""" NS options """
+# NS options
+DNS_BASE_TIMESTAMP = 42
 DNS_DOMAIN = "salle106.atilla.org"
 DNS_DOMAIN_SEARCH = "members.salle106.atilla.org"
 DNS_SERVER_1 = "192.168.253.1"
 DNS_SERVER_2 = "192.168.253.1"
 
-""" General network options """
+# General network options
 DOMAIN_ROOT_SERVER = "192.168.253.1"
 DOMAIN_MAIL_SERVER = "192.168.253.1"

@@ -24,7 +24,6 @@ def getNewIPAddress():
     return IP_NETWORK_PREFIX + str(availableIPs[0])
 
 """ Models definition """
-
 class Device(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -72,6 +71,11 @@ class Device(models.Model):
 
     def getFQDN(self):
         return self.device_name + "." + self.user.username + "." + DNS_DOMAIN
+
+    class Meta:
+        permissions = (
+            ("can_publish_device", "Can use this device on the network"),
+        )
 
 class Interface(models.Model):
     WIFI = "WLP"

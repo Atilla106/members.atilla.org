@@ -1,9 +1,13 @@
+from django.contrib.auth.models import User, Permission
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.template import loader
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 
+from .settings import *
 from .models import Device, Interface
 
 class DeviceView(LoginRequiredMixin, generic.ListView):
@@ -84,5 +88,44 @@ class InterfaceDeleteView(LoginRequiredMixin, generic.edit.DeleteView):
         return get_object_or_404(Interface,
                 pk=self.kwargs['pk2'],
                 device=device)
+
+class RenderDHCPView(generic.base.View):
+    interfaces_list = Interface.objects.all()
+
+    def users_with_perm(self, perm_name):
+        return User.objects.filter(
+                Q(is_superuser=True) |
+                Q(user_permissions__codename=perm_name) |
+                Q(groups__permissions__codename=perm_name)).distinct()
+
+    def get_interfaces(self):
+        return Interface.objects.filter(
+                device__user__in=self.users_with_perm("can_publish_device"))
+
+    def render_file(self, request):
+        interface_list = self.get_interfaces()
+        template = loader.get_template('network/render_dhcp.conf')
+        context = {
+            'interface_list': interface_list,
+            'DNS_DOMAIN': DNS_DOMAIN,
+            'DNS_SERVER_1': DNS_SERVER_1,
+            'DNS_SERVER_2': DNS_SERVER_2,
+            'DNS_DOMAIN_SEARCH': DNS_DOMAIN_SEARCH,
+        }
+        output = open(DHCP_CONFIG_OUTPUT, "w")
+        output.write(template.render(context, request))
+        output.close()
+
+    def get(self, request, *args, **kwargs):
+        self.render_file(request)
+        return HttpResponse("OK")
+
+class RenderDNSView(generic.base.View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("OK")
+
+class RenderReverseDNSView(generic.base.View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("OK")
 
 

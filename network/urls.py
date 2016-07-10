@@ -30,4 +30,15 @@ urlpatterns = [
         url(r'^devices/(?P<pk1>[0-9]+)/interfaces/(?P<pk2>[0-9]+)/delete/$',
             views.InterfaceDeleteView.as_view(),
             name='interfaceDelete'),
+
+        url(r'^render/dhcp/$',
+            views.RenderDHCPView.as_view(),
+            name='renderDHCP'),
+        url(r'^render/dns/$',
+            views.RenderDNSView.as_view(),
+            name='renderDNS'),
+        url(r'^render/dns/reverse/$',
+            views.RenderReverseDNSView.as_view(),
+            name='renderReverseDNS'),
+
 ]
