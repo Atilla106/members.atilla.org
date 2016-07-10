@@ -1,44 +1,44 @@
 from django.conf.urls import url
 
-from . import views
+from .views import device, interface, render
 
 app_name = 'network'
 
 urlpatterns = [
         url(r'^devices/$',
-            views.DeviceView.as_view(),
+            device.DeviceView.as_view(),
             name='index'),
         url(r'^devices/add/$',
-            views.DeviceCreateView.as_view(),
+            device.DeviceCreateView.as_view(),
             name='deviceCreate'),
         url(r'^devices/(?P<pk>[0-9]+)/$',
-            views.DeviceDetailView.as_view(),
+            device.DeviceDetailView.as_view(),
             name='deviceDetail'),
         url(r'^devices/(?P<pk>[0-9]+)/edit/$',
-            views.DeviceUpdateView.as_view(),
+            device.DeviceUpdateView.as_view(),
             name='deviceUpdate'),
         url(r'^devices/(?P<pk>[0-9]+)/delete/$',
-            views.DeviceDeleteView.as_view(),
+            device.DeviceDeleteView.as_view(),
             name='deviceDelete'),
 
         url(r'^devices/(?P<pk>[0-9]+)/interfaces/add/$',
-            views.InterfaceCreateView.as_view(),
+            interface.InterfaceCreateView.as_view(),
             name='interfaceCreate'),
         url(r'^devices/(?P<pk1>[0-9]+)/interfaces/(?P<pk2>[0-9]+)/edit/$',
-            views.InterfaceUpdateView.as_view(),
+            interface.InterfaceUpdateView.as_view(),
             name='interfaceUpdate'),
         url(r'^devices/(?P<pk1>[0-9]+)/interfaces/(?P<pk2>[0-9]+)/delete/$',
-            views.InterfaceDeleteView.as_view(),
+            interface.InterfaceDeleteView.as_view(),
             name='interfaceDelete'),
 
         url(r'^render/dhcp/$',
-            views.RenderDHCPView.as_view(),
+            render.RenderDHCPView.as_view(),
             name='renderDHCP'),
         url(r'^render/dns/$',
-            views.RenderDNSView.as_view(),
+            render.RenderDNSView.as_view(),
             name='renderDNS'),
         url(r'^render/dns/reverse/$',
-            views.RenderReverseDNSView.as_view(),
+            render.RenderReverseDNSView.as_view(),
             name='renderReverseDNS'),
 
 ]
