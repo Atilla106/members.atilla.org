@@ -13,6 +13,10 @@
 			rel="stylesheet"
 			href="{% static "materialize.scss" %}"
 			media="screen,projection"/>
+		<link type="text/scss"
+			rel="stylesheet"
+			href="{% static "base.scss" %}"
+			media="screen,projection"/>
 		{% endcompress %}
 		<meta name="viewport"
 			content="width=device-width, initial-scale=1.0"/>
@@ -24,7 +28,7 @@
 	</head>
 	<body>
 		<header>
-			<nav class="grey darken-4">
+			<nav>
 				<div class="nav-wrapper">
 					<a href="#"
 						class="brand-logo center">
@@ -61,9 +65,9 @@
 				</div>
 			</div>
 		</main>
-		<footer class="page-footer grey darken-4">
+		<footer class="page-footer">
 			<div class="container">
-				<div class="row white-text">
+				<div class="row">
 					Fait avec amour par l’association >~/ATILLA
 				</div>
 			</div>

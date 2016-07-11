@@ -5,3 +5,4 @@ venv/
 env/
 .bundle/
 .sass-cache/
+CACHE/

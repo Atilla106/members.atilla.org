@@ -40,13 +40,13 @@
 				</td>
 				<td>
 					<a href="{% url "network:deviceUpdate" device.id %}"
-							class="btn orange darken-3">
+						class="btn">
 						Modifier
 					</a>
 				</td>
 				<td>
 					<a href="{% url "network:deviceDelete" device.id %}"
-							class="btn orange darken-3">
+							class="btn">
 						Supprimer
 					</a>
 				</td>
@@ -58,7 +58,7 @@
 	<p>Aucun appareil enregistré</p>
 {% endif %}
 
-<a href="{% url "network:deviceCreate" %}" class="btn orange darken-3">
+<a href="{% url "network:deviceCreate" %}" class="btn">
 	Ajouter un appareil
 </a>
 
