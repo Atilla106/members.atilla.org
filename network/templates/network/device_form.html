@@ -4,29 +4,32 @@
 <form action="" method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
-	<input type="submit" value="Sauvegarder" class="btn orange darken-3" />
+	<input type="submit" value="Sauvegarder" class="btn" />
 </form>
 
 {% if object %}
 	<hr/>
 	<h4>Interfaces</h4>
 	{% if object.interface_set.all %}
-		<table>
-			<tr>
-				<th>
-					Type
-				</th>
-				<th>
-					Description
-				</th>
-				<th>
-					Adresse MAC
-				</th>
-				<th colspan=2>
-					Options
-				</th>
-			</tr>
-			{% for interface in object.interface_set.all %}
+		<table class="highlight bordered">
+			<thead>
+				<tr>
+					<th>
+						Type
+					</th>
+					<th>
+						Description
+					</th>
+					<th>
+						Adresse MAC
+					</th>
+					<th colspan=2>
+						Options
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for interface in object.interface_set.all %}
 				<tr>
 					<td>
 						{{ interface.interface_type }}
@@ -39,21 +42,22 @@
 					</td>
 					<td>
 						<a href="{% url "network:interfaceUpdate" object.id interface.id %}"
-								class="btn orange darken-3">
+								class="btn">
 							Modifier
 						</a>
 					</td>
 					<td>
 						<a href="{% url "network:interfaceDelete" object.id interface.id %}"
-								class="btn orange darken-3">
+								class="btn">
 							Supprimer
 						</a>
 					</td>
 				</tr>
-			{% endfor %}
+				{% endfor %}
+			</tbody>
 		</table>
 		<a href="{% url "network:interfaceCreate" object.id %}"
-				class="btn orange darken-3">Ajouter une interface</a>
+				class="btn">Ajouter une interface</a>
 	{% else %}
 		Aucune interface enregistrée,
 		<a href="{% url "network:interfaceCreate" object.id %}">

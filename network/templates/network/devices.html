@@ -1,8 +1,8 @@
 {% extends "base_network.html" %}
 
 {% block main %}
-
-{% if user_devices_list %}
+<div class="row">
+	{% if user_devices_list %}
 	<table class="highlight bordered">
 		<thead>
 			<tr>
@@ -54,12 +54,15 @@
 			{% endfor %}
 		</tbody>
 	</table>
-{% else %}
+	{% else %}
 	<p>Aucun appareil enregistré</p>
-{% endif %}
+	{% endif %}
+</div>
 
-<a href="{% url "network:deviceCreate" %}" class="btn">
-	Ajouter un appareil
-</a>
+<div class="row">
+	<a href="{% url "network:deviceCreate" %}" class="btn">
+		Ajouter un appareil
+	</a>
+</div>
 
 {% endblock %}
