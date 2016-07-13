@@ -6,3 +6,4 @@ env/
 .bundle/
 .sass-cache/
 CACHE/
+localSettings.py
