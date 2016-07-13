@@ -1,13 +1,22 @@
 {% extends "base_network.html" %}
 
 {% block main %}
-{{ object.device_name }}
-{{ device.description }}
-{{ device.device_ip }}
-{{ device.interface_set.all|length }}
+<div class="row">
+	<ul>
+		<li>
+			Nom : {{ object.device_name }}
+		</li>
+		<li>
+			Description : {{ device.description }}
+		</li>
+		<li>
+			Adresse IP : {{ device.device_ip }}
+		</li>
+</div>
 
-<h4>Interfaces</h4>
-{% if device.interface_set.all %}
+<div class="row">
+	<h4>Interfaces</h4>
+	{% if device.interface_set.all %}
 	<table class="highlight bordered">
 		<thead>
 			<tr>
@@ -53,11 +62,12 @@
 			{% endfor %}
 		</tbody>
 	</table>
-{% else %}
-	Aucune interface enregistrée,
-	<a href="{% url "network:interfaceCreate" device.id %}">
-			ajoutez-en une !
-	</a>
-{% endif %}
+	{% else %}
+		Aucune interface enregistrée,
+		<a href="{% url "network:interfaceCreate" device.id %}">
+				ajoutez-en une !
+		</a>
+	{% endif %}
+</div>
 
 {% endblock %}

@@ -1,14 +1,18 @@
 {% extends "base_network.html" %}
 
 {% block main %}
-<form action="" method="post">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Sauvegarder" class="btn" />
-</form>
+<div class="row">
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Sauvegarder" class="btn" />
+	</form>
+</div>
 
 {% if object %}
-	<hr/>
+<hr/>
+
+<div class="row">
 	<h4>Interfaces</h4>
 	{% if object.interface_set.all %}
 		<table class="highlight bordered">
@@ -56,6 +60,7 @@
 				{% endfor %}
 			</tbody>
 		</table>
+
 		<a href="{% url "network:interfaceCreate" object.id %}"
 				class="btn">Ajouter une interface</a>
 	{% else %}
@@ -64,6 +69,7 @@
 				ajoutez-en une !
 		</a>
 	{% endif %}
+</div>
 {% endif %}
 
 {% endblock %}
