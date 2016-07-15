@@ -15,7 +15,7 @@ class DeviceTestCase(TestCase):
 
         self.test1_device1 = Device.objects.create(user=self.test1,
                 device_name="device_1_test_user_1",
-                device_ip="127.0.0.1", description="Stardard description 1"))
+                device_ip="127.0.0.1", description="Stardard description 1")
 
         self.test2_device1 = Device.objects.create(user=self.test2,
                 device_name="device_1_test_user_2",
