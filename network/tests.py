@@ -5,16 +5,17 @@ from django.core.exceptions import ValidationError
 
 from .models import Device, Interface
 
+
 class DeviceTestCase(TestCase):
     def setUp(self):
         self.test1 = User.objects.create_user('TestUser1', 'test1@example.com',
-                'We love HDM !')
+                                              'We love HDM !')
         self.test2 = User.objects.create_user('TestUser2', 'test2@example.com',
-                'We love HDM !')
+                                              'We love HDM !')
 
         self.test1_device1 = Device.objects.create(user=self.test1,
                 device_name="device_1_test_user_1",
-                device_ip="127.0.0.1", description="Stardard description 1")
+                device_ip="127.0.0.1", description="Stardard description 1"))
 
         self.test2_device1 = Device.objects.create(user=self.test2,
                 device_name="device_1_test_user_2",
