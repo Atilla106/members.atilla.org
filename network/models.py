@@ -1,7 +1,4 @@
-import re
-
 from django.db import models
-from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
@@ -21,19 +18,21 @@ INTERFACE_TYPE_CHOICES = (
 
 """ Generates a new IP address for the device """
 
+
 def getNewIPAddress():
     def lastMember(device):
         return int(device.device_ip.split(".")[3])
 
     usedMembers = list(map(lastMember, Device.objects.all()))
     availableIPs = ([a for a in range(IP_RANGE_START, IP_RANGE_END)
-        if a not in usedMembers])
+                    if a not in usedMembers])
 
     if len(availableIPs) == 0:
         raise ValidationError("No more available IPs !")
     return IP_NETWORK_PREFIX + str(availableIPs[0])
 
 """ Models definition """
+
 
 class Device(models.Model):
 
@@ -68,8 +67,8 @@ class Device(models.Model):
     def clean(self):
         if ((self.user_id is not None)
             and (self.device_name
-                in [d.device_name for d in self.user.device_set.all()
-                    if d.id != self.id])):
+                 in [d.device_name for d in self.user.device_set.all()
+                     if d.id != self.id])):
                 raise ValidationError('Device name aleready taken')
         if (self.device_ip is None):
             self.device_ip = getNewIPAddress()
@@ -90,6 +89,7 @@ class Device(models.Model):
         permissions = (
             ("can_publish_device", "Can use this device on the network"),
         )
+
 
 class Interface(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
@@ -120,8 +120,7 @@ class Interface(models.Model):
 
     def __str__(self):
         return (self.mac_address + " - " + self.interface_type
-        + " (" + self.description + ")")
+                + " (" + self.description + ")")
 
     def get_absolute_url(self):
         return reverse('network:deviceDetail', kwargs={'pk': self.device.pk})
-
