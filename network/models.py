@@ -10,7 +10,17 @@ from django.contrib.auth.models import User
 from .settings import IP_NETWORK_PREFIX, IP_RANGE_START, IP_RANGE_END
 from .settings import DNS_DOMAIN
 
+""" Constants for interface type """
+
+WIFI = "WLP"
+ETHERNET = "ETH"
+INTERFACE_TYPE_CHOICES = (
+    (WIFI, "Wifi"),
+    (ETHERNET, "Ethernet")
+)
+
 """ Generates a new IP address for the device """
+
 def getNewIPAddress():
     def lastMember(device):
         return int(device.device_ip.split(".")[3])
@@ -24,6 +34,7 @@ def getNewIPAddress():
     return IP_NETWORK_PREFIX + str(availableIPs[0])
 
 """ Models definition """
+
 class Device(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -81,13 +92,6 @@ class Device(models.Model):
         )
 
 class Interface(models.Model):
-    WIFI = "WLP"
-    ETHERNET = "ETH"
-    INTERFACE_TYPE_CHOICES = (
-            (WIFI, "Wifi"),
-            (ETHERNET, "Ethernet")
-            )
-
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
 
     interface_type = models.CharField(

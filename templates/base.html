@@ -11,11 +11,11 @@
 		{% compress css %}
 		<link type="text/scss"
 			rel="stylesheet"
-			href="{% static "materialize.scss" %}"
+			href="{% static "sass/materialize.scss" %}"
 			media="screen,projection"/>
 		<link type="text/scss"
 			rel="stylesheet"
-			href="{% static "base.scss" %}"
+			href="{% static "sass/base.scss" %}"
 			media="screen,projection"/>
 		{% endcompress %}
 		<meta name="viewport"
@@ -78,6 +78,9 @@
 			</script>
 			<script type="text/javascript"
 	   			src="{% static "js/materialize.min.js" %}">
+			</script>
+			<script type="text/javascript"
+				src="{% static "js/custom.js" %}">
 			</script>
 			{% block scripts %}
 			{% endblock %}
