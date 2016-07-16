@@ -1,7 +1,7 @@
 before_script:
+  - id
   - ruby -v
   - which ruby
-  - gem install bundler --no-ri --no-rdoc
   - virtualenv venv
   - bundle install --jobs $(nproc)  --path venv/ruby
   - source venv/bin/activate
