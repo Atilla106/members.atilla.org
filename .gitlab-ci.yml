@@ -1,0 +1,22 @@
+before_script:
+  - ruby -v
+  - which ruby
+  - gem install bundler --no-ri --no-rdoc
+  - virtualenv venv
+  - bundle install --jobs $(nproc)  --path venv/ruby
+  - source venv/bin/activate
+  - pip install -r requirements.txt
+
+stages:
+  - build
+  - test
+
+network-build:
+  stage: build
+  script:
+    - python manage.py test network
+
+network-test:
+  stage: test
+  script:
+    - python manage.py makemigrations
