@@ -2,9 +2,10 @@ before_script:
   - id
   - ruby -v
   - which ruby
-  - virtualenv venv
+  - virtualenv -p ${which python3} venv
   - bundle install --jobs $(nproc)  --path venv/ruby
   - source venv/bin/activate
+  - pip install --upgrade pip
   - pip install -r requirements.txt
 
 stages:
