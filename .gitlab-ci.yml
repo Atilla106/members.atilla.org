@@ -15,9 +15,10 @@ stages:
 network-build:
   stage: build
   script:
-    - python manage.py test network
+    - cp members/localSettings.py.example members/localSettings.py
+    - python manage.py makemigrations
 
 network-test:
   stage: test
   script:
-    - python manage.py makemigrations
+    - python manage.py test network
