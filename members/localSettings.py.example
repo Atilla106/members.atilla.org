@@ -2,6 +2,8 @@ import ldap
 from django_auth_ldap.config import LDAPSearch, PosixGroupType
 
 import logging
+
+
 """ LDAP Configuration """
 
 AUTH_LDAP_SERVER_URI = "ldap://ldap.mycompany.org"
