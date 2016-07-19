@@ -5,6 +5,10 @@ app_name = "accounts"
 urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url('^register/$', registration.RegisterView.as_view(), name='register'),
-    url('^validate/(?P<token>[a-zA-Z0-9]*)/',
-        validation.ValidateRegistrationView.as_view(), name='validate'),
+    url('^register/complete/$',
+        registration.RegistrationCompleteView.as_view(),
+        name='registration-complete'),
+    url('^validate/(?P<token>.*)',
+        validation.ValidateRegistrationView.as_view(),
+        name='validate'),
 ]

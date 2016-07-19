@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django import forms, views
 from django.views import generic
 from django.core.mail import send_mail
+from django.template import loader
 
 from ..settings import MAIL_SENDER
 from ..models import PendingUser
@@ -33,8 +34,11 @@ class RegisterView(generic.edit.CreateView):
 
         """ Send confirmation email """
         send_mail("Account validation",
-                  render_mail_content(pending_user),
+                  self.render_mail_content(pending_user),
                   MAIL_SENDER,
                   [pending_user.email])
 
-        return suéper(RegisterView, self).form_valid(form)
+        return super(RegisterView, self).form_valid(form)
+
+class RegistrationCompleteView(generic.TemplateView):
+    template_name = 'accounts/registration_complete.html'

@@ -116,6 +116,8 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = ['django_auth_ldap.backend.LDAPBackend',
                            'django.contrib.auth.backends.ModelBackend']
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # TO DO : Remove hardcoded urls
 
 LOGIN_URL = "/accounts/login/"
