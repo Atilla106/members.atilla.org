@@ -19,17 +19,17 @@ INTERFACE_TYPE_CHOICES = (
 """ Generates a new IP address for the device """
 
 
-def getNewIPAddress():
+def get_new_IP_address():
     def lastMember(device):
         return int(device.device_ip.split(".")[3])
 
-    usedMembers = list(map(lastMember, Device.objects.all()))
-    availableIPs = ([a for a in range(IP_RANGE_START, IP_RANGE_END)
-                    if a not in usedMembers])
+    used_members = list(map(lastMember, Device.objects.all()))
+    available_IPs = ([a for a in range(IP_RANGE_START, IP_RANGE_END)
+                      if a not in used_members])
 
-    if len(availableIPs) == 0:
+    if len(available_IPs) == 0:
         raise ValidationError("No more available IPs !")
-    return IP_NETWORK_PREFIX + str(availableIPs[0])
+    return IP_NETWORK_PREFIX + str(available_IPs[0])
 
 """ Models definition """
 
@@ -71,7 +71,7 @@ class Device(models.Model):
                      if d.id != self.id])):
                 raise ValidationError('Device name aleready taken')
         if (self.device_ip is None):
-            self.device_ip = getNewIPAddress()
+            self.device_ip = get_new_IP_address()
 
     def __str__(self):
         return self.device_name + " (" + self.description + ")"

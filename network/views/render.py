@@ -1,15 +1,19 @@
 import time
 
-from django.contrib.auth.models import User, Permission
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.template import loader
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
 
-from ..settings import *
+from ..settings import (DHCP_CONFIG_OUTPUT, DNS_CONFIG_OUTPUT,
+                        REV_DNS_CONFIG_OUTPUT, TTL, NEGATIVE_CACHE_TTL,
+                        REFRESH, RETRY, EXPIRE, DNS_BASE_SERIAL, DNS_DOMAIN,
+                        DNS_DOMAIN_SEARCH, DNS_SERVER_1, DNS_SERVER_2,
+                        REV_DNS_ORIGIN, DOMAIN_ROOT_SERVER, DOMAIN_MAIL_SERVER)
+
 from ..models import Device, Interface
+
 
 class RenderView(generic.base.View):
     """ Useful functions """
@@ -46,7 +50,7 @@ class RenderView(generic.base.View):
             }
 
     def render_file(self, request, template,
-            object_list, output_path):
+                    object_list, output_path):
         template = loader.get_template(template)
 
         context = self.get_config_dict()
@@ -57,30 +61,33 @@ class RenderView(generic.base.View):
         output.close()
 
 """ Config rendering views """
+
+
 class RenderDHCPView(RenderView):
     def get(self, request, *args, **kwargs):
         interface_list = self.get_interfaces()
         self.render_file(request,
-                'network/render_dhcp.conf',
-                interface_list,
-                DHCP_CONFIG_OUTPUT)
+                         'network/render_dhcp.conf',
+                         interface_list,
+                         DHCP_CONFIG_OUTPUT)
         return HttpResponse("OK")
+
 
 class RenderDNSView(RenderView):
     def get(self, request, *args, **kwargs):
         device_list = self.get_devices()
         self.render_file(request,
-                'network/render_dns.conf',
-                device_list,
-                DNS_CONFIG_OUTPUT)
+                         'network/render_dns.conf',
+                         device_list,
+                         DNS_CONFIG_OUTPUT)
         return HttpResponse("OK")
+
 
 class RenderReverseDNSView(RenderView):
     def get(self, request, *args, **kwargs):
         device_list = self.get_devices()
         self.render_file(request,
-                'network/render_reverse_dns.conf',
-                device_list,
-                REV_DNS_CONFIG_OUTPUT)
+                         'network/render_reverse_dns.conf',
+                         device_list,
+                         REV_DNS_CONFIG_OUTPUT)
         return HttpResponse("OK")
-
