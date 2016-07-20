@@ -117,6 +117,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+""" General informations """
+PLATFORM_NAME = "members.atilla.org"
+PLATFORM_HOSTNAME = "members.atilla.org"
+PLATFORM_USING_HTTPS = False
+
 """ LDAP Settings for LDAP authentication backend """
 AUTH_LDAP_SERVER_URI = LDAP_SERVER_URI
 AUTH_LDAP_BIND_DN = LDAP_AUTHENTICATION_DN
