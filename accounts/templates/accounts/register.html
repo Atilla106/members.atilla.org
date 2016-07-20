@@ -1,0 +1,16 @@
+{% extends "base_accounts.html" %}
+
+{% block main %}
+<div class="row">
+	<h4>Inscription</h4>
+	<p>
+		L’inscription à {{ PLATFORM_NAME }} vous permet d’accéder à de
+		nombreux services de notre association.
+	</p>
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Envoyer" class="btn" />
+	</form>
+</div>
+{% endblock %}
