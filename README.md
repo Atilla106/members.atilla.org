@@ -30,3 +30,12 @@ If you get the following warning : `You don't have $HOME/.gem/ruby/X.X.X/bin in 
 - Install the project Gems : `bundle install`
 
 Once the Ruby setup is done, SASS should be compiled on-the-fly by the Django server.
+
+Configuration
+---
+
+- Copy the exemple file `members/localSettings.py.example` to `members/localSettings.py`
+
+- Set your LDAP credentials in `members/localSettings.py`
+
+- Review the project settings in `members/settings.py`
