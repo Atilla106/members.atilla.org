@@ -33,8 +33,8 @@ class PendingUser(models.Model):
         TO DO : check if the username is not aleready used in LDAP """
 
     def generate_username(self):
-        self.username = ((self.first_name.lower()
-                          + self.last_name.lower())[:10])
+        self.username = ((self.last_name.lower()
+                          + self.first_name.lower())[:10])
 
     def generate_token(self):
         dk = hmac.new(bytes(str(time.time()), 'UTF-8'),

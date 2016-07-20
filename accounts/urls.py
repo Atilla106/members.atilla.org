@@ -8,7 +8,10 @@ urlpatterns = [
     url('^register/complete/$',
         registration.RegistrationCompleteView.as_view(),
         name='registration-complete'),
-    url('^validate/(?P<token>.*)',
+    url('^validate/complete/$',
+        validation.ValidationCompleteView.as_view(),
+        name='validation-complete'),
+    url('^validate/token/(?P<token>.*)',
         validation.ValidateRegistrationView.as_view(),
         name='validate'),
 ]

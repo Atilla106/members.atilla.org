@@ -134,3 +134,9 @@ AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=groups,dc=atilla,dc=org",
                                     "(objectClass=posixGroup)")
 
 AUTH_LDAP_GROUP_TYPE = PosixGroupType()
+
+""" LDAP Settings for the accounts app """
+LDAP_USERS_BASE_DN = "ou=users,dc=atilla,dc=org"
+LDAP_DEFAULT_USER_OU = "users"
+LDAP_DEFAULT_GID = 500
+LDAP_DEFAULT_HOME_PATH = "/home/users/"
