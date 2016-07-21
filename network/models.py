@@ -77,7 +77,7 @@ class Device(models.Model):
         return self.device_name + " (" + self.description + ")"
 
     def get_absolute_url(self):
-        return reverse('network:deviceDetail', kwargs={'pk': self.pk})
+        return reverse('network:device_detail', kwargs={'pk': self.pk})
 
     def get_FQDN(self):
         return self.device_name + "." + self.user.username + "." + DNS_DOMAIN
@@ -123,4 +123,4 @@ class Interface(models.Model):
                 + " (" + self.description + ")")
 
     def get_absolute_url(self):
-        return reverse('network:deviceDetail', kwargs={'pk': self.device.pk})
+        return reverse('network:device_detail', kwargs={'pk': self.device.pk})

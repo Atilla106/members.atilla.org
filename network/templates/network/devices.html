@@ -9,10 +9,10 @@
 	<table class="highlight bordered">
 		<thead>
 			<tr>
-				<th>
+				<th width="25%">
 					Nom
 				</th>
-				<th>
+				<th width="25%">
 					Description
 				</th>
 				<th>
@@ -21,7 +21,7 @@
 				<th>
 					Interfaces
 				</th>
-				<th colspan="2">
+				<th>
 					Options
 				</th>
 			</tr>
@@ -30,7 +30,9 @@
 			{% for device in user_devices_list %}
 			<tr>
 				<td>
-					{{ device.device_name }}
+					<a href="{% url "network:device_detail" device.id %}">
+						{{ device.device_name }}
+					</a>
 				</td>
 				<td>
 					{{ device.description }}
@@ -42,13 +44,12 @@
 					{{ device.interface_set.all|length }}
 				</td>
 				<td>
-					<a href="{% url "network:deviceUpdate" device.id %}"
+					<a href="{% url "network:device_update" device.id %}"
 						class="btn">
 						Modifier
 					</a>
-				</td>
-				<td>
-					<a href="{% url "network:deviceDelete" device.id %}"
+					&nbsp;
+					<a href="{% url "network:device_delete" device.id %}"
 							class="btn">
 						Supprimer
 					</a>
@@ -63,7 +64,7 @@
 </div>
 
 <div class="row">
-	<a href="{% url "network:deviceCreate" %}" class="btn">
+	<a href="{% url "network:device_create" %}" class="btn">
 		Ajouter un appareil
 	</a>
 </div>

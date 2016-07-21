@@ -47,13 +47,13 @@
 					{{ interface.mac_address }}
 				</td>
 				<td>
-					<a href="{% url "network:interfaceUpdate" device.id interface.id %}"
+					<a href="{% url "network:interface_update" device.id interface.id %}"
 							class="btn">
 						Modifier
 					</a>
 				</td>
 				<td>
-					<a href="{% url "network:interfaceDelete" device.id interface.id %}"
+					<a href="{% url "network:interface_delete" device.id interface.id %}"
 							class="btn">
 						Supprimer
 					</a>
@@ -64,7 +64,7 @@
 	</table>
 	{% else %}
 		Aucune interface enregistrée,
-		<a href="{% url "network:interfaceCreate" device.id %}">
+		<a href="{% url "network:interface_create" device.id %}">
 				ajoutez-en une !
 		</a>
 	{% endif %}
