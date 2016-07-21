@@ -1,4 +1,11 @@
 {% extends "base_network.html" %}
+{% block title %}
+	{% if object.interface_set.all %}
+		Modification d’un appareil
+	{% else %}
+		Ajout d’un appareil
+	{% endif %}
+{% endblock %}
 
 {% block main %}
 <div class="row">

@@ -22,8 +22,8 @@
 			content="width=device-width, initial-scale=1.0"/>
 		<title>
 			{% block title %}
-				members.atilla.org
 			{% endblock %}
+			| members.atilla.org
 		</title>
 	</head>
 	<body>
@@ -34,6 +34,7 @@
 						class="brand-logo center">
 						>~/ATILLA
 					</a>
+					{% if request.user.is_authenticated %}
 					<ul class="left hide-on-med-and-down">
 						<li>
 							<a href="#">
@@ -44,14 +45,21 @@
 							</a>
 						</li>
 					</ul>
+					{% endif %}
 					<ul class="right hide-on-med-and-down">
 						<li>
+						{% if request.user.is_authenticated %}
+							<a href="{% url "accounts:logout" %}">
+								Déconnexion
+							</a>
+						{% else %}
 							<a href="{% url "accounts:login" %}">
 								Connexion
 							</a>
 							<a href="{% url "accounts:register" %}">
 								Inscription
 							</a>
+						{% endif %}
 						</li>
 					</ul>
 				</div>

@@ -7,10 +7,20 @@ from django.template import loader
 from ..settings import MAIL_SENDER
 from ..models import PendingUser
 
+class RegisterForm(forms.ModelForm):
+    agreement = forms.BooleanField(label='Je reconnais être membre d’ATILLA '
+                                   'et accepte la charte des ressources '
+                                   'informatiques de l’association')
+
+    class Meta:
+        model = PendingUser
+        fields = ['first_name', 'last_name', 'email']
+
 class RegisterView(generic.edit.CreateView):
     template_name = 'accounts/register.html'
     model = PendingUser
-    fields = ['first_name', 'last_name', 'email']
+    #fields = ['first_name', 'last_name', 'email']
+    form_class = RegisterForm
 
     def render_mail_content(self, pending_user):
         template = loader.get_template('accounts/validation_mail.html')
