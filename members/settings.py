@@ -140,7 +140,9 @@ AUTH_LDAP_GROUP_SEARCH = LDAPSearch("ou=groups,dc=atilla,dc=org",
 
 AUTH_LDAP_GROUP_TYPE = PosixGroupType()
 
-""" LDAP Settings for the accounts app """
+""" Settings for the accounts app """
+MAIL_SENDER = "noreply@members.atilla.org"
+
 LDAP_USERS_BASE_DN = "ou=users,dc=atilla,dc=org"
 LDAP_DEFAULT_USER_OU = "users"
 LDAP_DEFAULT_GID = 500

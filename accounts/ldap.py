@@ -4,9 +4,10 @@ import crypt
 import random
 import string
 
+from django.conf import settings
+
 def generate_crypt_password(password):
-    char_set = string.ascii_uppercase + string.digits
-    salt = ''.join(random.sample(char_set, 8))
+    salt = crypt.mksalt(method=crypt.METHOD_SHA512)
     salt = '$1$' + salt + '$'
     return "{CRYPT}" + str(crypt.crypt(password, salt))
 

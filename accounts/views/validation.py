@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import ValidationError
 from django.views import generic
-from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse_lazy
 

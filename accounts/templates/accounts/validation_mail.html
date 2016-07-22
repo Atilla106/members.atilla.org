@@ -1,6 +1,10 @@
 Bonjour {{ first_name }},
-Pour finaliser votre inscription sur members.atilla.org, merci de suivre le
+
+Votre login pour la plateforme {{ PLATFORM_NAME }} est : {{ username }}
+
+Pour finaliser votre inscription sur {{ PLATFORM_NAME }}, merci de suivre le
 lien ci-après :
-{% url 'accounts:validate' validation_token %}
+
+{{ platform_url }}{% url 'accounts:validate' validation_token %}
 
 A très bientôt !
