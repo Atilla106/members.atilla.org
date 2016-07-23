@@ -2,14 +2,16 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
-from .models import Device, Interface
+from ..models import Device, Interface
 
 
 class DeviceTestCase(TestCase):
     def setUp(self):
         self.test1 = User.objects.create_user('TestUser1', 'test1@example.com',
                                               'We love HDM !')
+
         self.test2 = User.objects.create_user('TestUser2', 'test2@example.com',
                                               'We love HDM !')
 
@@ -19,14 +21,6 @@ class DeviceTestCase(TestCase):
                                                    device_ip="127.0.0.1",
                                                    description="Standard"
                                                                " description 1"
-                                                   )
-
-        self.test2_device1 = Device.objects.create(user=self.test2,
-                                                   device_name="device_1_test"
-                                                               "_user_2",
-                                                   device_ip="127.0.0.2",
-                                                   description="Standard"
-                                                               " description 2"
                                                    )
 
     def test_device_different_IPs(self):
@@ -51,14 +45,14 @@ class DeviceTestCase(TestCase):
                    device_name="device with spaces",
                    device_ip="127.0.0.3").full_clean()
 
-    def test_interface_mac_format(self):
-        """ An interface should have a correct MAC address """
+    def test_max_devices_per_user(self):
+        for i in range(1, settings.MAX_DEVICE_PER_USER):
+            tmp = Device.objects.create(user=self.test2,
+                                        device_name="device" + str(i),
+                                        device_ip="0.0.0." + str(i))
+            tmp.save()
         with self.assertRaises(ValidationError):
-            Interface(device=self.test1_device1,
-                      mac_address="__:__:__:__:__:__").full_clean()
-        with self.assertRaises(ValidationError):
-            Interface(device=self.test1_device1,
-                      mac_address="ab:cd:ef:gh:12:34").full_clean()
-        with self.assertRaises(ValidationError):
-            Interface(device=self.test1_device1,
-                      mac_address="ab:cd:ab:54:12").full_clean()
+            final = Device.objects.create(user=self.test2,
+                                          device_name="deviceFinal",
+                                          device_ip="42.42.42.42")
+            final.save()

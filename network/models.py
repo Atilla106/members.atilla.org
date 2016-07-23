@@ -3,9 +3,7 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-
-from .settings import IP_NETWORK_PREFIX, IP_RANGE_START, IP_RANGE_END
-from .settings import DNS_DOMAIN
+from django.conf import settings
 
 """ Constants for interface type """
 
@@ -24,12 +22,13 @@ def get_new_IP_address():
         return int(device.device_ip.split(".")[3])
 
     used_members = list(map(lastMember, Device.objects.all()))
-    available_IPs = ([a for a in range(IP_RANGE_START, IP_RANGE_END)
+    available_IPs = ([a for a in range(settings.IP_RANGE_START,
+                                       settings.IP_RANGE_END)
                       if a not in used_members])
 
     if len(available_IPs) == 0:
         raise ValidationError("No more available IPs !")
-    return IP_NETWORK_PREFIX + str(available_IPs[0])
+    return settings.IP_NETWORK_PREFIX + str(available_IPs[0])
 
 """ Models definition """
 
@@ -72,6 +71,13 @@ class Device(models.Model):
                 raise ValidationError('Device name aleready taken')
         if (self.device_ip is None):
             self.device_ip = get_new_IP_address()
+        return super(Device, self).clean()
+
+    def save(self, *args, **kwargs):
+        if (self.user.device_set.all().count()
+            >= settings.MAX_DEVICE_PER_USER):
+            raise ValidationError('Too much devices')
+        return super(Device, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.device_name + " (" + self.description + ")"
@@ -117,6 +123,12 @@ class Interface(models.Model):
     last_modified = models.DateTimeField(
             "Last update",
             auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if (self.device.interface_set.all().count()
+            >= settings.MAX_INTERFACE_PER_DEVICE):
+            raise ValidationError('Too much interfaces')
+        return super(Interface, self).save(*args, **kwargs)
 
     def __str__(self):
         return (self.mac_address + " - " + self.interface_type
