@@ -5,12 +5,7 @@ from django.db.models import Q
 from django.template import loader
 from django.http import HttpResponse
 from django.views import generic
-
-from ..settings import (DHCP_CONFIG_OUTPUT, DNS_CONFIG_OUTPUT,
-                        REV_DNS_CONFIG_OUTPUT, TTL, NEGATIVE_CACHE_TTL,
-                        REFRESH, RETRY, EXPIRE, DNS_BASE_SERIAL, DNS_DOMAIN,
-                        DNS_DOMAIN_SEARCH, DNS_SERVER_1, DNS_SERVER_2,
-                        REV_DNS_ORIGIN, DOMAIN_ROOT_SERVER, DOMAIN_MAIL_SERVER)
+from django.conf import settings
 
 from ..models import Device, Interface
 
@@ -34,19 +29,19 @@ class RenderView(generic.base.View):
     """ Loads config options into a dictionnary for template context """
     def get_config_dict(self):
         return {
-            'TTL': TTL,
-            'NEGATIVE_CACHE_TTL': NEGATIVE_CACHE_TTL,
-            'REFRESH': REFRESH,
-            'RETRY': RETRY,
-            'EXPIRE': EXPIRE,
-            'SERIAL': DNS_BASE_SERIAL + int(time.time() / 100),
-            'DNS_DOMAIN': DNS_DOMAIN,
-            'DNS_DOMAIN_SEARCH': DNS_DOMAIN_SEARCH,
-            'DNS_SERVER_1': DNS_SERVER_1,
-            'DNS_SERVER_2': DNS_SERVER_2,
-            'REV_DNS_ORIGIN': REV_DNS_ORIGIN,
-            'DOMAIN_ROOT_SERVER': DOMAIN_ROOT_SERVER,
-            'DOMAIN_MAIL_SERVER': DOMAIN_MAIL_SERVER,
+            'TTL': settings.TTL,
+            'NEGATIVE_CACHE_TTL': settings.NEGATIVE_CACHE_TTL,
+            'REFRESH': settings.REFRESH,
+            'RETRY': settings.RETRY,
+            'EXPIRE': settings.EXPIRE,
+            'SERIAL': settings.DNS_BASE_SERIAL + int(time.time() / 100),
+            'DNS_DOMAIN': settings.DNS_DOMAIN,
+            'DNS_DOMAIN_SEARCH': settings.DNS_DOMAIN_SEARCH,
+            'DNS_SERVER_1': settings.DNS_SERVER_1,
+            'DNS_SERVER_2': settings.DNS_SERVER_2,
+            'REV_DNS_ORIGIN': settings.REV_DNS_ORIGIN,
+            'DOMAIN_ROOT_SERVER': settings.DOMAIN_ROOT_SERVER,
+            'DOMAIN_MAIL_SERVER': settings.DOMAIN_MAIL_SERVER,
             }
 
     def render_file(self, request, template,
@@ -69,7 +64,7 @@ class RenderDHCPView(RenderView):
         self.render_file(request,
                          'network/render_dhcp.conf',
                          interface_list,
-                         DHCP_CONFIG_OUTPUT)
+                         settings.DHCP_CONFIG_OUTPUT)
         return HttpResponse("OK")
 
 
@@ -79,7 +74,7 @@ class RenderDNSView(RenderView):
         self.render_file(request,
                          'network/render_dns.conf',
                          device_list,
-                         DNS_CONFIG_OUTPUT)
+                         settings.DNS_CONFIG_OUTPUT)
         return HttpResponse("OK")
 
 
@@ -89,5 +84,5 @@ class RenderReverseDNSView(RenderView):
         self.render_file(request,
                          'network/render_reverse_dns.conf',
                          device_list,
-                         REV_DNS_CONFIG_OUTPUT)
+                         settings.REV_DNS_CONFIG_OUTPUT)
         return HttpResponse("OK")
