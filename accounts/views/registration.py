@@ -42,10 +42,6 @@ class RegisterView(generic.edit.CreateView):
     """ Validate the account informations and send a confirmation mail """
     def form_valid(self, form):
         pending_user = form.save(commit=False)
-        pending_user.format_last_name()
-        pending_user.generate_username()
-        pending_user.generate_token()
-        pending_user.full_clean()
 
         """ Send confirmation email """
         send_mail("Account validation",

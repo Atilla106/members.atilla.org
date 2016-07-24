@@ -17,7 +17,7 @@ class PendingUser(models.Model):
 
     last_name = models.CharField("Last name", max_length=25)
 
-    email = models.EmailField("E-Mail", max_length=50)
+    email = models.EmailField("E-Mail", max_length=50, unique=True)
 
     validation_token = models.CharField("Validation token", max_length=256)
 
@@ -44,6 +44,12 @@ class PendingUser(models.Model):
 
     def format_last_name(self):
         self.last_name = self.last_name.upper()
+
+    def clean(self):
+        self.generate_username()
+        self.generate_token()
+        self.format_last_name()
+        return super(PendingUser, self).clean()
 
     def get_absolute_url(self):
         return reverse('accounts:registration-complete')
