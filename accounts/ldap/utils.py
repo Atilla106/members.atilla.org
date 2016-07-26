@@ -38,13 +38,3 @@ def get_biggest_LDAP_uid(connection):
         else:
             break
     return max_uid
-
-def check_LDAP_configuration():
-    if (not settings.LDAP_SERVER_URI
-            or not settings.LDAP_MANAGEMENT_DN
-            or not settings.LDAP_MANAGEMENT_PASSWORD
-            or not settings.LDAP_DEFAULT_GID
-            or not settings.LDAP_USERS_BASE_DN
-            or not settings.LDAP_DEFAULT_USER_OU
-            or not settings.LDAP_DEFAULT_HOME_PATH):
-        raise NameError("LDAP settings not properly configured")

@@ -4,16 +4,19 @@ import string
 
 from django.conf import settings
 
-from .connection import LDAPManagerConnection
+from .connection.LDAPManager import LDAPManagerConnection
 from .utils import *
 
 def get_biggest_LDAP_uid(connection):
     search_filter = '(objectClass=posixAccount)'
     search_attribute = ["uidNumber"]
     search_scope = ldap.SCOPE_SUBTREE
+    print("Trace1A")
+    print(connection)
     result_id = connection.search(settings.LDAP_USERS_BASE_DN,
                                   search_scope, search_filter,
                                   search_attribute)
+    print("Trace1B")
     max_uid = 0
 
     # JPF
@@ -37,8 +40,9 @@ def get_biggest_LDAP_uid(connection):
 def migrate_to_LDAP(pending_user, password):
     password = generate_crypt_password(password)
 
-    connection = LDAPManagerConnection().get_connection()
-
+    connection = LDAPManagerConnection()
+    print(connection)
+    print("Trace1")
     attrs = {}
     attrs['cn'] = (pending_user.first_name
                    + " " + pending_user.last_name)
@@ -52,6 +56,7 @@ def migrate_to_LDAP(pending_user, password):
     attrs['homeDirectory'] = (settings.LDAP_DEFAULT_HOME_PATH
                               + pending_user.username)
 
+    print("Trace2")
     # Make sure that every attribute is a ascii string
     for key, value in attrs.items():
         attrs[key] = str(value).encode('ascii', 'ignore')
@@ -63,4 +68,5 @@ def migrate_to_LDAP(pending_user, password):
     dn = ("cn=" + pending_user.first_name + " " + pending_user.last_name
           + "," + settings.LDAP_USERS_BASE_DN)
     ldif = modlist.addModlist(attrs)
+    print("Trace3")
     connection.add_s(dn, ldif)
