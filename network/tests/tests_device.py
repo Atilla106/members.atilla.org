@@ -4,7 +4,8 @@ from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
-from ..models import Device, Interface
+from ..models.device import Device
+from ..models.interface import Interface
 
 
 class DeviceTestCase(TestCase):
