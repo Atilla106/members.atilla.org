@@ -53,3 +53,7 @@ class PendingUser(models.Model):
 
     def get_absolute_url(self):
         return reverse('accounts:registration-complete')
+
+    def __str__(self):
+        return (self.first_name + " " + self.last_name
+                + "(" + self.username + ")")

@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 
-from ..models import Device
+from ..models.device import Device
 
 """ Views for the device model """
 
