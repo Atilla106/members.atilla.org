@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse_lazy
 from django.views import generic
 from django import forms
 
-from ..models import Device, Interface, INTERFACE_TYPE_CHOICES
+from ..models.device import Device
+from ..models.interface import Interface, INTERFACE_TYPE_CHOICES
 
 
 def get_interface(kwargs, request, queryset=None):
