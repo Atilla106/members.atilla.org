@@ -7,7 +7,6 @@ from django.test import Client
 from django.core.urlresolvers import reverse
 
 from ..models.device import Device
-from ..models.interface import Interface
 
 
 class DeviceModelTestCase(TestCase):
@@ -62,6 +61,7 @@ class DeviceModelTestCase(TestCase):
                                           device_ip="42.42.42.42")
             final.save()
 
+
 class DeviceViewTestCase(TestCase):
     def setUp(self):
         self.test1 = User.objects.create_user(
@@ -85,4 +85,5 @@ class DeviceViewTestCase(TestCase):
         """ get_queryset should return an array of Devices """
         response = self.client.get(reverse('network:index'))
         device_list = response.context['user_devices_list']
-        self.assertTrue(all(isinstance(x, Device) for x in device_list))
+        self.assertTrue(all(isinstance(x, Device) for x in device_list)
+                        and device_list.count != 0)
