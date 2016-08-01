@@ -41,7 +41,7 @@
 					{{ device.device_ip }}
 				</td>
 				<td>
-					{{ device.interface_set.all|length }}
+					{{ device.interface_set.count }}
 				</td>
 				<td>
 					<a href="{% url "network:device_update" device.id %}"
