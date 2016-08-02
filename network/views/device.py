@@ -21,7 +21,7 @@ class DeviceDetailView(generic.DetailView):
         model = Device
 
 
-class DeviceCreateView(generic.edit.CreateView):
+class DeviceCreateView(LoginRequiredMixin, generic.edit.CreateView):
     model = Device
     fields = ['device_name', 'description']
 
