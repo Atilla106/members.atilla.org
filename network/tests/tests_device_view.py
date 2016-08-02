@@ -59,7 +59,7 @@ class DeviceViewTestCase(TestCase):
         self.assertTrue([all(isinstance(x, Device) for x in device_list)])
         self.assertTrue(device_list.count != 0)
 
-    """ Test for DeviceCreateView class """
+    """ Tests for DeviceCreateView class """
 
     def test_create_view_deny_anonymous(self):
         response = self.anonymous.get(
@@ -81,7 +81,7 @@ class DeviceViewTestCase(TestCase):
     def test_create_view_form_valid(self):
         """ The registered device should have a unique name and should belong
         to the current user.
-        The name should also should match the database requirements """
+        The name should also match the database requirements """
 
         """ Try with a correct device """
         self.client.post(reverse('network:device_create'),
@@ -109,7 +109,7 @@ class DeviceViewTestCase(TestCase):
             "Device name aleready taken",
             html=False)
 
-    """ Test for DeviceUpdateView class """
+    """ Tests for DeviceUpdateView class """
 
     def test_update_view_deny_anonymous(self):
         response = self.anonymous.get(
@@ -146,10 +146,10 @@ class DeviceViewTestCase(TestCase):
         self.assertTrue(response2.status_code == 404)
 
         """ Try with a device that does not exists """
-        response2 = self.client.get(reverse(
+        response3 = self.client.get(reverse(
             'network:device_update',
             args=[42133742]))
-        self.assertTrue(response2.status_code == 404)
+        self.assertTrue(response3.status_code == 404)
 
     """ Test for DeviceDeleteView class """
 
@@ -188,7 +188,7 @@ class DeviceViewTestCase(TestCase):
         self.assertTrue(response2.status_code == 404)
 
         """ Try with a device that does not exists """
-        response2 = self.client.get(reverse(
+        response3 = self.client.get(reverse(
             'network:device_delete',
             args=[42133742]))
-        self.assertTrue(response2.status_code == 404)
+        self.assertTrue(response3.status_code == 404)
