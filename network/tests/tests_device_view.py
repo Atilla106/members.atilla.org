@@ -50,7 +50,6 @@ class DeviceViewTestCase(TestCase):
                 (settings.LOGIN_URL + "?next=" + reverse(view_name,
                                                          args=args)))
 
-
     def load_test(self, view_name, template_name, args=[]):
         response = self.client.get(
                 reverse(view_name, args=args),
@@ -127,26 +126,28 @@ class DeviceViewTestCase(TestCase):
         The name should also match the database requirements """
 
         """ Try with a correct device """
-        self.client.post(reverse('network:device_create'),
-                         {'device_name': 'NewDevice1',
-                          'description': 'New device 1'})
-        newDevice = Device.objects.filter(user=self.test1,
-                                          device_name='NewDevice1')
+        self.client.post(
+                reverse('network:device_create'),
+                {'device_name': 'NewDevice1', 'description': 'New device 1'})
+        newDevice = Device.objects.filter(
+                user=self.test1,
+                device_name='NewDevice1')
         self.assertNotEqual(newDevice, [])
 
         """ Try with an incorrect device name """
-        response2 = self.client.post(reverse('network:device_create'),
-                                     {'device_name': 'New Device 2',
-                                      'description': 'New device 2'})
+        response2 = self.client.post(
+                reverse('network:device_create'),
+                {'device_name': 'New Device 2', 'description': 'New device 2'})
         self.assertContains(
             response2,
             "Invalid name",
             html=False)
 
         """ Try with a device name aleready taken """
-        response3 = self.client.post(reverse('network:device_create'),
-                                     {'device_name': 'device_1_test_user_1',
-                                     'description': 'New device 3'})
+        response3 = self.client.post(
+                reverse('network:device_create'),
+                {'device_name': 'device_1_test_user_1',
+                    'description': 'New device 3'})
         self.assertContains(
             response3,
             "Device name aleready taken",

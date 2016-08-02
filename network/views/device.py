@@ -21,9 +21,11 @@ class DeviceDetailView(LoginRequiredMixin, generic.DetailView):
     model = Device
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Device,
-                                 pk=self.kwargs['pk'],
-                                 user=self.request.user)
+        return get_object_or_404(
+                Device,
+                pk=self.kwargs['pk'],
+                user=self.request.user)
+
 
 class DeviceCreateView(LoginRequiredMixin, generic.edit.CreateView):
     model = Device
