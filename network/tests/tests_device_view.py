@@ -67,7 +67,7 @@ class DeviceViewTestCase(TestCase):
 
         """ Try with a device name aleready taken """
         response3 = self.client.post(reverse('network:device_create'),
-                                     {'device_name': 'device_1_test_user_2',
+                                     {'device_name': 'device_1_test_user_1',
                                      'description': 'New device 3'})
         self.assertContains(
             response3,

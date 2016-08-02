@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse_lazy
 from django.views import generic
@@ -28,7 +29,11 @@ class DeviceCreateView(generic.edit.CreateView):
     def form_valid(self, form):
         device = form.save(commit=False)
         device.user = self.request.user
-        device.full_clean()
+        try:
+            device.full_clean()
+        except ValidationError as e:
+            form.add_error("device_name", str(e))
+            return super(DeviceCreateView, self).form_invalid(form)
         return super(DeviceCreateView, self).form_valid(form)
 
 
