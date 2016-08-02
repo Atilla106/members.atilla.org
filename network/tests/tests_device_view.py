@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test import Client
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from ..models.device import Device
 
@@ -30,11 +31,26 @@ class DeviceViewTestCase(TestCase):
                 device_ip="127.0.0.2",
                 description="Standard description 2")
 
+        self.anonymous = Client()
+
         self.client = Client()
         self.client.login(username='TestUser1', password='We love HDM !')
 
     def tearDown(self):
         self.test1.delete()
+
+    """ Tests for DeviceView class """
+
+    def test_view_deny_anonymous(self):
+        response = self.anonymous.get(reverse('network:index'), follow=True)
+        self.assertRedirects(
+                response,
+                settings.LOGIN_URL + "?next=" + reverse('network:index'))
+
+    def test_view_loads(self):
+        response = self.client.get(reverse('network:index'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'network/devices.html')
 
     def test_view_get_queryset(self):
         """ get_queryset should return an array of Devices """
@@ -42,6 +58,25 @@ class DeviceViewTestCase(TestCase):
         device_list = response.context['user_devices_list']
         self.assertTrue([all(isinstance(x, Device) for x in device_list)])
         self.assertTrue(device_list.count != 0)
+
+    """ Test for DeviceCreateView class """
+
+    def test_create_view_deny_anonymous(self):
+        response = self.anonymous.get(
+                reverse('network:device_create'),
+                follow=True)
+        self.assertRedirects(
+                response,
+                (settings.LOGIN_URL
+                    + "?next="
+                    + reverse('network:device_create')))
+
+    def test_create_view_loads(self):
+        response = self.client.get(
+                reverse('network:device_create'),
+                follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'network/device_form.html')
 
     def test_create_view_form_valid(self):
         """ The registered device should have a unique name and should belong
@@ -74,6 +109,26 @@ class DeviceViewTestCase(TestCase):
             "Device name aleready taken",
             html=False)
 
+    """ Test for DeviceUpdateView class """
+
+    def test_update_view_deny_anonymous(self):
+        response = self.anonymous.get(
+                reverse('network:device_update', args=[self.test1_device1.pk]),
+                follow=True)
+        self.assertRedirects(
+                response,
+                (settings.LOGIN_URL
+                    + "?next="
+                    + reverse('network:device_update',
+                              args=[self.test1_device1.pk])))
+
+    def test_update_view_loads(self):
+        response = self.client.get(
+                reverse('network:device_update', args=[self.test1_device1.pk]),
+                follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'network/device_form.html')
+
     def test_update_view_get_object(self):
         """ The view should return a Device owned by the current user or
         throw a 404 error """
@@ -95,6 +150,26 @@ class DeviceViewTestCase(TestCase):
             'network:device_update',
             args=[42133742]))
         self.assertTrue(response2.status_code == 404)
+
+    """ Test for DeviceDeleteView class """
+
+    def test_delete_view_deny_anonymous(self):
+        response = self.anonymous.get(
+                reverse('network:device_delete', args=[self.test1_device1.pk]),
+                follow=True)
+        self.assertRedirects(
+                response,
+                (settings.LOGIN_URL
+                    + "?next="
+                    + reverse('network:device_delete',
+                              args=[self.test1_device1.pk])))
+
+    def test_delete_view_loads(self):
+        response = self.client.get(
+                reverse('network:device_delete', args=[self.test1_device1.pk]),
+                follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'network/device_confirm_delete.html')
 
     def test_delete_view_get_object(self):
         """ The view should return a Device owned by the current user or
