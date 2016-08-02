@@ -66,19 +66,19 @@ class DeviceViewTestCase(TestCase):
         response1 = self.client.get(reverse(
             view_name,
             args=[self.test1_device1.pk]))
-        self.assertTrue(self.test1_device1 == response1.context['device'])
+        self.assertEqual(self.test1_device1, response1.context['device'])
 
         """ Try with a device owned by another user """
         response2 = self.client.get(reverse(
             view_name,
             args=[self.test2_device1.pk]))
-        self.assertTrue(response2.status_code == 404)
+        self.assertEqual(response2.status_code, 404)
 
         """ Try with a device that does not exists """
         response3 = self.client.get(reverse(
             view_name,
             args=[42133742]))
-        self.assertTrue(response3.status_code == 404)
+        self.assertEqual(response3.status_code, 404)
 
     """ Tests for DeviceView class """
 
@@ -92,8 +92,8 @@ class DeviceViewTestCase(TestCase):
         """ get_queryset should return an array of Devices """
         response = self.client.get(reverse('network:index'))
         device_list = response.context['user_devices_list']
-        self.assertTrue([all(isinstance(x, Device) for x in device_list)])
-        self.assertTrue(device_list.count != 0)
+        self.assertTrue(all([isinstance(x, Device) for x in device_list]))
+        self.assertNotEqual(device_list.count, 0)
 
     """ Tests for DeviceDetailView class """
 
@@ -132,7 +132,7 @@ class DeviceViewTestCase(TestCase):
                           'description': 'New device 1'})
         newDevice = Device.objects.filter(user=self.test1,
                                           device_name='NewDevice1')
-        self.assertTrue(newDevice != [])
+        self.assertNotEqual(newDevice, [])
 
         """ Try with an incorrect device name """
         response2 = self.client.post(reverse('network:device_create'),
