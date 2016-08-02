@@ -44,7 +44,35 @@ class DeviceViewTestCase(TestCase):
         self.assertTrue(device_list.count != 0)
 
     def test_create_view_form_valid(self):
-        pass
+        """ The registered device should have a unique name and should belong
+        to the current user.
+        The name should also should match the database requirements """
+
+        """ Try with a correct device """
+        self.client.post(reverse('network:device_create'),
+                         {'device_name': 'NewDevice1',
+                          'description': 'New device 1'})
+        newDevice = Device.objects.filter(user=self.test1,
+                                          device_name='NewDevice1')
+        self.assertTrue(newDevice != [])
+
+        """ Try with an incorrect device name """
+        response2 = self.client.post(reverse('network:device_create'),
+                                     {'device_name': 'New Device 2',
+                                      'description': 'New device 2'})
+        self.assertContains(
+            response2,
+            "Invalid name",
+            html=False)
+
+        """ Try with a device name aleready taken """
+        response3 = self.client.post(reverse('network:device_create'),
+                                     {'device_name': 'device_1_test_user_2',
+                                     'description': 'New device 3'})
+        self.assertContains(
+            response3,
+            "Device name aleready taken",
+            html=False)
 
     def test_update_view_get_object(self):
         """ The view should return a Device owned by the current user or
