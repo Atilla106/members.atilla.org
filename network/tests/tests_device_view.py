@@ -59,6 +59,47 @@ class DeviceViewTestCase(TestCase):
         self.assertTrue([all(isinstance(x, Device) for x in device_list)])
         self.assertTrue(device_list.count != 0)
 
+    """ Tests for DeviceDetailView class """
+
+    def test_detail_view_deny_anonymous(self):
+        response = self.anonymous.get(
+                reverse('network:device_detail',
+                        args=[self.test1_device1.pk]))
+        self.assertRedirects(
+                response,
+                (settings.LOGIN_URL + "?next="
+                    + reverse('network:device_detail',
+                              args=[self.test1_device1.pk])))
+
+    def test_detail_view_loads(self):
+        response = self.client.get(
+                reverse('network:device_detail',
+                        args=[self.test1_device1.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'network/device_detail.html')
+
+    def test_detail_view_get_object(self):
+        """ The view should return a Device owned by the current user or
+        throw a 404 error """
+
+        """ Try with a device owned by the user """
+        response1 = self.client.get(reverse(
+            'network:device_detail',
+            args=[self.test1_device1.pk]))
+        self.assertTrue(self.test1_device1 == response1.context['device'])
+
+        """ Try with a device owned by another user """
+        response2 = self.client.get(reverse(
+            'network:device_detail',
+            args=[self.test2_device1.pk]))
+        self.assertTrue(response2.status_code == 404)
+
+        """ Try with a device that does not exists """
+        response3 = self.client.get(reverse(
+            'network:device_detail',
+            args=[42133742]))
+        self.assertTrue(response3.status_code == 404)
+
     """ Tests for DeviceCreateView class """
 
     def test_create_view_deny_anonymous(self):
