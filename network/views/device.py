@@ -13,7 +13,7 @@ class DeviceView(LoginRequiredMixin, generic.ListView):
     context_object_name = 'user_devices_list'
 
     def get_queryset(self):
-        return Device.objects.filter(user=self.request.user).values()
+        return Device.objects.filter(user=self.request.user)
 
 
 class DeviceDetailView(generic.DetailView):
