@@ -151,6 +151,18 @@ class DeviceViewTestCase(TestCase):
             args=[42133742]))
         self.assertTrue(response3.status_code == 404)
 
+    def test_update_view_commit(self):
+        """ A device should only be editable by the device owner
+        The primary key given in request should match a device in db """
+
+        """ Try with a device owned by the user """
+        response1 = self.client.post(
+                reverse('network:device_update',
+                        args=[self.test1_device1.pk]),
+                {'device_name': 'device_1_test_user_1', 'description': '4242'})
+        self.assertEqual(response1.status_code, 302)
+        self.assertRedirects(response1, reverse('network:index'))
+
     """ Test for DeviceDeleteView class """
 
     def test_delete_view_deny_anonymous(self):
@@ -192,3 +204,14 @@ class DeviceViewTestCase(TestCase):
             'network:device_delete',
             args=[42133742]))
         self.assertTrue(response3.status_code == 404)
+
+    def test_delete_view_commit(self):
+        """ A device should only be deleted by the device owner
+        The primary key given in request should match a device in db """
+
+        """ Try with a device owned by the user """
+        response1 = self.client.post(
+                reverse('network:device_delete',
+                        args=[self.test1_device1.pk]))
+        self.assertEqual(response1.status_code, 302)
+        self.assertRedirects(response1, reverse('network:index'))
