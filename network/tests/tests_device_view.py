@@ -47,7 +47,7 @@ class DeviceViewTestCase(TestCase):
         pass
 
     def test_update_view_get_object(self):
-        """ get_object should return a Device owned by the current user or
+        """ The view should return a Device owned by the current user or
         throw a 404 error """
 
         """ Try with a device owned by the user """
@@ -69,4 +69,23 @@ class DeviceViewTestCase(TestCase):
         self.assertTrue(response2.status_code == 404)
 
     def test_delete_view_get_object(self):
-        pass
+        """ The view should return a Device owned by the current user or
+        throw a 404 error """
+
+        """ Try with a device owned by the user """
+        response1 = self.client.get(reverse(
+            'network:device_delete',
+            args=[self.test1_device1.pk]))
+        self.assertTrue(self.test1_device1 == response1.context['device'])
+
+        """ Try with a device owned by another user """
+        response2 = self.client.get(reverse(
+            'network:device_delete',
+            args=[self.test2_device1.pk]))
+        self.assertTrue(response2.status_code == 404)
+
+        """ Try with a device that does not exists """
+        response2 = self.client.get(reverse(
+            'network:device_delete',
+            args=[42133742]))
+        self.assertTrue(response2.status_code == 404)
