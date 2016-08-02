@@ -86,4 +86,4 @@ class DeviceViewTestCase(TestCase):
         response = self.client.get(reverse('network:index'))
         device_list = response.context['user_devices_list']
         self.assertTrue(all(isinstance(x, Device) for x in device_list)
-                        and device_list.count != 0)
+        self.assertTrue(device_list.count != 0)
