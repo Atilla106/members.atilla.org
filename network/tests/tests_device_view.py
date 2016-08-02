@@ -33,7 +33,6 @@ class DeviceViewTestCase(TestCase):
 
         self.anonymous = Client()
 
-        self.client = Client()
         self.client.login(username='TestUser1', password='We love HDM !')
 
     def tearDown(self):
@@ -63,20 +62,20 @@ class DeviceViewTestCase(TestCase):
 
         """ Try with a device owned by the user """
         response1 = self.client.get(reverse(
-            view_name,
-            args=[self.test1_device1.pk]))
+                view_name,
+                args=[self.test1_device1.pk]))
         self.assertEqual(self.test1_device1, response1.context['device'])
 
         """ Try with a device owned by another user """
         response2 = self.client.get(reverse(
-            view_name,
-            args=[self.test2_device1.pk]))
+                view_name,
+                args=[self.test2_device1.pk]))
         self.assertEqual(response2.status_code, 404)
 
         """ Try with a device that does not exists """
         response3 = self.client.get(reverse(
-            view_name,
-            args=[42133742]))
+                view_name,
+                args=[42133742]))
         self.assertEqual(response3.status_code, 404)
 
     """ Tests for DeviceView class """
@@ -139,9 +138,9 @@ class DeviceViewTestCase(TestCase):
                 reverse('network:device_create'),
                 {'device_name': 'New Device 2', 'description': 'New device 2'})
         self.assertContains(
-            response2,
-            "Invalid name",
-            html=False)
+                response2,
+                "Invalid name",
+                html=False)
 
         """ Try with a device name aleready taken """
         response3 = self.client.post(
@@ -149,9 +148,9 @@ class DeviceViewTestCase(TestCase):
                 {'device_name': 'device_1_test_user_1',
                     'description': 'New device 3'})
         self.assertContains(
-            response3,
-            "Device name aleready taken",
-            html=False)
+                response3,
+                "Device name aleready taken",
+                html=False)
 
     """ Tests for DeviceUpdateView class """
 
@@ -190,9 +189,9 @@ class DeviceViewTestCase(TestCase):
 
     def test_delete_view_loads(self):
         self.load_test(
-            'network:device_delete',
-            'network/device_confirm_delete.html',
-            args=[self.test1_device1.pk])
+                'network:device_delete',
+                'network/device_confirm_delete.html',
+                args=[self.test1_device1.pk])
 
     def test_delete_view_get_object(self):
         self.get_object_test('network:device_delete')
