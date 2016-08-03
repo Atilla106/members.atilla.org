@@ -27,7 +27,7 @@ class RegisterView(generic.edit.CreateView):
     def render_mail_content(self, pending_user):
         template = loader.get_template('accounts/validation_mail.html')
 
-        url_prefix = "https://" if settings.PLATFORM_USING_HTTPS else "http://"
+        url_prefix = 'https://' if settings.PLATFORM_USING_HTTPS else 'http://'
         platform_url = (url_prefix + settings.PLATFORM_HOSTNAME)
 
         context = {
@@ -43,12 +43,12 @@ class RegisterView(generic.edit.CreateView):
         return template.render(context, self.request)
 
     def form_valid(self, form):
-        """Validate the account informations and send a confirmation mail."""
+        '''Validate the account informations and send a confirmation mail.'''
         pending_user = form.save(commit=False)
 
         # Send confirmation email
         send_mail(
-            "Account validation",
+            'Account validation',
             self.render_mail_content(pending_user),
             settings.MAIL_SENDER,
             [pending_user.email],

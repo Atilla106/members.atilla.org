@@ -1,4 +1,4 @@
-"""Account models definition."""
+'''Account models definition.'''
 import base64
 import hashlib
 import hmac
@@ -11,23 +11,22 @@ from django.db import models
 class PendingUser(models.Model):
     username = models.CharField(max_length=10, unique=True)
 
-    first_name = models.CharField("First name", max_length=25)
+    first_name = models.CharField('First name', max_length=25)
 
-    last_name = models.CharField("Last name", max_length=25)
+    last_name = models.CharField('Last name', max_length=25)
 
-    email = models.EmailField("E-Mail", max_length=50, unique=True)
+    email = models.EmailField('E-Mail', max_length=50, unique=True)
 
-    validation_token = models.CharField("Validation token", max_length=256)
+    validation_token = models.CharField('Validation token', max_length=256)
 
-    add_date = models.DateTimeField("Date added", auto_now_add=True)
+    add_date = models.DateTimeField('Date added', auto_now_add=True)
 
-    last_modified = models.DateTimeField("Last update", auto_now=True)
+    last_modified = models.DateTimeField('Last update', auto_now=True)
 
     def generate_username(self):
-        """Generates a proper username.
+        '''Generates a proper username.
 
-        TODO: check if the username is not aleready used in LDAP.
-        """
+        TODO: check if the username is not aleready used in LDAP.'''
         self.username = (self.last_name + self.first_name).lower()[:10]
 
     def generate_token(self):

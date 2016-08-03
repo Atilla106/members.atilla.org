@@ -14,10 +14,9 @@ class ValidateRegistrationForm(forms.Form):
 
 
 class ValidateRegistrationView(generic.FormView):
-    """Try to find the DB entry corresponding to the given token
+    '''Try to find the DB entry corresponding to the given token
     if one entry is found, ask for a password and sync the account
-    with the LDAP.
-    """
+    with the LDAP.'''
 
     template_name = 'accounts/finish_validation.html'
     form_class = ValidateRegistrationForm
