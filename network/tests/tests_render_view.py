@@ -71,6 +71,17 @@ class RenderViewTestCase(TestCase):
                 output_file.read(),
                 template.render(context, request))
 
+    def render_view_test(self, url, object_list, template_name, file_path):
+        response = self.client.get(reverse(url))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b'OK')
+
+        self.render_file_test(
+                object_list,
+                template_name,
+                file_path)
+
     ''' Tests for RenderView class '''
 
     def test_user_with_perm(self):
@@ -150,34 +161,22 @@ class RenderViewTestCase(TestCase):
                 settings.DOMAIN_MAIL_SERVER)
 
     def test_render_dhcp_view(self):
-        response = self.client.get(reverse('network:render_DHCP'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'OK')
-
-        self.render_file_test(
+        self.render_view_test(
+                'network:render_DHCP',
                 self.interface_list,
                 'network/render_dhcp.conf',
                 settings.DHCP_CONFIG_OUTPUT)
 
     def test_render_dns_view(self):
-        response = self.client.get(reverse('network:render_DNS'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'OK')
-
-        self.render_file_test(
+        self.render_view_test(
+                'network:render_DNS',
                 self.device_list,
                 'network/render_dns.conf',
                 settings.DNS_CONFIG_OUTPUT)
 
     def test_render_reverse_dns_view(self):
-        response = self.client.get(reverse('network:render_reverse_DNS'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'OK')
-
-        self.render_file_test(
+        self.render_view_test(
+                'network:render_reverse_DNS',
                 self.device_list,
                 'network/render_reverse_dns.conf',
                 settings.REV_DNS_CONFIG_OUTPUT)
