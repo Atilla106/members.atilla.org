@@ -1,16 +1,23 @@
 import time
 
-from django.test import TestCase, RequestFactory
-from django.contrib.auth.models import User, Permission
 from django.conf import settings
-from django.template import loader
+from django.contrib.auth.models import (
+        User,
+        Permission
+)
 from django.core.urlresolvers import reverse
+from django.template import loader
+from django.test import (
+        TestCase,
+        RequestFactory
+)
 
 from ..views.render import RenderView
-
 from ..models.device import Device
-from ..models.interface import Interface, ETHERNET
-
+from ..models.interface import (
+        Interface,
+        ETHERNET
+)
 
 class RenderViewTestCase(TestCase):
     def setUp(self):
@@ -28,12 +35,28 @@ class RenderViewTestCase(TestCase):
                 user=self.test1,
                 device_name='device_1_test_user_1',
                 device_ip='127.0.0.1',
-                description='Description 1')
+                description='Description')
 
         self.test1_device1_interface1 = Interface.objects.create(
                 device=self.test1_device1,
                 interface_type=ETHERNET,
                 mac_address='00:00:00:00:00:00')
+
+        self.test1_device2 = Device.objects.create(
+                user=self.test1,
+                device_name='device_2_test_user_1',
+                device_ip='127.0.1.1',
+                description='Description')
+
+        self.test1_device2_interface1 = Interface.objects.create(
+                device=self.test1_device2,
+                interface_type=ETHERNET,
+                mac_address='00:00:00:00:01:00')
+
+        self.test1_device2_interface2 = Interface.objects.create(
+                device=self.test1_device2,
+                interface_type=ETHERNET,
+                mac_address='00:00:00:00:02:00')
 
         self.test2 = User.objects.create_user(
                 'TestUser2',
@@ -44,7 +67,7 @@ class RenderViewTestCase(TestCase):
                 user=self.test2,
                 device_name='device_1_test_user_2',
                 device_ip='127.0.0.2',
-                description='Description 2')
+                description='Description')
 
         self.test2_device1_interface1 = Interface.objects.create(
                 device=self.test2_device1,
@@ -82,8 +105,6 @@ class RenderViewTestCase(TestCase):
                 template_name,
                 file_path)
 
-    ''' Tests for RenderView class '''
-
     def test_user_with_perm(self):
         self.assertTrue(
                 self.test1
@@ -92,17 +113,17 @@ class RenderViewTestCase(TestCase):
                 self.test2
                 in self.render_view.users_with_perm('can_publish_device'))
 
-    ''' We may have to test with more than one device / interface in
-    test_get_interfaces and test_get_devices '''
-
     def test_get_interfaces(self):
         self.assertEqual(
-                [self.test1_device1_interface1],
+                [self.test1_device1_interface1,
+                    self.test1_device2_interface1,
+                    self.test1_device2_interface2],
                 list(self.render_view.get_interfaces()))
 
     def test_get_devices(self):
         self.assertEqual(
-                [self.test1_device1],
+                [self.test1_device1,
+                    self.test1_device2],
                 list(self.render_view.get_devices()))
 
     def test_config_dict(self):
