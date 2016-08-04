@@ -1,26 +1,32 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse_lazy
-from django.views import generic
 from django import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.urlresolvers import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.views import generic
 
 from ..models.device import Device
-from ..models.interface import Interface, INTERFACE_TYPE_CHOICES
+from ..models.interface import (
+    Interface,
+    INTERFACE_TYPE_CHOICES,
+)
 
 
 def get_interface(kwargs, request, queryset=None):
-    device = get_object_or_404(Device,
-                               pk=kwargs['pk1'],
-                               user=request.user)
-    return get_object_or_404(Interface,
-                             pk=kwargs['pk2'],
-                             device=device)
+    device = get_object_or_404(
+        Device,
+        pk=kwargs['pk1'],
+        user=request.user,
+    )
 
-
-""" Form declaration for the interface model """
+    return get_object_or_404(
+        Interface,
+        pk=kwargs['pk2'],
+        device=device,
+    )
 
 
 class InterfaceForm(forms.ModelForm):
+    '''Form declaration for the interface model.'''
     interface_type = forms.ChoiceField(choices=INTERFACE_TYPE_CHOICES)
     mac_address = forms.CharField()
     description = forms.CharField()
@@ -30,21 +36,25 @@ class InterfaceForm(forms.ModelForm):
         fields = ['interface_type', 'mac_address', 'description']
 
 
-""" Views for the interface model """
-
+# Views for the interface model
 
 class InterfaceCreateView(generic.edit.CreateView):
+    '''Add the device referenced in url as the interface owner.'''
+
     model = Interface
     form_class = InterfaceForm
 
-    """ Add the device referenced in url as the interface owner """
     def form_valid(self, form):
         interface = form.save(commit=False)
-        device = get_object_or_404(Device,
-                                   pk=self.kwargs['pk'],
-                                   user=self.request.user)
+        device = get_object_or_404(
+            Device,
+            pk=self.kwargs['pk'],
+            user=self.request.user,
+        )
+
         interface.device = device
         interface.full_clean()
+
         return super(InterfaceCreateView, self).form_valid(form)
 
 

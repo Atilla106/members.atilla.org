@@ -1,45 +1,40 @@
+'''Account models definition.'''
+import base64
 import hashlib
 import hmac
-import base64
 import time
-from django.db import models
-from django.core.urlresolvers import reverse
 
-""" Models definition """
+from django.core.urlresolvers import reverse
+from django.db import models
 
 
 class PendingUser(models.Model):
-    username = models.CharField(
-            max_length=10,
-            unique=True)
+    username = models.CharField(max_length=10, unique=True)
 
-    first_name = models.CharField("First name", max_length=25)
+    first_name = models.CharField('First name', max_length=25)
 
-    last_name = models.CharField("Last name", max_length=25)
+    last_name = models.CharField('Last name', max_length=25)
 
-    email = models.EmailField("E-Mail", max_length=50, unique=True)
+    email = models.EmailField('E-Mail', max_length=50, unique=True)
 
-    validation_token = models.CharField("Validation token", max_length=256)
+    validation_token = models.CharField('Validation token', max_length=256)
 
-    add_date = models.DateTimeField(
-            "Date added",
-            auto_now_add=True)
+    add_date = models.DateTimeField('Date added', auto_now_add=True)
 
-    last_modified = models.DateTimeField(
-            "Last update",
-            auto_now=True)
-
-    """ Generates a proper username
-        TO DO : check if the username is not aleready used in LDAP """
+    last_modified = models.DateTimeField('Last update', auto_now=True)
 
     def generate_username(self):
-        self.username = ((self.last_name.lower()
-                          + self.first_name.lower())[:10])
+        '''Generates a proper username.
+
+        TODO: check if the username is not aleready used in LDAP.'''
+        self.username = (self.last_name + self.first_name).lower()[:10]
 
     def generate_token(self):
-        dk = hmac.new(bytes(str(time.time()), 'UTF-8'),
-                      msg=bytes((str(time.time()) + self.email), 'UTF-8'),
-                      digestmod=hashlib.sha256).digest()
+        dk = hmac.new(
+            bytes(str(time.time()), 'UTF-8'),
+            msg=bytes((str(time.time()) + self.email), 'UTF-8'),
+            digestmod=hashlib.sha256
+        ).digest()
         self.validation_token = base64.b64encode(dk).decode()
 
     def format_last_name(self):
@@ -55,5 +50,8 @@ class PendingUser(models.Model):
         return reverse('accounts:registration-complete')
 
     def __str__(self):
-        return (self.first_name + " " + self.last_name
-                + "(" + self.username + ")")
+        return '{first_name} {last_name} ({username})'.format(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            username=self.username,
+        )
