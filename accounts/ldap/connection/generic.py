@@ -19,7 +19,7 @@ class LDAPGenericConnection():
                 or not settings.LDAP_USERS_BASE_DN
                 or not settings.LDAP_DEFAULT_USER_OU
                 or not settings.LDAP_DEFAULT_HOME_PATH):
-            raise NameError("LDAP settings not properly configured")
+            raise NameError('LDAP settings not properly configured')
 
     def bind(self, bind_dn, bind_password):
         self.connection.bind(bind_dn, bind_password)
