@@ -1,23 +1,18 @@
 import time
 
 from django.conf import settings
-from django.contrib.auth.models import (
-        User,
-        Permission
-)
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission
 from django.core.urlresolvers import reverse
 from django.template import loader
-from django.test import (
-        TestCase,
-        RequestFactory
-)
+from django.test import TestCase
+from django.test import RequestFactory
 
 from ..views.render import RenderView
 from ..models.device import Device
-from ..models.interface import (
-        Interface,
-        ETHERNET
-)
+from ..models.interface import Interface
+from ..models.interface import ETHERNET
+
 
 class RenderViewTestCase(TestCase):
     def setUp(self):
@@ -106,12 +101,8 @@ class RenderViewTestCase(TestCase):
                 file_path)
 
     def test_user_with_perm(self):
-        self.assertTrue(
-                self.test1
-                in self.render_view.users_with_perm('can_publish_device'))
-        self.assertFalse(
-                self.test2
-                in self.render_view.users_with_perm('can_publish_device'))
+        self.assertTrue([self.test1] ==
+                        self.render_view.users_with_perm('can_publish_device'))
 
     def test_get_interfaces(self):
         self.assertEqual(
