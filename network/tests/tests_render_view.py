@@ -1,4 +1,5 @@
 import time
+from pprint import pprint
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -105,8 +106,8 @@ class RenderViewTestCase(TestCase):
 
     def test_user_with_perm(self):
         """Tests that user_with_perms returns the correct list of users"""
-        self.assertTrue([self.test1] ==
-                        self.render_view.users_with_perm('can_publish_device'))
+        self.assertTrue([self.test1] == list(
+                self.render_view.users_with_perm('can_publish_device')))
 
     def test_get_interfaces(self):
         """Tests that the get_interfaces view returns all interfaces objects"""
