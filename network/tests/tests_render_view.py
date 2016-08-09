@@ -1,5 +1,4 @@
 import time
-from pprint import pprint
 
 from django.conf import settings
 from django.contrib.auth.models import User
