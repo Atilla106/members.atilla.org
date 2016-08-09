@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from ..models import PendingUser
-from ..ldap import migrate_to_LDAP
+from ..ldap.migration import migrate_to_LDAP
 
 
 class ValidateRegistrationForm(forms.Form):
