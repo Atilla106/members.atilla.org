@@ -76,6 +76,7 @@ class RenderViewTestCase(TestCase):
         self.interface_list = self.render_view.get_interfaces()
 
     def render_file_test(self, object_list, template_name, file_path):
+        """Test that generated config files are properly written on disk"""
         request = self.factory.get('/')
         request.user = self.client
 
@@ -90,6 +91,8 @@ class RenderViewTestCase(TestCase):
                 template.render(context, request))
 
     def render_view_test(self, url, object_list, template_name, file_path):
+        """Tests that url, view and file generation for one predefined config
+            file generator works"""
         response = self.client.get(reverse(url))
 
         self.assertEqual(response.status_code, 200)
@@ -101,10 +104,12 @@ class RenderViewTestCase(TestCase):
                 file_path)
 
     def test_user_with_perm(self):
+        """Tests that user_with_perms returns the correct list of users"""
         self.assertTrue([self.test1] ==
                         self.render_view.users_with_perm('can_publish_device'))
 
     def test_get_interfaces(self):
+        """Tests that the get_interfaces view returns all interfaces objects"""
         self.assertEqual(
                 [self.test1_device1_interface1,
                     self.test1_device2_interface1,
@@ -112,12 +117,14 @@ class RenderViewTestCase(TestCase):
                 list(self.render_view.get_interfaces()))
 
     def test_get_devices(self):
+        """Tests that the get_devices view returns all devices objects"""
         self.assertEqual(
                 [self.test1_device1,
                     self.test1_device2],
                 list(self.render_view.get_devices()))
 
     def test_config_dict(self):
+        """Tests that the get_config view returns all the config parameters"""
         config = self.render_view.get_config_dict()
         keys = ('TTL',
                 'NEGATIVE_CACHE_TTL',
@@ -173,6 +180,7 @@ class RenderViewTestCase(TestCase):
                 settings.DOMAIN_MAIL_SERVER)
 
     def test_render_dhcp_view(self):
+        """Tests the DHCP config file generator"""
         self.render_view_test(
                 'network:render_DHCP',
                 self.interface_list,
@@ -180,6 +188,7 @@ class RenderViewTestCase(TestCase):
                 settings.DHCP_CONFIG_OUTPUT)
 
     def test_render_dns_view(self):
+        """Tests the DNS config file generator"""
         self.render_view_test(
                 'network:render_DNS',
                 self.device_list,
@@ -187,6 +196,7 @@ class RenderViewTestCase(TestCase):
                 settings.DNS_CONFIG_OUTPUT)
 
     def test_render_reverse_dns_view(self):
+        """Tests the reverse DNS config file generator"""
         self.render_view_test(
                 'network:render_reverse_DNS',
                 self.device_list,
