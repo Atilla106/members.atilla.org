@@ -1,15 +1,14 @@
 import crypt
 import ldap
-import ldap.modlist as modlist
-import random
-import string
 
 from django.conf import settings
+
 
 def generate_crypt_password(password):
     salt = crypt.mksalt(method=crypt.METHOD_SHA512)
     salt = '$1${}$'.format(salt)
     return '{CRYPT}{}'.format(str(crypt.crypt(password, salt)))
+
 
 def get_biggest_LDAP_uid(connection):
     search_filter = '(objectClass=posixAccount)'
