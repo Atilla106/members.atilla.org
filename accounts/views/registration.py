@@ -8,11 +8,7 @@ from ..models import PendingUser
 
 
 class RegisterForm(forms.ModelForm):
-    agreement = forms.BooleanField(
-        label='Je reconnais être membre d’ATILLA '
-        'et accepte la charte des ressources '
-        'informatiques de l’association'
-    )
+    agreement = forms.BooleanField()
 
     class Meta:
         model = PendingUser
