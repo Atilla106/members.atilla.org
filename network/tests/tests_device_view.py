@@ -37,7 +37,6 @@ class DeviceViewTestCase(TestCase):
 
         self.anonymous = Client()
 
-        self.client = Client()
         self.client.login(username='TestUser1', password='We love HDM !')
 
     def tearDown(self):

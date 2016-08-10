@@ -7,3 +7,6 @@ env/
 .sass-cache/
 CACHE/
 localSettings.py
+dhcp.conf
+dns.conf
+rev.dns.conf
