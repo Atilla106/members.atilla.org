@@ -26,7 +26,7 @@ class LDAPFunctionsTestCase(TestCase):
                     'uid': ['usertest'],
                     'userPassword': ['We love HDM !']})
 
-        self.directory = dict([root, top, users, manager, user1, user2])
+        self.directory = dict([root, top, users, manager, user1])
 
         self.mockldap = MockLdap(self.directory)
         self.mockldap.start()
