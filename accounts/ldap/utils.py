@@ -18,8 +18,9 @@ def test_user_bind(user_dn, password):
                 user_dn,
                 password)
         return True
-    except:
+    except (NameError, ldap.LDAPError):
         return False
+
 
 def change_user_password(user_dn, old_password, new_password):
     try:
@@ -27,16 +28,17 @@ def change_user_password(user_dn, old_password, new_password):
                 settings.LDAP_SERVER_URI,
                 user_dn,
                 old_password)
-        new_crypt_password = generate_crypt_password(new_password)
-        mod_attrs = [(
-            ldap.MOD_REPLACE,
-            'userPassword',
-            [str(new_crypt_password).encode('ascii', 'ignore')]
-            )]
-        connection.modify_s(user_dn, mod_attrs)
-        return True
-    except:
+    except (NameError, ldap.LDAPError):
         return False
+
+    new_crypt_password = generate_crypt_password(new_password)
+    mod_attrs = [(
+        ldap.MOD_REPLACE,
+        'userPassword',
+        [str(new_crypt_password).encode('ascii', 'ignore')]
+        )]
+    connection.modify_s(user_dn, mod_attrs)
+    return True
 
 def get_biggest_LDAP_uid(connection):
     search_filter = '(objectClass=posixAccount)'
