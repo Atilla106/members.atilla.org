@@ -3,12 +3,42 @@ import ldap
 
 from django.conf import settings
 
+from .connection.generic import LDAPGenericConnection
 
 def generate_crypt_password(password):
     salt = crypt.mksalt(method=crypt.METHOD_SHA512)
     salt = '$1${}$'.format(salt)
     return '{{CRYPT}}{}'.format(str(crypt.crypt(password, salt)))
 
+
+def test_user_bind(user_dn, password):
+    try:
+        LDAPGenericConnection(
+                settings.LDAP_SERVER_URI,
+                user_dn,
+                password)
+        return True
+    except (NameError, ldap.LDAPError):
+        return False
+
+
+def change_user_password(user_dn, old_password, new_password):
+    try:
+        connection = LDAPGenericConnection(
+                settings.LDAP_SERVER_URI,
+                user_dn,
+                old_password)
+    except (NameError, ldap.LDAPError):
+        return False
+
+    new_crypt_password = generate_crypt_password(new_password)
+    mod_attrs = [(
+        ldap.MOD_REPLACE,
+        'userPassword',
+        [str(new_crypt_password).encode('ascii', 'ignore')]
+        )]
+    connection.modify_s(user_dn, mod_attrs)
+    return True
 
 def get_biggest_LDAP_uid(connection):
     search_filter = '(objectClass=posixAccount)'
