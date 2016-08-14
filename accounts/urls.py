@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from .views import registration, validation
+from .views import registration, validation, profile
 
 app_name = "accounts"
 urlpatterns = [
@@ -14,4 +14,7 @@ urlpatterns = [
     url('^validate/token/(?P<token>.*)',
         validation.ValidateRegistrationView.as_view(),
         name='validate'),
+    url('^password/update/$',
+        profile.UpdatePasswordView.as_view(),
+        name='change_password'),
 ]

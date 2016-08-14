@@ -25,20 +25,25 @@ class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
         new_password_conf = form.cleaned_data['new_password_conf']
 
         if not test_user_bind(
-                self.request.user.dn,
+                self.request.user.ldap_user.dn,
                 old_password):
-            raise ValidationError(
-                    'The old password is incorrect',
-                    code='invalid'
-                    )
+            form.add_error(
+                    'old_password',
+                    'The old password is incorrect')
+            return super(UpdatePasswordView, self).form_invalid(form)
         elif new_password != new_password_conf:
-            raise ValidationError(
-                    'Passwords are not the same',
-                    code='invalid'
-                    )
+            form.add_error(
+                    'new_password',
+                    'Passwords are not the same')
+            return super(UpdatePasswordView, self).form_invalid(form)
         else:
-            change_user_password(
-                    self.request.user.dn,
+            if change_user_password(
+                    self.request.user.ldap_user.dn,
                     old_password,
-                    new_password)
-            return super(ValidateRegistrationView, self).form_valid(form)
+                    new_password):
+                return super(UpdatePasswordView, self).form_valid(form)
+            else:
+                form.add_error(
+                        'old_password',
+                        'Unable to perform update')
+                return super(UpdatePasswordView, self).form_invalid(form)
