@@ -31,7 +31,7 @@ class LDAPGenericConnection():
             raise NameError('LDAP settings not properly configured')
 
     def bind(self, bind_dn, bind_password):
-        self.connection.bind(bind_dn, bind_password)
+        self.connection.simple_bind_s(bind_dn, bind_password)
 
     def search(self, base_dn, search_scope, search_filter, search_attribute):
         return self.connection.search(
