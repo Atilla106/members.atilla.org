@@ -25,11 +25,6 @@ class LDAPConnectionTestCase(TestCase):
                     'cn': ['Test User'],
                     'uid': ['usertest'],
                     'userPassword': ['We love HDM !']})
-        user2 = (
-                'cn=Test User2,ou=users,dc=atilla,dc=org', {
-                    'cn': ['Test User2'],
-                    'uid': ['usertest2'],
-                    'userPassword': ['We love HDM !']})
 
         self.directory = dict([root, top, users, manager, user1, user2])
 
@@ -40,38 +35,3 @@ class LDAPConnectionTestCase(TestCase):
     def tearDown(self):
         self.mockldap.stop()
         del self.ldap
-
-    def test_user_bind(self):
-        self.assertTrue(
-                utils.test_user_bind(
-                    'cn=Test User,ou=users,dc=atilla,dc=org',
-                    'We love HDM !',
-                    self.ldap))
-
-    def test_user_password_update(self):
-        utils.change_user_password(
-                'cn=Test User,ou=users,dc=atilla,dc=org',
-                'We love HDM !',
-                'Caniche',
-                self.ldap)
-
-        self.assertEquals(
-                self.ldap.methods_called(),
-                ['simple_bind_s', 'modify_s', 'unbind_s'])
-
-    def test_user_migration(self):
-        # First, create a pending user
-        user = PendingUser(
-                username='randomuser',
-                first_name='Random',
-                last_name='User',
-                email='random.user@example.org',
-                validation_token='42')
-
-        password = 'We love HDM !'
-        # Migrate this user to the LDAP
-        migration.migrate_to_LDAP(user, password, self.ldap)
-
-        self.assertEquals(
-                self.ldap.methods_called(),
-                ['simple_bind_s', 'search', 'result', 'add_s', 'unbind_s'])
