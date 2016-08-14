@@ -27,7 +27,8 @@ def change_user_password(user_dn, old_password, new_password, connection=None):
         connection = LDAPGenericConnection(
                 settings.LDAP_SERVER_URI,
                 user_dn,
-                old_password)
+                old_password,
+                connection)
     except (NameError, ldap.LDAPError):
         return False
 
