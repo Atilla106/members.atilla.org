@@ -37,6 +37,9 @@ class LDAPGenericConnection():
     def add_s(self, dn, ldif):
         return self.connection.add_s(dn, ldif)
 
+    def modify_s(self, dn, ldif):
+        return self.connection.modify_s(dn, ldif)
+
     def get_connection(self):
         return self.connection
 

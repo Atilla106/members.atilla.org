@@ -3,6 +3,7 @@ import ldap
 
 from django.conf import settings
 
+from .connection.generic import LDAPGenericConnection
 
 def generate_crypt_password(password):
     salt = crypt.mksalt(method=crypt.METHOD_SHA512)
@@ -26,10 +27,12 @@ def change_user_password(user_dn, old_password, new_password):
                 settings.LDAP_SERVER_URI,
                 user_dn,
                 old_password)
+        new_crypt_password = generate_crypt_password(new_password)
         mod_attrs = [(
-            ldap.MOD_ADD,
+            ldap.MOD_REPLACE,
             'userPassword',
-            generate_crypt_password(new_password))]
+            [str(new_crypt_password).encode('ascii', 'ignore')]
+            )]
         connection.modify_s(user_dn, mod_attrs)
         return True
     except:
