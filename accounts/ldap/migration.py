@@ -6,10 +6,10 @@ from .connection.LDAPManager import LDAPManagerConnection
 from .utils import generate_crypt_password, get_biggest_LDAP_uid
 
 
-def migrate_to_LDAP(pending_user, password):
+def migrate_to_LDAP(pending_user, password, connection=None):
     password = generate_crypt_password(password)
 
-    connection = LDAPManagerConnection()
+    connection = LDAPManagerConnection(connection=connection)
     attrs = {}
     attrs['cn'] = '{} {}'.format(
             pending_user.first_name,

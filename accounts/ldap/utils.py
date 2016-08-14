@@ -11,7 +11,7 @@ def generate_crypt_password(password):
     return '{{CRYPT}}{}'.format(str(crypt.crypt(password, salt)))
 
 
-def test_user_bind(user_dn, password):
+def test_user_bind(user_dn, password, connection=None):
     try:
         LDAPGenericConnection(
                 settings.LDAP_SERVER_URI,
@@ -22,7 +22,7 @@ def test_user_bind(user_dn, password):
         return False
 
 
-def change_user_password(user_dn, old_password, new_password):
+def change_user_password(user_dn, old_password, new_password, connection=None):
     try:
         connection = LDAPGenericConnection(
                 settings.LDAP_SERVER_URI,
