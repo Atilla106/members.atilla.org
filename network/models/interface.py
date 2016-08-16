@@ -58,7 +58,7 @@ class Interface(models.Model):
         return super(Interface, self).save(*args, **kwargs)
 
     def __str__(self):
-        return '{mac} - {interface_type} (description{})'.format(
+        return '{mac} - {interface_type} ({description})'.format(
             mac=self.mac_address,
             interface_type=self.interface_type,
             description=self.description,
