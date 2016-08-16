@@ -74,14 +74,20 @@ COMPRESS_PRECOMPILERS = (
 
 STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-# Static files (CSS, JavaScript, Images)
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
-COMPRESS_ENABLED = True
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
+# Static files (CSS, JavaScript, Images)
+COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
+
+COMPRESS_ENABLED = True
 
 # Database
 DATABASES = {
