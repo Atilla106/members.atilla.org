@@ -12,7 +12,14 @@ from ..models.interface import Interface
 
 
 class RenderView(generic.base.View):
-    '''Useful functions.'''
+    ''' This class allows direct template rendering into a file.
+    It is used to generate network configuration files for DNS and
+    DHCP servers.
+    All the necessary application configuration settings are loaded in
+    the template context with get_config_dict. This function also generates
+    the serial for the DNS configurations'''
+
+    # Useful functions
     def users_with_perm(self, perm_name):
         return User.objects.filter(
             Q(is_superuser=True) |
@@ -49,6 +56,9 @@ class RenderView(generic.base.View):
         }
 
     def render_file(self, request, template, object_list, output_path):
+        ''' Render the given template into the output_path using a context
+        made of object_list and get_config_dict return value'''
+
         template = loader.get_template(template)
 
         context = self.get_config_dict()
@@ -61,6 +71,8 @@ class RenderView(generic.base.View):
 # Config rendering views
 
 class RenderDHCPView(RenderView):
+    ''' Generate a DHCP configuration file with the interfaces registered in
+    the application '''
     def get(self, request, *args, **kwargs):
         interface_list = self.get_interfaces()
         self.render_file(
@@ -74,6 +86,7 @@ class RenderDHCPView(RenderView):
 
 
 class RenderDNSView(RenderView):
+    ''' Generate a DNS configuration file (serial derived from timestamp) '''
     def get(self, request, *args, **kwargs):
         device_list = self.get_devices()
         self.render_file(
@@ -87,6 +100,8 @@ class RenderDNSView(RenderView):
 
 
 class RenderReverseDNSView(RenderView):
+    ''' Generate a reverse DNS configuration file (serial derived from
+    timestamp) '''
     def get(self, request, *args, **kwargs):
         device_list = self.get_devices()
         self.render_file(
