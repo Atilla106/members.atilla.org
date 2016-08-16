@@ -5,6 +5,7 @@ from django.conf import settings
 
 from .connection.generic import LDAPGenericConnection
 
+
 def generate_crypt_password(password):
     salt = crypt.mksalt(method=crypt.METHOD_SHA512)
     salt = '$1${}$'.format(salt)
@@ -40,6 +41,7 @@ def change_user_password(user_dn, old_password, new_password, connection=None):
         )]
     connection.modify_s(user_dn, mod_attrs)
     return True
+
 
 def get_biggest_LDAP_uid(connection):
     search_filter = '(objectClass=posixAccount)'
