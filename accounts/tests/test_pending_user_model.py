@@ -1,7 +1,7 @@
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from .models import PendingUser
+from ..models import PendingUser
 
 
 class PendingUserTestCase(TestCase):

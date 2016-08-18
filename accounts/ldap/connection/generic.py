@@ -4,9 +4,18 @@ from django.conf import settings
 
 
 class LDAPGenericConnection():
-    def __init__(self, server_uri, bind_dn=None, bind_password=None):
+    def __init__(
+            self,
+            server_uri,
+            bind_dn=None,
+            bind_password=None,
+            connection=None):
         self.check_LDAP_configuration()
-        self.connection = ldap.initialize(server_uri)
+
+        if connection is None:
+            self.connection = ldap.initialize(server_uri)
+        else:
+            self.connection = connection
 
         if bind_dn is not None and bind_password is not None:
             self.bind(bind_dn, bind_password)
@@ -22,7 +31,7 @@ class LDAPGenericConnection():
             raise NameError('LDAP settings not properly configured')
 
     def bind(self, bind_dn, bind_password):
-        self.connection.bind(bind_dn, bind_password)
+        self.connection.simple_bind_s(bind_dn, bind_password)
 
     def search(self, base_dn, search_scope, search_filter, search_attribute):
         return self.connection.search(
