@@ -1,0 +1,82 @@
+{% extends "base_network.html" %}
+{% block title %}
+	{% if object.interface_set.all %}
+		Modification d’un appareil
+	{% else %}
+		Ajout d’un appareil
+	{% endif %}
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Sauvegarder" class="btn" />
+	</form>
+</div>
+
+{% if object %}
+<hr/>
+
+<div class="row">
+	<h4>Interfaces</h4>
+	{% if object.interface_set.all %}
+		<table class="highlight bordered">
+			<thead>
+				<tr>
+					<th>
+						Type
+					</th>
+					<th>
+						Description
+					</th>
+					<th>
+						Adresse MAC
+					</th>
+					<th colspan=2>
+						Options
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for interface in object.interface_set.all %}
+				<tr>
+					<td>
+						{{ interface.interface_type }}
+					</td>
+					<td>
+						{{ interface.description }}
+					</td>
+					<td>
+						{{ interface.mac_address }}
+					</td>
+					<td>
+						<a href="{% url "network:interface_update" object.id interface.id %}"
+								class="btn">
+							Modifier
+						</a>
+					</td>
+					<td>
+						<a href="{% url "network:interface_delete" object.id interface.id %}"
+								class="btn">
+							Supprimer
+						</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<a href="{% url "network:interface_create" object.id %}"
+				class="btn">Ajouter une interface</a>
+	{% else %}
+		Aucune interface enregistrée,
+		<a href="{% url "network:interface_create" object.id %}">
+				ajoutez-en une !
+		</a>
+	{% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

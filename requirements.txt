@@ -1,0 +1,7 @@
+Django
+django-appconf
+django-auth-ldap
+django-compressor
+pyldap
+rcssmin
+rjsmin

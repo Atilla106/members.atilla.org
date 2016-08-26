@@ -1,0 +1,73 @@
+{% extends "base_network.html" %}
+
+{% block main %}
+<div class="row">
+	<ul>
+		<li>
+			Nom : {{ object.device_name }}
+		</li>
+		<li>
+			Description : {{ device.description }}
+		</li>
+		<li>
+			Adresse IP : {{ device.device_ip }}
+		</li>
+</div>
+
+<div class="row">
+	<h4>Interfaces</h4>
+	{% if device.interface_set.all %}
+	<table class="highlight bordered">
+		<thead>
+			<tr>
+				<th>
+					Type
+				</th>
+				<th>
+					Description
+				</th>
+				<th>
+					Adresse MAC
+				</th>
+				<th colspan=2>
+					Options
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for interface in device.interface_set.all %}
+			<tr>
+				<td>
+					{{ interface.interface_type }}
+				</td>
+				<td>
+					{{ interface.description }}
+				</td>
+				<td>
+					{{ interface.mac_address }}
+				</td>
+				<td>
+					<a href="{% url "network:interface_update" device.id interface.id %}"
+							class="btn">
+						Modifier
+					</a>
+				</td>
+				<td>
+					<a href="{% url "network:interface_delete" device.id interface.id %}"
+							class="btn">
+						Supprimer
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+		Aucune interface enregistrée,
+		<a href="{% url "network:interface_create" device.id %}">
+				ajoutez-en une !
+		</a>
+	{% endif %}
+</div>
+
+{% endblock %}

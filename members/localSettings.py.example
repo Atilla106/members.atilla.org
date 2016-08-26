@@ -1,0 +1,7 @@
+""" LDAP Server informations and credentials """
+
+LDAP_SERVER_URI = "ldap://127.0.0.1"
+LDAP_AUTHENTICATION_DN = "cn=authuser,dc=domain,dc=org"
+LDAP_AUTHENTICATION_PASSWORD = ""
+LDAP_MANAGEMENT_DN = "cn=manager,dc=domain,dc=org"
+LDAP_MANAGEMENT_PASSWORD = ""

@@ -1,0 +1,17 @@
+{% extends "base_accounts.html" %}
+{% block title %}
+	Finaliser la validation
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<h4>Encore une étape ...</h4>
+	Pour finaliser votre inscription, merci de fournir un mot de passe pour
+	votre compte :
+	<form action="" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Envoyer" class="btn" />
+	</form>
+</div>
+{% endblock %}
