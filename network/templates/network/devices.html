@@ -44,9 +44,9 @@
 					{{ device.interface_set.count }}
 				</td>
 				<td>
-					<a href="{% url "network:device_update" device.id %}"
+					<a href="{% url "network:device_detail" device.id %}"
 						class="btn">
-						Modifier
+						Voir
 					</a>
 					&nbsp;
 					<a href="{% url "network:device_delete" device.id %}"
