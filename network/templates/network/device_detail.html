@@ -13,7 +13,6 @@
 			Adresse IP : {{ device.device_ip }}
 		</li>
 </div>
-
 <div class="row">
 	<h4>Interfaces</h4>
 	{% if device.interface_set.all %}
@@ -29,9 +28,6 @@
 				<th>
 					Adresse MAC
 				</th>
-				<th colspan=2>
-					Options
-				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,22 +42,14 @@
 				<td>
 					{{ interface.mac_address }}
 				</td>
-				<td>
-					<a href="{% url "network:interface_update" device.id interface.id %}"
-							class="btn">
-						Modifier
-					</a>
-				</td>
-				<td>
-					<a href="{% url "network:interface_delete" device.id interface.id %}"
-							class="btn">
-						Supprimer
-					</a>
-				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
+        <a href="{% url "network:device_update" device.id%}"
+                        class="btn">
+                Modifier
+        </a>
 	{% else %}
 		Aucune interface enregistrée,
 		<a href="{% url "network:interface_create" device.id %}">

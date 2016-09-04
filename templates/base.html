@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<link
-			href="http://fonts.googleapis.com/icon?family=Material+Icons"
+			href="https://fonts.googleapis.com/icon?family=Material+Icons"
 			rel="stylesheet"/>
 		{% compress css %}
 		<link type="text/scss"
@@ -58,9 +58,6 @@
 					{% if request.user.is_authenticated %}
 					<ul class="left hide-on-med-and-down">
 						<li>
-							<a href="#">
-								Mon compte
-							</a>
 							<a href="{% url "accounts:change_password" %}">
 								Modifier le mot de passe
 							</a>
