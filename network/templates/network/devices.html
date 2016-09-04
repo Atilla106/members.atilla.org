@@ -1,0 +1,72 @@
+{% extends "base_network.html" %}
+{% block title %}
+	Mes appareils
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	{% if user_devices_list %}
+	<table class="highlight bordered">
+		<thead>
+			<tr>
+				<th width="25%">
+					Nom
+				</th>
+				<th width="25%">
+					Description
+				</th>
+				<th>
+					Adresse IP
+				</th>
+				<th>
+					Interfaces
+				</th>
+				<th>
+					Options
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for device in user_devices_list %}
+			<tr>
+				<td>
+					<a href="{% url "network:device_detail" device.id %}">
+						{{ device.device_name }}
+					</a>
+				</td>
+				<td>
+					{{ device.description }}
+				</td>
+				<td>
+					{{ device.device_ip }}
+				</td>
+				<td>
+					{{ device.interface_set.count }}
+				</td>
+				<td>
+					<a href="{% url "network:device_detail" device.id %}"
+						class="btn">
+						Voir
+					</a>
+					&nbsp;
+					<a href="{% url "network:device_delete" device.id %}"
+							class="btn">
+						Supprimer
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>Aucun appareil enregistré</p>
+	{% endif %}
+</div>
+
+<div class="row">
+	<a href="{% url "network:device_create" %}" class="btn">
+		Ajouter un appareil
+	</a>
+</div>
+
+{% endblock %}

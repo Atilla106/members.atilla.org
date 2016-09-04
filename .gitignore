@@ -1,0 +1,12 @@
+*.pyc
+db.sqlite3
+*.swp
+venv/
+env/
+.bundle/
+.sass-cache/
+CACHE/
+localSettings.py
+dhcp.conf
+dns.conf
+rev.dns.conf

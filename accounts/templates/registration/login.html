@@ -1,0 +1,13 @@
+{% extends "base_accounts.html" %}
+{% block title %}
+	Connexion
+{% endblock %}
+
+{% block main %}
+	<form action="." method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+        	<input type="submit" value="Connexion"
+		class="btn orange darken-3">
+	</form>
+{% endblock %}
