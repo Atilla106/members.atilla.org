@@ -39,6 +39,7 @@ accounts-test:
   dependencies:
     - requirements-install
   script:
+    - cp members/localSettings.py.example members/localSettings.py
     - python manage.py test accounts
 
 network-test:
@@ -46,5 +47,4 @@ network-test:
   dependencies:
     - requirements-install
   script:
-    - cp members/localSettings.py.example members/localSettings.py
     - python manage.py test network
