@@ -9,11 +9,15 @@ before_script:
   - pip install -r requirements.txt
   - cp members/localSettings.py.example members/localSettings.py
 
+cache:
+  paths:
+    - venv/
+
 stages:
   - build
   - test
 
-network-build:
+db-migrations:
   stage: build
   script:
     - python manage.py makemigrations
@@ -22,3 +26,8 @@ network-test:
   stage: test
   script:
     - python manage.py test network
+
+accounts-test:
+  stage: test
+  script:
+    - python manage.py test accounts
