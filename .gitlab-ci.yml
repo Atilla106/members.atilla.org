@@ -3,7 +3,7 @@ before_script:
   - pwd
   - ruby -v
   - python3 --version
-  - if [ -e venv/bin/activate ] ; then source venv/bin/activate ; fi
+  - if [ -e venv/bin/activate ] ; then source venv/bin/activate ; else echo "No virtualenv !" ; fi
   - cp members/localSettings.py.example members/localSettings.py
 
 cache:
