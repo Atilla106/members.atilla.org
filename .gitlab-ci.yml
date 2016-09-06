@@ -10,11 +10,14 @@ stages:
   - build
   - test
 
+cache:
+  paths:
+    - venv/
+
 requirements-install:
   stage: install
   script:
-    - rm -rf venv
-    - virtualenv -p $(which python3) venv
+    - if [ -e venv/bin/activate ] ; then virtualenv -p $(which python3) venv ; fi
     - bundle install --jobs $(nproc) --path venv/ruby
     - source venv/bin/activate
     - pip install --upgrade pip
