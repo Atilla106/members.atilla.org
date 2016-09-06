@@ -32,12 +32,12 @@ db-migrations:
   script:
     - python manage.py makemigrations
 
-network-test:
-  stage: test
-  script:
-    - python manage.py test network
-
 accounts-test:
   stage: test
   script:
     - python manage.py test accounts
+
+network-test:
+  stage: test
+  script:
+    - python manage.py test network
