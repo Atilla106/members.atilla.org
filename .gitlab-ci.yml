@@ -20,7 +20,7 @@ requirements-install:
     - pip install --upgrade pip
     - pip install -r requirements.txt
     - pip install -r requirements-test.txt
-    - echo LDAP_SERVER_URI = \'ldap://$LDAP_TEST_URL\' >> members/localSettings.py
+    - echo LDAP_SERVER_URI = \'ldap://$LDAP_TEST_URL\' > members/localSettings.py
     - echo LDAP_AUTHENTICATION_DN = \'$LDAP_TEST_AUTH_DN\' >> members/localSettings.py
     - echo LDAP_AUTHENTICATION_PASSWORD = \'$LDAP_TEST_AUTH_PWD\' >> members/localSettings.py
     - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
