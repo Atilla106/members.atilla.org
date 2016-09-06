@@ -40,6 +40,7 @@ accounts-test:
     - requirements-install
   script:
     - cp members/localSettings.py.example members/localSettings.py
+    - ls members/
     - python manage.py test accounts
 
 network-test:
