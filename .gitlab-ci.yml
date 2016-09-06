@@ -4,7 +4,6 @@ before_script:
   - ruby -v
   - python3 --version
   - if [ -e venv/bin/activate ] ; then source venv/bin/activate ; else echo "No virtualenv !" ; fi
-  - cp members/localSettings.py.example members/localSettings.py
 
 cache:
   untracked: true
@@ -24,6 +23,7 @@ requirements-install:
     - pip install --upgrade pip
     - pip install -r requirements.txt
     - pip install -r requirements-test.txt
+    - cp members/localSettings.py.example members/localSettings.py
   artifacts:
     untracked: true
 
