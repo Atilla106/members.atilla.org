@@ -41,3 +41,5 @@ network-test:
   stage: test
   script:
     - python manage.py test network
+  dependencies:
+    - requirements-install
