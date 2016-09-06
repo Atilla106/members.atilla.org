@@ -56,6 +56,14 @@ class DeviceModelTestCase(TestCase):
                 device_ip='127.0.0.3',
             ).full_clean()
 
+        ''' Check that a device containing special chars can be created '''
+        self.assertEqual(
+            type(Device.objects.create(
+                user=self.test1,
+                device_name='device-with_special-chars',
+                device_ip='10.42.42.1')),
+            Device)
+
     def test_max_devices_per_user(self):
         for i in range(1, settings.MAX_DEVICE_PER_USER):
             tmp = Device.objects.create(
