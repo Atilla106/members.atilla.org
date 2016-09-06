@@ -17,7 +17,7 @@ cache:
 requirements-install:
   stage: install
   script:
-    - if [ -e venv/bin/activate ] ; then virtualenv -p $(which python3) venv ; fi
+    - if [ ! -e venv/bin/activate ] ; then virtualenv -p $(which python3) venv ; fi
     - bundle install --jobs $(nproc) --path venv/ruby
     - source venv/bin/activate
     - pip install --upgrade pip
