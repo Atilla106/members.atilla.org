@@ -14,9 +14,6 @@ before_script:
 cache:
   untracked: true
 
-artifacts:
-  untracked: true
-
 stages:
   - install
   - build
@@ -32,6 +29,8 @@ requirements-install:
     - pip install --upgrade pip
     - pip install -r requirements.txt
     - pip install -r requirements-test.txt
+  artifacts:
+    untracked: true
 
 db-migrations:
   stage: build
