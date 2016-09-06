@@ -36,14 +36,14 @@ db-migrations:
 
 accounts-test:
   stage: test
+  dependencies:
+    - requirements-install
   script:
     - python manage.py test accounts
 
 network-test:
   stage: test
-  script:
-    - ls members/
-    - cp members/localSettings.py.example members/localSettings.py
-    - python manage.py test network
   dependencies:
     - requirements-install
+  script:
+    - python manage.py test network
