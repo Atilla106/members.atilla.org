@@ -8,6 +8,8 @@ before_script:
 
 cache:
   untracked: true
+  paths:
+    - venv/
 
 stages:
   - install
