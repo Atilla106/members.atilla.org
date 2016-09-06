@@ -2,20 +2,26 @@ before_script:
   - id
   - ruby -v
   - which ruby
-  - rm -rf venv
-  - virtualenv -p $(which python3) venv
-  - bundle install --jobs $(nproc) --path venv/ruby
   - source venv/bin/activate
-  - pip install --upgrade pip
-  - pip install -r requirements.txt
   - cp members/localSettings.py.example members/localSettings.py
 
 cache:
   untracked: true
 
 stages:
+  - install
   - build
   - test
+
+requirements-install:
+  stage: install
+  script:
+    - rm -rf venv
+    - virtualenv -p $(which python3) venv
+    - bundle install --jobs $(nproc) --path venv/ruby
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
 
 db-migrations:
   stage: build
