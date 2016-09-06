@@ -5,9 +5,6 @@ before_script:
   - python3 --version
   - if [ -e venv/bin/activate ] ; then source venv/bin/activate ; else echo "No virtualenv !" ; fi
 
-cache:
-  untracked: true
-
 stages:
   - install
   - build
