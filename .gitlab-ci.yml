@@ -1,7 +1,8 @@
 before_script:
   - id
+  - pwd
   - ruby -v
-  - which ruby
+  - python3 -v
   - if [ -e venv/bin/activate ] ; then source venv/bin/activate ; fi
   - cp members/localSettings.py.example members/localSettings.py
 
