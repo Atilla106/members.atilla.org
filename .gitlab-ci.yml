@@ -40,6 +40,10 @@ db-migrations:
 
 accounts-test:
   stage: test
+  environment: developpement
+  except:
+    - master
+    - preprod
   dependencies:
     - requirements-install
   script:
@@ -47,6 +51,10 @@ accounts-test:
 
 network-test:
   stage: test
+  environment: developpement
+  except:
+    - master
+    - preprod
   dependencies:
     - requirements-install
   script:
