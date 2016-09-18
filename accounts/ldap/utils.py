@@ -67,7 +67,7 @@ def get_biggest_LDAP_uid(connection):
         if result_type == ldap.RES_SEARCH_ENTRY:
             try:
                 uid = int(result_data[0][1]['uidNumber'][0])
-                if (uid > max_uid):
+                if uid > max_uid:
                     max_uid = uid
             except:
                 pass

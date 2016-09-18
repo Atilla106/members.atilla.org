@@ -32,7 +32,7 @@ class PendingUser(models.Model):
     def generate_token(self):
         dk = hmac.new(
             bytes(str(time.time()), 'UTF-8'),
-            msg=bytes((str(time.time()) + self.email), 'UTF-8'),
+            msg=bytes(str(time.time()) + self.email, 'UTF-8'),
             digestmod=hashlib.sha256
         ).digest()
         self.validation_token = base64.b64encode(dk).decode()
