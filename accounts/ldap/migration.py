@@ -1,5 +1,6 @@
+import codecs
 import ldap.modlist as modlist
-import translit
+import translitcodec
 
 from django.conf import settings
 
@@ -25,18 +26,23 @@ def migrate_to_LDAP(pending_user, password, connection=None):
     attrs['homeDirectory'] = (settings.LDAP_DEFAULT_HOME_PATH
                               + pending_user.username)
 
+    print("AAAAA")
+
     # Make sure that every attribute is a ascii string
     for key, value in attrs.items():
-        attrs[key] = str(value).encode('ascii/translit')
+        print(key)
+        attrs[key] = str(value).encode('translit/one/ascii', 'replace')
+
+    print("BBBBB")
 
     attrs['objectclass'] = [
-            ('inetOrgPerson').encode('ascii/translit'),
-            ('posixAccount').encode('ascii/translit'),
-            ('top').encode('ascii/translit')]
+            ('inetOrgPerson').encode('translit/one/ascii', 'replace'),
+            ('posixAccount').encode('translit/one/ascii', 'replace'),
+            ('top').encode('translit/one/ascii', 'replace')]
 
     dn = 'cn={} {},{}'.format(
-            pending_user.first_name.encode('ascii/translit'),
-            pending_user.last_name.encode('ascii/translit'),
+            pending_user.first_name.encode('translit/one/ascii', 'replace'),
+            pending_user.last_name.encode('translit/one/ascii', 'replace'),
             settings.LDAP_USERS_BASE_DN)
     ldif = modlist.addModlist(attrs)
     connection.add_s(dn, ldif)
