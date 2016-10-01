@@ -26,14 +26,9 @@ def migrate_to_LDAP(pending_user, password, connection=None):
     attrs['homeDirectory'] = (settings.LDAP_DEFAULT_HOME_PATH
                               + pending_user.username)
 
-    print("AAAAA")
-
     # Make sure that every attribute is a ascii string
     for key, value in attrs.items():
-        print(key)
         attrs[key] = str(value).encode('translit/one/ascii', 'replace')
-
-    print("BBBBB")
 
     attrs['objectclass'] = [
             ('inetOrgPerson').encode('translit/one/ascii', 'replace'),
@@ -41,8 +36,12 @@ def migrate_to_LDAP(pending_user, password, connection=None):
             ('top').encode('translit/one/ascii', 'replace')]
 
     dn = 'cn={} {},{}'.format(
-            pending_user.first_name.encode('translit/one/ascii', 'replace'),
-            pending_user.last_name.encode('translit/one/ascii', 'replace'),
+            pending_user.first_name.encode(
+                'translit/one/ascii',
+                'replace').decode(),
+            pending_user.last_name.encode(
+                'translit/one/ascii',
+                'replace').decode(),
             settings.LDAP_USERS_BASE_DN)
     ldif = modlist.addModlist(attrs)
     connection.add_s(dn, ldif)
