@@ -35,8 +35,8 @@ def migrate_to_LDAP(pending_user, password, connection=None):
             ('top').encode('ascii/translit')]
 
     dn = 'cn={} {},{}'.format(
-            pending_user.first_name,
-            pending_user.last_name,
+            pending_user.first_name.encode('ascii/translit'),
+            pending_user.last_name.encode('ascii/translit'),
             settings.LDAP_USERS_BASE_DN)
     ldif = modlist.addModlist(attrs)
     connection.add_s(dn, ldif)
