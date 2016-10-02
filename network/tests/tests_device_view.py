@@ -23,14 +23,14 @@ class DeviceViewTestCase(TestCase):
 
         self.test1_device1 = Device.objects.create(
             user=self.test1,
-            device_name='device_1_test_user_1',
+            device_name='device-1-test-user-1',
             device_ip='127.0.0.1',
             description='Standard description 1',
         )
 
         self.test2_device1 = Device.objects.create(
             user=self.test2,
-            device_name='device_1_test_user_2',
+            device_name='device-1-test-user-2',
             device_ip='127.0.0.2',
             description='Standard description 2',
         )
@@ -161,7 +161,7 @@ class DeviceViewTestCase(TestCase):
         response3 = self.client.post(
             reverse('network:device_create'),
             {
-                'device_name': 'device_1_test_user_1',
+                'device_name': 'device-1-test-user-1',
                 'description': 'New device 3',
             },
         )
@@ -195,7 +195,7 @@ class DeviceViewTestCase(TestCase):
         # Try with a device owned by the user
         response1 = self.client.post(
             reverse('network:device_update', args=[self.test1_device1.pk]),
-            {'device_name': 'device_1_test_user_1', 'description': '4242'},
+            {'device_name': 'device-1-test-user-1', 'description': '4242'},
         )
 
         self.assertEqual(response1.status_code, 302)
