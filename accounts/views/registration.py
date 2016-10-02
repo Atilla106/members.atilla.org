@@ -24,7 +24,7 @@ class RegisterView(generic.edit.CreateView):
         template = loader.get_template('accounts/validation_mail.html')
 
         url_prefix = 'https://' if settings.PLATFORM_USING_HTTPS else 'http://'
-        platform_url = (url_prefix + settings.PLATFORM_HOSTNAME)
+        platform_url = url_prefix + settings.PLATFORM_HOSTNAME
 
         context = {
             'first_name': pending_user.first_name,

@@ -1,24 +1,61 @@
 before_script:
   - id
+  - pwd
   - ruby -v
-  - which ruby
-  - virtualenv -p $(which python3) venv
-  - bundle install --jobs $(nproc)  --path venv/ruby
-  - source venv/bin/activate
-  - pip install --upgrade pip
-  - pip install -r requirements.txt
-  - cp members/localSettings.py.example members/localSettings.py
+  - python3 --version
+  - if [ -e venv/bin/activate ] ; then source venv/bin/activate ; else echo "No virtualenv !" ; fi
 
 stages:
+  - install
   - build
   - test
 
-network-build:
+cache:
+  paths:
+    - venv/
+
+requirements-install:
+  stage: install
+  script:
+    - if [ ! -e venv/bin/activate ] ; then virtualenv -p $(which python3) venv ; fi
+    - bundle install --jobs $(nproc) --path venv/ruby
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install -r requirements-test.txt
+    - echo LDAP_SERVER_URI = \'ldap://$LDAP_TEST_URL\' > members/localSettings.py
+    - echo LDAP_AUTHENTICATION_DN = \'$LDAP_TEST_AUTH_DN\' >> members/localSettings.py
+    - echo LDAP_AUTHENTICATION_PASSWORD = \'$LDAP_TEST_AUTH_PWD\' >> members/localSettings.py
+    - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
+    - echo LDAP_MANAGEMENT_PASSWORD = \'$LDAP_TEST_MGMT_PWD\' >> members/localSettings.py
+  artifacts:
+    untracked: true
+    paths:
+      - members/localSettings.py
+
+db-migrations:
   stage: build
   script:
     - python manage.py makemigrations
 
+accounts-test:
+  stage: test
+  environment: developpement
+  except:
+    - master
+    - preprod
+  dependencies:
+    - requirements-install
+  script:
+    - python manage.py test accounts
+
 network-test:
   stage: test
+  environment: developpement
+  except:
+    - master
+    - preprod
+  dependencies:
+    - requirements-install
   script:
     - python manage.py test network

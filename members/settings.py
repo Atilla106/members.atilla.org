@@ -208,6 +208,7 @@ DNS_BASE_SERIAL = 42
 
 # Domain name configuration
 DNS_DOMAIN = 'salle106.atilla.org'
+REV_DNS_DOMAIN = 'salle106.atilla.org'
 DNS_DOMAIN_SEARCH = 'members.salle106.atilla.org'
 DNS_SERVER_1 = '192.168.253.1'
 DNS_SERVER_2 = '192.168.253.1'
