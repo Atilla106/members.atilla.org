@@ -32,7 +32,7 @@ class Device(models.Model):
         max_length=25,
         validators=[
             RegexValidator(
-                regex='^[a-zA-Z0-9_\−]{1,25}$',
+                regex='^[-a-zA-Z0-9]{1,25}$',
                 message='Invalid name',
             )
         ],
