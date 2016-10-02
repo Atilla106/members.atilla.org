@@ -47,6 +47,7 @@ class RenderView(generic.base.View):
             'EXPIRE': settings.EXPIRE,
             'SERIAL': settings.DNS_BASE_SERIAL + int(time.time() / 100),
             'DNS_DOMAIN': settings.DNS_DOMAIN,
+            'REV_DNS_DOMAIN': settings.REV_DNS_DOMAIN,
             'DNS_DOMAIN_SEARCH': settings.DNS_DOMAIN_SEARCH,
             'DNS_SERVER_1': settings.DNS_SERVER_1,
             'DNS_SERVER_2': settings.DNS_SERVER_2,
