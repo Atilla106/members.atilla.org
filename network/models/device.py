@@ -32,7 +32,7 @@ class Device(models.Model):
         max_length=25,
         validators=[
             RegexValidator(
-                regex='^[a-zA-Z0-9_−]{1,25}$',
+                regex='^[-a-zA-Z0-9]{1,25}$',
                 message='Invalid name',
             )
         ],
@@ -77,7 +77,7 @@ class Device(models.Model):
 
     def save(self, *args, **kwargs):
         device_count = self.user.device_set.all().count()
-        if (device_count >= settings.MAX_DEVICE_PER_USER):
+        if device_count >= settings.MAX_DEVICE_PER_USER:
             raise ValidationError('Too many devices')
 
         return super(Device, self).save(*args, **kwargs)
