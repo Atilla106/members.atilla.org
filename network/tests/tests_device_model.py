@@ -23,7 +23,7 @@ class DeviceModelTestCase(TestCase):
 
         self.test1_device1 = Device.objects.create(
             user=self.test1,
-            device_name='device_1_test_user_1',
+            device_name='device-1-test-user-1',
             device_ip='127.0.0.1',
             description='Standard description 1',
         )
@@ -33,7 +33,7 @@ class DeviceModelTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             Device.objects.create(
                 user=self.test1,
-                device_name='device_2_test_user_1',
+                device_name='device-2-test-user-1',
                 device_ip='127.0.0.1',
             )
 
@@ -42,7 +42,7 @@ class DeviceModelTestCase(TestCase):
         with self.assertRaises(ValidationError):
             Device(
                 user=self.test1,
-                device_name='device_1_test_user_1',
+                device_name='device-1-test-user-1',
                 device_ip='127.0.0.3',
             ).clean()
 
@@ -60,7 +60,7 @@ class DeviceModelTestCase(TestCase):
         self.assertEqual(
             type(Device.objects.create(
                 user=self.test1,
-                device_name='device-with_special-chars',
+                device_name='device-with-special-chars',
                 device_ip='10.42.42.1')),
             Device)
 
