@@ -35,7 +35,7 @@ class PendingUser(models.Model):
             msg=bytes(str(time.time()) + self.email, 'UTF-8'),
             digestmod=hashlib.sha256
         ).digest()
-        self.validation_token = base64.b64encode(dk).decode()
+        self.validation_token = base64.urlsafe_b64encode(dk).decode()
 
     def format_last_name(self):
         self.last_name = self.last_name.upper()
