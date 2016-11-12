@@ -27,7 +27,10 @@ class PendingUser(models.Model):
         '''Generates a proper username.
 
         TODO: check if the username is not aleready used in LDAP.'''
-        self.username = (self.last_name + self.first_name).lower()[:10]
+        self.username = (
+                self.last_name
+                + self.first_name
+                ).lower().replace(' ', '')[:10]
 
     def generate_token(self):
         dk = hmac.new(
