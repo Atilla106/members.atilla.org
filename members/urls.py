@@ -5,7 +5,7 @@ from network.views import device
 from members.views import legal_view
 
 urlpatterns = [
-	url(r'^legal$', legal_view, name="legal"),
+    url(r'^legal$', legal_view, name="legal"),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^network/', include('network.urls')),
