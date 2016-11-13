@@ -34,8 +34,9 @@
 		<p>
 			{{ form.agreement }}
 			<label for="{{ form.agreement.id_for_label }}">
-					Je reconnais être membre d’ATILLA et accepte la charte des
-					ressources informatiques de l’association.
+					En cochant cette case, je certifie être membre d’ATILLA, avoir accepté la charte
+					d'utilisation des ressources informatiques de l'EISTI et accepter le stockage
+					de données personnelles (<a target="_blank" href="{% url 'legal' %}">plus d'informations</a>)
 			</label>
 		</p>
 		<input type="submit" value="Envoyer" class="btn" />
