@@ -26,15 +26,16 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
-    'network.apps.NetworkConfig',
-    'accounts.apps.AccountsConfig',
+    'compressor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',
+    'accounts.apps.AccountsConfig',
+    'customAuthAdmin.auth.user',
+    'network.apps.NetworkConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
