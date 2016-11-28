@@ -31,6 +31,7 @@ class CustomUserAdmin(UserAdmin):
         return obj.has_perm('network.can_publish_device')
 
     is_allowed_publish_device.short_description = 'Peut publier'
+    is_allowed_publish_device.boolean = True
 
     actions = [make_publisher, remove_publisher]
 
