@@ -36,7 +36,7 @@ GEM
     erubis (2.7.0)
     hike (1.2.3)
     i18n (0.7.0)
-    json (1.8.3)
+    json (1.8.6)
     mail (2.3.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -68,10 +68,10 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (~> 0.14.6)
-    rake (11.2.2)
+    rake (12.0.0)
     rdoc (3.12.2)
       json (~> 1.4)
-    sass (3.4.22)
+    sass (3.4.23)
     sass-rails (3.1.7)
       actionpack (~> 3.1.0)
       railties (~> 3.1.0)
@@ -86,7 +86,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.51)
+    tzinfo (0.3.52)
 
 PLATFORMS
   ruby
@@ -96,4 +96,4 @@ DEPENDENCIES
   sass-rails
 
 BUNDLED WITH
-   1.12.5
+   1.14.3
