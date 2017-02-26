@@ -1,6 +1,7 @@
 import time
 
 from os import remove
+from os.path import exists
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -77,7 +78,9 @@ class RenderDHCPView(RenderView):
     ''' Generate a DHCP configuration file with the interfaces registered in
     the application '''
     def get(self, request, *args, **kwargs):
-        remove(settings.DHCP_CONFIG_OUTPUT)
+        if exists(settings.DHCP_CONFIG_OUTPUT):
+            remove(settings.DHCP_CONFIG_OUTPUT)
+
         interface_list = self.get_interfaces()
         self.render_file(
             request,
@@ -92,7 +95,9 @@ class RenderDHCPView(RenderView):
 class RenderDNSView(RenderView):
     ''' Generate a DNS configuration file (serial derived from timestamp) '''
     def get(self, request, *args, **kwargs):
-        remove(settings.DNS_CONFIG_OUTPUT)
+        if exists(settings.DNS_CONFIG_OUTPUT):
+            remove(settings.DNS_CONFIG_OUTPUT)
+
         device_list = self.get_devices()
         self.render_file(
             request,
@@ -108,7 +113,9 @@ class RenderReverseDNSView(RenderView):
     ''' Generate a reverse DNS configuration file (serial derived from
     timestamp) '''
     def get(self, request, *args, **kwargs):
-        remove(settings.REV_DNS_CONFIG_OUTPUT)
+        if exists(settings.REV_DNS_CONFIG_OUTPUT):
+            remove(settings.REV_DNS_CONFIG_OUTPUT)
+
         device_list = self.get_devices()
         self.render_file(
             request,
