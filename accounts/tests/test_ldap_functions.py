@@ -21,8 +21,8 @@ class LDAPFunctionsTestCase(TestCase):
                     'cn': ['admin'],
                     'userPassword': ['123456']})
         user1 = (
-                'cn=Test User,ou=users,dc=atilla,dc=org', {
-                    'cn': ['Test User'],
+                'cn=Test USER,ou=users,dc=atilla,dc=org', {
+                    'cn': ['Test USER'],
                     'uid': ['usertest'],
                     'userPassword': ['We love HDM !']})
 
@@ -54,13 +54,47 @@ class LDAPFunctionsTestCase(TestCase):
                 validation_token='42')
 
         password = 'We love HDM !'
-        # Migrate this user to the LDAP
-        migration.migrate_to_LDAP(user, password, self.ldap)
 
+        # Migrate this user to the LDAP
+        result = migration.migrate_to_LDAP(user, password, self.ldap)
+
+        self.assertTrue(result)
         self.assertEquals(
                 self.ldap.methods_called(),
                 ['simple_bind_s', 'search', 'result',
                     'search_s', 'add_s', 'unbind_s'])
+
+    def test_duplicate_user_cn_migration(self):
+        # Create a duplicate user from Test User
+        user = PendingUser(
+                username='anothertestuser',
+                first_name='Test',
+                last_name='User',
+                email='random.user@example.org',
+                validation_token='42')
+
+        password = 'We love HDM !'
+
+        # Migrate this user to the LDAP
+        result = migration.migrate_to_LDAP(user, password, self.ldap)
+
+        self.assertFalse(result)
+
+    def test_duplicate_user_uid_migration(self):
+        # Create a duplicate user from Test User
+        user = PendingUser(
+                username='usertest',
+                first_name='Another',
+                last_name='User',
+                email='random.user@example.org',
+                validation_token='42')
+
+        password = 'We love HDM !'
+
+        # Migrate this user to the LDAP
+        result = migration.migrate_to_LDAP(user, password, self.ldap)
+
+        self.assertFalse(result)
 
     def test_user_password_update(self):
         utils.change_user_password(
