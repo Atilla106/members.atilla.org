@@ -59,7 +59,8 @@ class LDAPFunctionsTestCase(TestCase):
 
         self.assertEquals(
                 self.ldap.methods_called(),
-                ['simple_bind_s', 'search', 'result', 'add_s', 'unbind_s'])
+                ['simple_bind_s', 'search', 'result',
+                    'search_s', 'add_s', 'unbind_s'])
 
     def test_user_password_update(self):
         utils.change_user_password(

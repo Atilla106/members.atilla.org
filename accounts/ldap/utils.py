@@ -24,7 +24,7 @@ def test_user_bind(user_dn, password, connection=None):
 
 
 def test_unique(user_id, user_cn, connection):
-    results = connection.search(
+    results = connection.search_s(
             settings.LDAP_USERS_BASE_DN,
             ldap.SCOPE_SUBTREE,
             '(|(cn={})(uid={}))'.format(user_cn, user_id))

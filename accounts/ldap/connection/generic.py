@@ -40,6 +40,12 @@ class LDAPGenericConnection():
                 search_filter,
                 search_attribute)
 
+    def search_s(self, base_dn, search_scope, search_attribute):
+        return self.connection.search_s(
+                base_dn,
+                search_scope,
+                search_attribute)
+
     def result(self, result_id, result_all):
         return self.connection.result(result_id, result_all)
 
