@@ -33,6 +33,8 @@ requirements-install:
 
 db-migrations:
   stage: build
+  dependencies:
+    - requirements-install
   script:
     - python manage.py makemigrations
 
