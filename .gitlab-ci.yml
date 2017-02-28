@@ -28,8 +28,6 @@ cache:
 
 db-migrations:
   stage: build
-  dependencies:
-    - requirements-install
   script:
     - python manage.py makemigrations
 
@@ -37,8 +35,6 @@ accounts-test:
   stage: test
   except:
     - master
-  dependencies:
-    - requirements-install
   script:
     - python manage.py test accounts
 
@@ -46,8 +42,6 @@ network-test:
   stage: test
   except:
     - master
-  dependencies:
-    - requirements-install
   script:
     - python manage.py test network
 
