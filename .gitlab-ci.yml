@@ -28,6 +28,8 @@ cache:
 
 db-migrations:
   stage: build
+  except:
+    - master
   script:
     - python manage.py makemigrations
 
@@ -67,5 +69,5 @@ deploy_prod:
   when: manual
   script:
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_DEV_PRIVATE_KEY")
+    - ssh-add <(echo "$SSH_MASTER_PRIVATE_KEY")
     - ssh -t members@members-prod.prod.infra.atilla.org "cd members/misc; ./deploy.sh master"
