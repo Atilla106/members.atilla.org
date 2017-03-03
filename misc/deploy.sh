@@ -27,6 +27,9 @@ bundle install --path=venv/ruby
 echo "Running migration …"
 python manage.py migrate
 
+echo "Collecting static files …"
+python manage.py collectstatic --noinput
+
 echo "Restarting service …"
 sudo systemctl restart members
 sudo systemctl status members
