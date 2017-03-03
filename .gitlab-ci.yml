@@ -28,6 +28,8 @@ cache:
 
 db-migrations:
   stage: build
+  except:
+    - master
   script:
     - python manage.py makemigrations
 
