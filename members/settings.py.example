@@ -26,16 +26,18 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
-    'network.apps.NetworkConfig',
     'accounts.apps.AccountsConfig',
+    'customAuthAdmin.auth.user',
+    'network.apps.NetworkConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor',
+    'compressor'
 ]
+
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -118,8 +120,6 @@ AUTHENTICATION_BACKENDS = ['django_auth_ldap.backend.LDAPBackend',
                            'django.contrib.auth.backends.ModelBackend']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# TO DO : Remove hardcoded urls
 
 LOGIN_URL = "/accounts/login/"
 

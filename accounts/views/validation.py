@@ -38,18 +38,25 @@ class ValidateRegistrationView(generic.FormView):
         password = form.cleaned_data['password']
         password_conf = form.cleaned_data['password_conf']
 
-        if password != password_conf:
-            raise ValidationError(
-                'Passwords are not the same',
-                code='invalid',
-            )
-        else:
-            migrate_to_LDAP(
-                self.pending_user,
-                form.cleaned_data['password'],
-            )
-            self.pending_user.delete()
-            return super(ValidateRegistrationView, self).form_valid(form)
+        try:
+            if password != password_conf:
+                raise ValidationError(
+                    'Passwords are not the same',
+                    code='invalid',
+                )
+            elif migrate_to_LDAP(
+                    self.pending_user,
+                    form.cleaned_data['password']):
+                self.pending_user.delete()
+                return super(ValidateRegistrationView, self).form_valid(form)
+            else:
+                raise ValidationError(
+                        'Duplicate UID or CN, please contact an administrator',
+                        code='invalid',
+                    )
+        except ValidationError as e:
+            form.add_error(None, str(e))
+            return super(ValidateRegistrationView, self).form_invalid(form)
 
 
 class ValidationCompleteView(generic.TemplateView):

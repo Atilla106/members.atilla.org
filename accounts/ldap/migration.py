@@ -5,7 +5,9 @@ import translitcodec
 from django.conf import settings
 
 from .connection.LDAPManager import LDAPManagerConnection
-from .utils import generate_crypt_password, get_biggest_LDAP_uid
+from .utils import generate_crypt_password
+from .utils import get_biggest_LDAP_uid
+from .utils import test_unique
 
 
 def migrate_to_LDAP(pending_user, password, connection=None):
@@ -26,22 +28,31 @@ def migrate_to_LDAP(pending_user, password, connection=None):
     attrs['homeDirectory'] = (settings.LDAP_DEFAULT_HOME_PATH
                               + pending_user.username)
 
-    # Make sure that every attribute is a ascii string
-    for key, value in attrs.items():
-        attrs[key] = str(value).encode('translit/one/ascii', 'replace')
+    if test_unique(attrs['uid'], attrs['cn'], connection):
+        # Make sure that every attribute is a ascii string
+        for key, value in attrs.items():
+            attrs[key] = str(value).encode('translit/one/ascii', 'replace')
 
-    attrs['objectclass'] = [
-            ('inetOrgPerson').encode('translit/one/ascii', 'replace'),
-            ('posixAccount').encode('translit/one/ascii', 'replace'),
-            ('top').encode('translit/one/ascii', 'replace')]
+        attrs['objectclass'] = [
+                ('inetOrgPerson').encode('translit/one/ascii', 'replace'),
+                ('posixAccount').encode('translit/one/ascii', 'replace'),
+                ('top').encode('translit/one/ascii', 'replace')]
 
-    dn = 'cn={} {},{}'.format(
-            pending_user.first_name.encode(
-                'translit/one/ascii',
-                'replace').decode(),
-            pending_user.last_name.encode(
-                'translit/one/ascii',
-                'replace').decode(),
-            settings.LDAP_USERS_BASE_DN)
-    ldif = modlist.addModlist(attrs)
-    connection.add_s(dn, ldif)
+        dn = 'cn={} {},{}'.format(
+                pending_user.first_name.encode(
+                    'translit/one/ascii',
+                    'replace').decode(),
+                pending_user.last_name.encode(
+                    'translit/one/ascii',
+                    'replace').decode(),
+                settings.LDAP_USERS_BASE_DN)
+
+        ldif = modlist.addModlist(attrs)
+
+        try:
+            connection.add_s(dn, ldif)
+            return True
+        except:
+            return False
+    else:
+        return False

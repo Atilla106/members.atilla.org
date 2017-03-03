@@ -39,3 +39,8 @@ Configuration
 - Set your LDAP credentials in `members/localSettings.py`
 
 - Review the project settings in `members/settings.py`
+
+Synchronize DHCP and DNS configuration
+----
+
+The script provided in `misc/update-network.sh` allows to update the DHCP and DNS configuration of a server running Debian Stretch. In production, this script should be executed as a cron job.

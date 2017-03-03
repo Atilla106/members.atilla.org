@@ -9,10 +9,17 @@ from ..ldap.utils import change_user_password
 
 
 class UpdatePasswordForm(forms.Form):
-    old_password = forms.CharField(widget=forms.PasswordInput())
-    new_password = forms.CharField(widget=forms.PasswordInput())
-    new_password_conf = forms.CharField(widget=forms.PasswordInput())
+    old_password = forms.CharField(
+            widget=forms.PasswordInput(),
+            label='Ancien mot de passe')
 
+    new_password = forms.CharField(
+            widget=forms.PasswordInput(),
+            label='Nouveau mot de passe')
+
+    new_password_conf = forms.CharField(
+            widget=forms.PasswordInput(),
+            label='Confirmation du mot de passe')
 
 class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
     template_name = 'accounts/update_password.html'
