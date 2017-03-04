@@ -1,12 +1,8 @@
-{% extends "base.html" %}
+{% extends "base_errors.html" %}
 {% block title %}403{% endblock %}
 
-{% block main %}
+{% block errorTitle %}Accès refusé{% endblock %}
 
-<h1>Accès refusé</h1>
-
-<p>Vous n’avez pas l’autorisation d’effectuer cette action.</p>
-
-<p>Si vous pensez qu’il s’agit d’un problème, n’hésitez pas à nous en faire part en envoyant un mail à <a href="mailto:bureau@lists.atilla.org">bureau@lists.atilla.org</a>.</p>
-
+{% block errorDescription %}
+Vous n’avez pas l’autorisation d’effectuer cette action.
 {% endblock %}

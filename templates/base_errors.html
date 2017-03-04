@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<h1>{% block errorTitle %}{% endblock %}</h1>
+
+<p>{% block errorDescription %}{% endblock %}</p>
+
+<p>Si vous pensez qu’il s’agit d’un problème, n’hésitez pas à nous en faire part en envoyant un mail à <a href="mailto:bureau@lists.atilla.org">bureau@lists.atilla.org</a>.</p>
+
+<h3>Informations détaillées</h3>
+
+<h4>Adresse de la requête : </h4>
+<pre>{{ request_path }}</pre>
+
+<h4>Message d’erreur : </h4>
+<pre>{{ exception }}</pre>
+
+{% endblock %}
