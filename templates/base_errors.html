@@ -10,10 +10,14 @@
 
 <h3>Informations détaillées</h3>
 
-<h4>Adresse de la requête : </h4>
-<pre>{{ request_path }}</pre>
+{% if request_path %}
+     <h4>Adresse de la requête : </h4>
+     <pre>{{ request_path }}</pre>
+{% endif %}
 
-<h4>Message d’erreur : </h4>
-<pre>{{ exception }}</pre>
+{% if exception %}
+     <h4>Message d’erreur : </h4>
+     <pre>{{ exception }}</pre>
+{% endif %}
 
 {% endblock %}
