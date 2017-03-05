@@ -51,7 +51,7 @@ code-coverage-report:
   except:
     - master
   script:
-    - coverage run python manage.py test
+    - coverage run manage.py test
     - coverage report --include="accounts/*,network/*"
 
 deploy_dev:
