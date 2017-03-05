@@ -1,5 +1,0 @@
-{
-  "accounts/tests/test_ldap_functions.py": true,
-  "accounts/tests/test_pending_user_model.py": true,
-  "accounts/tests/test_registration_view.py": true
-}

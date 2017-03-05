@@ -8,6 +8,8 @@ env/
 .bundle/
 .sass-cache/
 CACHE/
+.cache/
+.coverage
 
 localSettings.py
 settings.py
