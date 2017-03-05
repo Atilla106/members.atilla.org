@@ -16,7 +16,6 @@ before_script:
   - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
   - echo LDAP_MANAGEMENT_PASSWORD = \'$LDAP_TEST_MGMT_PWD\' >> members/localSettings.py
 
-
 stages:
   - build
   - test
@@ -46,6 +45,13 @@ network-test:
     - master
   script:
     - python manage.py test network
+
+code-coverage-report:
+  stage: test
+  except:
+    - master
+  script:
+    - coverage report --include="accounts/*,network/*"
 
 deploy_dev:
   stage: deploy
