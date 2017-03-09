@@ -1,9 +1,11 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 from .views import registration, validation, profile
 
 app_name = "accounts"
 urlpatterns = [
-    url('^', include('django.contrib.auth.urls')),
+    url('^login/$', auth_views.login, name='login'),
+    url('^logout/$', auth_views.logout, name='logout'),
     url('^register/$', registration.RegisterView.as_view(), name='register'),
     url('^register/complete/$',
         registration.RegistrationCompleteView.as_view(),
