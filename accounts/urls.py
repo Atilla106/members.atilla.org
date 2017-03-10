@@ -19,4 +19,5 @@ urlpatterns = [
     url('^password/update/$',
         profile.UpdatePasswordView.as_view(),
         name='change_password'),
+    url('^', profile.ProfileView.as_view(), name='profile'),
 ]

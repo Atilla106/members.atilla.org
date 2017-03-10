@@ -1,0 +1,26 @@
+{% extends "base_accounts.html" %}
+{% block title %}
+  Mon compte
+{% endblock %}
+
+{% block main %}
+<div class="row">
+  <h4>Profile</h4>
+  <p>
+    Sur votre page de profil, vous pouvez modifier les différents paramètres
+    concernant votre inscription à ATILLA
+  </p>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <p>
+      {{ form.cleaning }}
+      <label for="{{ form.cleaning.id_for_label }}">
+        Je veux bien aider au ménage de la CY106 (sélection aléatoire toutes
+        les semaines)
+      </label>
+    </p>
+    <input type="submit" value="Envoyer" class="btn" />
+  </form>
+</div>
+{% endblock %}

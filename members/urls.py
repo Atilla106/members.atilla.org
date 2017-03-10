@@ -7,7 +7,10 @@ from members.views import legal_view
 urlpatterns = [
     url(r'^legal$', legal_view, name="legal"),
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('accounts.urls')),
+    url(
+        r'^accounts/',
+        include('accounts.urls', namespace='accounts'),
+    ),
     url(r'^network/', include('network.urls')),
     url(r'^$', device.DeviceView.as_view())
 ]
