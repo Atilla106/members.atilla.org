@@ -110,7 +110,7 @@
 
 					<ul class="side-nav" id="mobile-demo">
 						{% if request.user.is_authenticated %}
-						     <li><a href="{% url "accounts:change_password" %}">Modifier le mot de passe</a></li>
+						     <li><a href="{% url "accounts:profile" %}">Modifier le mot de passe</a></li>
 						     <li><a href="{% url "network:index" %}">Réseau</a></li>
 						     <li><a href="{% url "accounts:logout" %}">Déconnexion</a></li>
 						{% else %}
