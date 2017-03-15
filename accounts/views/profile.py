@@ -1,11 +1,12 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import ValidationError
 from django.views import generic
+from django.views.generic.edit import UpdateView
 
 from ..ldap.utils import test_user_bind
 from ..ldap.utils import change_user_password
+from ..models import Account
 
 
 class UpdatePasswordForm(forms.Form):
@@ -20,6 +21,7 @@ class UpdatePasswordForm(forms.Form):
     new_password_conf = forms.CharField(
             widget=forms.PasswordInput(),
             label='Confirmation du mot de passe')
+
 
 class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
     template_name = 'accounts/update_password.html'
@@ -54,3 +56,13 @@ class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
                         'old_password',
                         'Unable to perform update')
                 return super(UpdatePasswordView, self).form_invalid(form)
+
+
+class ProfileView(LoginRequiredMixin, UpdateView):
+    template_name = "accounts/profile.html"
+    model = Account
+    fields = ['cleaning']
+    success_url = reverse_lazy('accounts:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user.account

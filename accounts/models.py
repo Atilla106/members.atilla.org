@@ -73,6 +73,10 @@ class Account(models.Model):
         verbose_name='default_user',
         on_delete=models.CASCADE,
     )
+    cleaning = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.user.username
 
 
 def create_user_profile(sender, instance, created, **kwargs):
