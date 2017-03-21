@@ -11,3 +11,6 @@ class CleaningRoster(models.Model):
     date = models.DateField(auto_now_add=True)
 
     cleaners = models.ManyToManyField(Account)
+
+    def __str__(self):
+        return "Ménage du %s" % self.date
