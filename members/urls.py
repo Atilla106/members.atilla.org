@@ -13,5 +13,5 @@ urlpatterns = [
     ),
     url(r'^network/', include('network.urls')),
     url(r'^cleaning/', include('cleaning.urls')),
-    url(r'^$', device.DeviceView.as_view())
+    url(r'^$', device.DeviceView.as_view(), name="portal")
 ]

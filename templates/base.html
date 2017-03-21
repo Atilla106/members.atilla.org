@@ -75,20 +75,27 @@
 						class="button-collapse left">
 						   <i class="material-icons">menu</i>
 					</a>
-					<a href="#"
+          <a href="{% url "portal" %}"
 						class="brand-logo center">
 						>~/ATILLA
 					</a>
 					{% if request.user.is_authenticated %}
 					<ul class="left hide-on-med-and-down">
 						<li>
-							<a href="{% url "accounts:change_password" %}">
-								Modifier le mot de passe
+							<a href="{% url "accounts:profile" %}">
+								Mon compte
 							</a>
+            </li>
+            <li>
 							<a href="{% url "network:index" %}">
 								Réseau
 							</a>
 						</li>
+            <li>
+              <a href="{% url "cleaning:portal" %}">
+                Ménage
+              </a>
+            </li>
 					</ul>
 					{% endif %}
 					<ul class="right hide-on-med-and-down">
