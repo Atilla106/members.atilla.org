@@ -5,14 +5,22 @@
 
 {% block main %}
 <div class="row">
-  <h4>Ménage</h4>
-  <ul class="collection with-header">
-    <li class="collection-header">
-      <h4>Les personnes sélectionnées pour le ménage sont:</h4>
-    </li>
-    {% for cleaner in cleaners %}
-    <li class⁼"collection-item">{{ cleaner.user }}</li>
+  <h4>Historique du ménage</h4>
+  <table>
+    <thead>
+      <th data-field="date">Date</th>
+      <th data-field="member1">Members</th>
+      <th data-field="member2"></th>
+      <th data-field="member3"></th>
+    </thead>
+    {% for roster in rosters %}
+    <tr>
+      <td>{{ roster.date }}</td>
+      {% for cleaner in roster.cleaners.all %}
+        <td>{{ cleaner }}</td>
+      {% endfor %}
+    </tr>
     {% endfor %}
-  </ul>
+  </table>
 </div>
 {% endblock %}

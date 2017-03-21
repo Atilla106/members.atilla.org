@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from .views import portalView
+from . import views
 app_name = "cleaning"
 urlpatterns = [
-    url('^', portalView, name="portal")
+    url('^', views.portal_view, name="portal"),
 ]
