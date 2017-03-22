@@ -1,9 +1,9 @@
-from accounts.models import Account
 from django.shortcuts import render
-from random import sample
+
+from .models import CleaningRoster
 
 
-def portalView(request):
-    volunteers = list(Account.objects.filter(cleaning=True))
-    cleaners = sample(volunteers, 3)
-    return render(request, "cleaning/portal.html", {'cleaners': cleaners})
+def portal_view(request):
+    rosters = CleaningRoster.objects.all()
+    print(list(rosters)[0].cleaners.all())
+    return render(request, "cleaning/portal.html", {'rosters': rosters})
