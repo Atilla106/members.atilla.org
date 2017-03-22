@@ -11,8 +11,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         volunteers = list(Account.objects.filter(cleaning=True))
-        cleaners = sample(volunteers, 3)
-        roster = CleaningRoster()
-        roster.save()
-        for cleaner in cleaners:
-            roster.cleaners.add(cleaner)
+
+        try:
+            cleaners = sample(volunteers, 3)
+            roster = CleaningRoster()
+            roster.save()
+            for cleaner in cleaners:
+                roster.cleaners.add(cleaner)
+        except ValueError:
+            print("Not enough colunteers for cleaning")
