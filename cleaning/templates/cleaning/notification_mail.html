@@ -1,0 +1,18 @@
+Bonjour {{ user.first_name }} {{ user.last_name }} !
+
+Nous sommes heureux de vous annoncer que vous avez été tiré au sort pour faire partie des participants au ménage hebdomadaire de la CY106 !
+
+Cette semaine, vos coéquipiers sont :
+{% for cleaner in cleaners %}{% if cleaner.user != user %}
+- {{ cleaner.user.first_name }} {{ cleaner.user.last_name|upper }}
+{% endif %}{% endfor %}
+
+Si pour une quelconque raison, vous ne souhaitez pas participer à cette séance de ménage, n’hésitez pas à envoyer un e-mail à bureau@lists.atilla.org !
+
+Vous pouvez également vous désinscrire de ce tirage au sort dans votre profil de members.atilla.org.
+
+Bonne journée,
+
+PS : Ce message est automatique, merci de ne pas y répondre :)
+
+>~/ATILLA - Bureau
