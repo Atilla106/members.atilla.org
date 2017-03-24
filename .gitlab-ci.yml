@@ -46,13 +46,20 @@ network-test:
   script:
     - python manage.py test network
 
+cleaning-test:
+  stage: test
+  except:
+    - master
+  script:
+    - python manage.py test cleaning
+
 code-coverage-report:
   stage: test
   except:
     - master
   script:
     - coverage run manage.py test
-    - coverage report --include="accounts/*,network/*"
+    - coverage report --include="accounts/*,network/*,cleaning/*"
 
 deploy_dev:
   stage: deploy
