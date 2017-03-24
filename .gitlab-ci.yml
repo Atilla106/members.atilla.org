@@ -3,21 +3,11 @@ before_script:
   - pwd
   - ruby -v
   - python3 --version
-  - if [ ! -e venv/bin/activate ] ; then virtualenv -p $(which python3) venv ; fi
-  - source venv/bin/activate
-  - bundle install --jobs $(nproc) --path venv/ruby
-  - pip install --upgrade pip
-  - pip install -r requirements.txt
-  - pip install -r requirements-test.txt
-  - cp -f members/settings.py.example members/settings.py
-  - echo LDAP_SERVER_URI = \'ldap://$LDAP_TEST_URL\' > members/localSettings.py
-  - echo LDAP_AUTHENTICATION_DN = \'$LDAP_TEST_AUTH_DN\' >> members/localSettings.py
-  - echo LDAP_AUTHENTICATION_PASSWORD = \'$LDAP_TEST_AUTH_PWD\' >> members/localSettings.py
-  - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
-  - echo LDAP_MANAGEMENT_PASSWORD = \'$LDAP_TEST_MGMT_PWD\' >> members/localSettings.py
 
 stages:
   - build
+  - configure
+  - install
   - test
   - deploy
 
@@ -25,34 +15,90 @@ cache:
   paths:
     - venv/
 
-db-migrations:
+build-venv:
   stage: build
   except:
     - master
   script:
+    - if [ ! -e venv/bin/activate ] ; then virtualenv -p $(which python3) venv ; fi
+    - source venv/bin/activate
+    - bundle install --jobs $(nproc) --path venv/ruby
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install -r requirements-test.txt
+  artifacts:
+    paths:
+      - venv/
+
+configure-project:
+  stage: configure
+  except:
+    - master
+  script:
+    - cp -f members/settings.py.example members/settings.py
+    - echo LDAP_SERVER_URI = \'ldap://$LDAP_TEST_URL\' > members/localSettings.py
+    - echo LDAP_AUTHENTICATION_DN = \'$LDAP_TEST_AUTH_DN\' >> members/localSettings.py
+    - echo LDAP_AUTHENTICATION_PASSWORD = \'$LDAP_TEST_AUTH_PWD\' >> members/localSettings.py
+    - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
+    - echo LDAP_MANAGEMENT_PASSWORD = \'$LDAP_TEST_MGMT_PWD\' >> members/localSettings.py
+  dependencies:
+    - build-venv
+  artifacts:
+    paths:
+      - members/
+      - venv/
+
+db-migrations:
+  stage: install
+  except:
+    - master
+  script:
+    - source venv/bin/activate
     - python manage.py makemigrations
+  dependencies:
+    - configure-project
 
 accounts-test:
   stage: test
   except:
     - master
   script:
+    - source venv/bin/activate
     - python manage.py test accounts
+  dependencies:
+    - configure-project
 
 network-test:
   stage: test
   except:
     - master
   script:
+    - source venv/bin/activate
     - python manage.py test network
+  dependencies:
+    - configure-project
+
+cleaning-test:
+  stage: test
+  except:
+    - master
+  script:
+    - source venv/bin/activate
+    - python manage.py test cleaning
+  dependencies:
+    - configure-project
+
 
 code-coverage-report:
   stage: test
   except:
     - master
   script:
+    - source venv/bin/activate
     - coverage run manage.py test
-    - coverage report --include="accounts/*,network/*"
+    - coverage report --include="accounts/*,network/*,cleaning/*"
+  dependencies:
+    - configure-project
 
 deploy_dev:
   stage: deploy
