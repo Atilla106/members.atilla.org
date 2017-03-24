@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from accounts.models import Account
 
@@ -11,6 +13,10 @@ class CleaningRoster(models.Model):
     date = models.DateField(auto_now_add=True)
 
     cleaners = models.ManyToManyField(Account)
+
+    def save(self, *args, **kwargs):
+        CleaningRoster.objects.filter(date=date.today()).delete()
+        return super(CleaningRoster, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Ménage du %s" % self.date
