@@ -44,4 +44,4 @@ class Command(BaseCommand):
 
             self.send_notification_mail(roster)
         except ValueError:
-            print("Not enough colunteers for cleaning")
+            print("Not enough volunteers for cleaning")
