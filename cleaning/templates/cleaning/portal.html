@@ -17,7 +17,7 @@
     <tr>
       <td>{{ roster.date }}</td>
       {% for cleaner in roster.cleaners.all %}
-        <td>{{ cleaner }}</td>
+	 <td>{{ cleaner.user.first_name }} {{ cleaner.user.last_name }}</td>
       {% endfor %}
     </tr>
     {% endfor %}
