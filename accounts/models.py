@@ -76,7 +76,10 @@ class Account(models.Model):
     cleaning = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.user.username
+        return '{} {} ({})'.format(
+                self.user.first_name,
+                self.user.last_name,
+                self.user.username)
 
 
 def create_user_profile(sender, instance, created, **kwargs):
