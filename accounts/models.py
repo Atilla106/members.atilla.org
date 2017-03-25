@@ -86,4 +86,5 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Account.objects.create(user=instance)
 
+
 post_save.connect(create_user_profile, sender=User)
