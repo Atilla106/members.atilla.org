@@ -146,16 +146,16 @@ class DeviceViewTestCase(TestCase):
         self.assertNotEqual(newDevice, [])
 
         # Try with an incorrect device name
-        response2 = self.client.post(
+        self.client.post(
             reverse('network:device_create'),
             {'device_name': 'New Device 2', 'description': 'New device 2'},
         )
 
-        self.assertContains(
-            response2,
-            'Invalid name',
-            html=False,
+        newDevice = Device.objects.filter(
+            user=self.test1,
+            device_name='New Device 2',
         )
+        self.assertEqual(newDevice, [])
 
         # Try with a device name aleready taken
         response3 = self.client.post(
