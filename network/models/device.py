@@ -33,7 +33,8 @@ class Device(models.Model):
         validators=[
             RegexValidator(
                 regex='^[-a-zA-Z0-9]{1,25}$',
-                message='Invalid name',
+                message="Le nom d'appareil ne peut pas contenir autre"
+                        "chose que des caractères alphanumériques et '-' ",
             )
         ],
     )
