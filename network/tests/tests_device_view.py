@@ -153,7 +153,7 @@ class DeviceViewTestCase(TestCase):
 
         self.assertContains(
             response2,
-            'Invalid name',
+            'Le nom d\'appareil ne peut pas contenir autre chose',
             html=False,
         )
 
