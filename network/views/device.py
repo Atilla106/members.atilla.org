@@ -1,10 +1,10 @@
 '''Views for the device model.'''
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
+from ..forms.device import DeviceForm
 from ..models.device import Device
 
 
@@ -29,21 +29,8 @@ class DeviceDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DeviceCreateView(LoginRequiredMixin, generic.edit.CreateView):
     '''Add the current user as device owner.'''
-
+    form_class = DeviceForm
     model = Device
-    fields = ['device_name', 'description']
-
-    def form_valid(self, form):
-        device = form.save(commit=False)
-        device.user = self.request.user
-
-        try:
-            device.full_clean()
-        except ValidationError as e:
-            form.add_error('device_name', str(e))
-            return super(DeviceCreateView, self).form_invalid(form)
-
-        return super(DeviceCreateView, self).form_valid(form)
 
 
 class DeviceUpdateView(LoginRequiredMixin, generic.edit.UpdateView):
