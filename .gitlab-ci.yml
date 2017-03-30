@@ -16,7 +16,6 @@ before_script:
   - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
   - echo LDAP_MANAGEMENT_PASSWORD = \'$LDAP_TEST_MGMT_PWD\' >> members/localSettings.py
 
-
 stages:
   - build
   - test
@@ -28,6 +27,8 @@ cache:
 
 db-migrations:
   stage: build
+  except:
+    - master
   script:
     - python manage.py makemigrations
 
@@ -44,6 +45,21 @@ network-test:
     - master
   script:
     - python manage.py test network
+
+cleaning-test:
+  stage: test
+  except:
+    - master
+  script:
+    - python manage.py test cleaning
+
+code-coverage-report:
+  stage: test
+  except:
+    - master
+  script:
+    - coverage run manage.py test
+    - coverage report --include="accounts/*,network/*,cleaning/*"
 
 deploy_dev:
   stage: deploy
@@ -67,5 +83,5 @@ deploy_prod:
   when: manual
   script:
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_DEV_PRIVATE_KEY")
+    - ssh-add <(echo "$SSH_MASTER_PRIVATE_KEY")
     - ssh -t members@members-prod.prod.infra.atilla.org "cd members/misc; ./deploy.sh master"

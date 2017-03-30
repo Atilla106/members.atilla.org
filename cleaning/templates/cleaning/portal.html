@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}
+  Ménage
+{% endblock %}
+
+{% block main %}
+<div class="row">
+  <h4>Historique du ménage</h4>
+  <table>
+    <thead>
+      <th data-field="date">Date</th>
+      <th data-field="member1">Membres</th>
+      <th data-field="member2"></th>
+      <th data-field="member3"></th>
+    </thead>
+    {% for roster in rosters %}
+    <tr>
+      <td>{{ roster.date }}</td>
+      {% for cleaner in roster.cleaners.all %}
+	 <td>{{ cleaner.user.first_name }} {{ cleaner.user.last_name }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

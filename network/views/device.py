@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
+from ..forms.device import DeviceForm
 from ..models.device import Device
 
 
@@ -29,9 +30,8 @@ class DeviceDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DeviceCreateView(LoginRequiredMixin, generic.edit.CreateView):
     '''Add the current user as device owner.'''
-
+    form_class = DeviceForm
     model = Device
-    fields = ['device_name', 'description']
 
     def form_valid(self, form):
         device = form.save(commit=False)

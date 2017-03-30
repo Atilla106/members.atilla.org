@@ -4,8 +4,10 @@ import hashlib
 import hmac
 import time
 
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models.signals import post_save
 
 
 class PendingUser(models.Model):
@@ -58,3 +60,31 @@ class PendingUser(models.Model):
             last_name=self.last_name,
             username=self.username,
         )
+
+
+class Account(models.Model):
+    """
+    Account model where you can store all the information about a member.
+    From an User object (which you can get easily thanks to Django), you can
+    access the related Account entry by `user.account`
+    """
+    user = models.OneToOneField(
+        User,
+        verbose_name='default_user',
+        on_delete=models.CASCADE,
+    )
+    cleaning = models.BooleanField(default=True)
+
+    def __str__(self):
+        return '{} {} ({})'.format(
+                self.user.first_name,
+                self.user.last_name,
+                self.user.username)
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Account.objects.create(user=instance)
+
+
+post_save.connect(create_user_profile, sender=User)

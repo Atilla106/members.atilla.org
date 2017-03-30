@@ -5,9 +5,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons"
-			rel="stylesheet"/>
+
 		{% compress css %}
 		<link type="text/scss"
 			rel="stylesheet"
@@ -18,13 +16,35 @@
 			href="{% static "sass/base.scss" %}"
 			media="screen,projection"/>
 		{% endcompress %}
+
 		<meta name="viewport"
 			content="width=device-width, initial-scale=1.0"/>
+
 		<title>
 			{% block title %}
 			{% endblock %}
 			| members.atilla.org
 		</title>
+
+		<link type="text/css" rel="stylesheet"
+			 href="{% static "fonts/material/material-icons.css" %}"/>
+
+		<style type="text/css">
+		@font-face {
+			   font-family: 'Material Icons';
+			   font-style: normal;
+			   font-weight: 400;
+			   src: url({% static "fonts/material/MaterialIcons-Regular.eot" %});
+			   src: local('Material Icons'),
+				   local('MaterialIcons-Regular'),
+				   url({% static "fonts/material/MaterialIcons-Regular.woff2" %})
+				        format('woff2'),
+				   url({% static "fonts/material/MaterialIcons-Regular.woff" %})
+				        format('woff'),
+				   url({% static "MaterialIcons-Regular.ttf" %}) format('truetype');
+		}
+		</style>
+
 		<!-- Piwik -->
 		<script type="text/javascript">
 			var _paq = _paq || [];
@@ -51,20 +71,31 @@
 		<header>
 			<nav>
 				<div class="nav-wrapper">
-					<a href="#"
+					<a href="#" data-activates="mobile-demo"
+						class="button-collapse left">
+						   <i class="material-icons">menu</i>
+					</a>
+          <a href="{% url "portal" %}"
 						class="brand-logo center">
 						>~/ATILLA
 					</a>
 					{% if request.user.is_authenticated %}
 					<ul class="left hide-on-med-and-down">
 						<li>
-							<a href="{% url "accounts:change_password" %}">
-								Modifier le mot de passe
+							<a href="{% url "accounts:profile" %}">
+								Mon compte
 							</a>
+            </li>
+            <li>
 							<a href="{% url "network:index" %}">
 								Réseau
 							</a>
 						</li>
+            <li>
+              <a href="{% url "cleaning:portal" %}">
+                Ménage
+              </a>
+            </li>
 					</ul>
 					{% endif %}
 					<ul class="right hide-on-med-and-down">
@@ -82,6 +113,17 @@
 							</a>
 						{% endif %}
 						</li>
+					</ul>
+
+					<ul class="side-nav" id="mobile-demo">
+						{% if request.user.is_authenticated %}
+						     <li><a href="{% url "accounts:profile" %}">Modifier le mot de passe</a></li>
+						     <li><a href="{% url "network:index" %}">Réseau</a></li>
+						     <li><a href="{% url "accounts:logout" %}">Déconnexion</a></li>
+						{% else %}
+						     <li><a href="{% url "accounts:login" %}">Connexion</a></li>
+							<li><a href="{% url "accounts:register" %}">Inscription</a></li>
+						{% endif %}
 					</ul>
 				</div>
 			</nav>

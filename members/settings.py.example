@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'customAuthAdmin.auth.user',
     'network.apps.NetworkConfig',
+    'cleaning.apps.CleaningConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

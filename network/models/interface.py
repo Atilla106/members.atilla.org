@@ -30,7 +30,9 @@ class Interface(models.Model):
         validators=[
             RegexValidator(
                 regex='^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$',
-                message='Invalid MAC address',
+                message="L'addresse mac doit être du format xx:xx:xx:xx:xx:xx,"
+                        "et ne doit comprendre que des caractères dans 1-9 et"
+                        "a-f"
             )
         ],
         unique=True,
