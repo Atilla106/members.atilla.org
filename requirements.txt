@@ -6,3 +6,4 @@ pyldap
 rcssmin
 rjsmin
 translitcodec
+psycopg2
