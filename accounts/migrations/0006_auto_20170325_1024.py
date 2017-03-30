@@ -14,7 +14,9 @@ def link_user_accounts(apps, schema_editor):
     '''
 
     for user in User.objects.all():
-        if user.account is None:
+        try:
+            user.account
+        except:
             Account.objects.create(user=user)
 
 
