@@ -7,3 +7,5 @@ rcssmin
 rjsmin
 translitcodec
 psycopg2
+django-constance
+django-picklefield
