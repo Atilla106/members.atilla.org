@@ -7,7 +7,6 @@ import time
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save
 
 
 class PendingUser(models.Model):
@@ -80,11 +79,3 @@ class Account(models.Model):
                 self.user.first_name,
                 self.user.last_name,
                 self.user.username)
-
-
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Account.objects.create(user=instance)
-
-
-post_save.connect(create_user_profile, sender=User)
