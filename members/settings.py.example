@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'compressor'
+    'compressor',
+    'constance',
+    'constance.backends.database',
 ]
 
 
@@ -132,6 +134,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+# Constance config
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+'''Flag for auto allow perm "Can publish device"'''
+CONSTANCE_CONFIG = {
+    'AUTO_ALLOW_FLAG': (False, 'Flag to toggle auto allow perm "Can publish device" to new devices'),
+}
 
 '''General informations.'''
 PLATFORM_NAME = "members.atilla.org"

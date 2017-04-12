@@ -2,8 +2,10 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from accounts.models import Account
+from constance.test import override_config
 
 
+@override_config(AUTO_ALLOW_FLAG="True")
 class AccountModelTest(TestCase):
     def setUp(self):
         User = get_user_model()
@@ -21,3 +23,7 @@ class AccountModelTest(TestCase):
 
     def test_user_model_has_related_account(self):
         self.assertIsNotNone(self.user.account)
+
+    def test_user_has_perms_when_flag_true(self):
+        self.assertTrue(self.user.has_perm(
+                'network.can_publish_device'))
