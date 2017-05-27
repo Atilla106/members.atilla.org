@@ -1,6 +1,4 @@
-import codecs
 import ldap.modlist as modlist
-import translitcodec
 
 from django.conf import settings
 
