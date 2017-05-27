@@ -61,6 +61,13 @@ code-coverage-report:
     - coverage run manage.py test
     - coverage report --include="accounts/*,network/*,cleaning/*"
 
+pep8-syntax:
+  stage: test
+  except:
+    - master
+  script:
+    - flake8 --exclude venv,migrations,members/settings.py
+
 deploy_dev:
   stage: deploy
   environment:
