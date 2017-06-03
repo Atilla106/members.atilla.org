@@ -1,6 +1,7 @@
-import codecs
+# Codecs and translitcodec are needed when calling encode() methods
+import codecs # noqa
 import ldap.modlist as modlist
-import translitcodec
+import translitcodec # noqa
 
 from django.conf import settings
 
