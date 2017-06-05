@@ -49,7 +49,7 @@ If you ever feel lost in your development process, here is a simple guide that y
 
 1. Supposing a bug or a feature has been notified by the users, this has to be reported on the project as an issue with a descriptive description and useful tags.
 2. A developer will then create a new branch based on `dev` where he'll make the necessary code changes.
-3. In case he needs advice from others, he can publish a new merge request for his branch to land onto `dev`, with the `WIP:` prefix, preventing the branch to be accidentally merge.
+3. In case he needs advice from others, he can publish an early merge request for his branch to land onto `dev`, with the `WIP:` prefix, preventing the branch to be accidentally merged.
 4. Discussions revolving around a patch must be contained in the associated merge request.
 5. When the feature / bug is ready to review, the assignee is changed to one of the head developer of the project, and the `WIP:` prefix is removed (if present).
 6. Comments about the code shall be made directly through the Gitlab code comment feature.
