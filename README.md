@@ -1,3 +1,8 @@
+Contributing
+---
+
+If you are planning to contribute to the project, please check out our [contribution guide](https://gitlab.atilla.org/atilla/members/blob/dev/CONTRIBUTING.md) first.
+
 Installation
 ---
 This project is using Python 3 and Django in the most part, but also SASS (Ruby) for easy CSS rendering. Before diving into the project, make sure to have the following packages installed on your system : 
