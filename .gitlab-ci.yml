@@ -66,7 +66,7 @@ pep8-syntax:
   except:
     - master
   script:
-    - flake8 --exclude venv,migrations,members/settings.py
+    - flake8
 
 deploy_dev:
   stage: deploy
