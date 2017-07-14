@@ -32,6 +32,12 @@
 			{{ form.email }}
 		</p>
 		<p>
+			<label for="{{ form.captcha.id_for_label }}">
+					Êtes vous un humain&nbsp;?
+			</label>
+			<br/>
+			{{ form.captcha }}
+		<p>
 			{{ form.agreement }}
 			<label for="{{ form.agreement.id_for_label }}">
 					En cochant cette case, je certifie être membre d’ATILLA, avoir accepté la charte
