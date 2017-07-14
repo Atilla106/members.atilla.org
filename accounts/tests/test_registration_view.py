@@ -21,6 +21,7 @@ class RegisterViewTestCase(TestCase):
             {'first_name': 'Potato',
                 'last_name': 'Chips',
                 'email': 'potato.chips@lustucru.org',
+                'captcha_1': 'PASSED',
                 'agreement': 'true'},
         )
 
@@ -33,6 +34,7 @@ class RegisterViewTestCase(TestCase):
             {'first_name': 'Mister',
                 'last_name': 'Tomaato',
                 'email': 'randomfalseemail',
+                'captcha_1': 'PASSED',
                 'agreement': 'true'},
         )
 
@@ -44,7 +46,8 @@ class RegisterViewTestCase(TestCase):
             reverse('accounts:register'),
             {'first_name': 'Little',
                 'last_name': 'Cupcake',
-                'email': 'little.cupcake@haribo.org'}
+                'email': 'little.cupcake@haribo.org',
+                'captcha_1': 'PASSED'}
         )
 
         newUser3 = PendingUser.objects.filter(first_name='Little')

@@ -2,6 +2,7 @@ Django
 django-appconf
 django-auth-ldap
 django-compressor
+django-simple-captcha
 pyldap
 rcssmin
 rjsmin
