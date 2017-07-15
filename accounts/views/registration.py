@@ -1,3 +1,5 @@
+from captcha.fields import CaptchaField
+
 from django import forms
 from django.conf import settings
 from django.core.mail import send_mail
@@ -9,6 +11,7 @@ from ..models import PendingUser
 
 class RegisterForm(forms.ModelForm):
     agreement = forms.BooleanField()
+    captcha = CaptchaField()
 
     class Meta:
         model = PendingUser
