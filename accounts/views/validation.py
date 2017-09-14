@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 
 from ..models import PendingUser
-from ..ldap.migration import migrate_to_LDAP
+from ..ldap.actions import LDAPAccountAdder
 
 
 class ValidateRegistrationForm(forms.Form):
@@ -44,7 +44,7 @@ class ValidateRegistrationView(generic.FormView):
                     'Passwords are not the same',
                     code='invalid',
                 )
-            elif migrate_to_LDAP(
+            elif LDAPAccountAdder().add(
                     self.pending_user,
                     form.cleaned_data['password']):
                 self.pending_user.delete()

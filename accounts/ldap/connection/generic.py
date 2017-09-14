@@ -4,12 +4,24 @@ from django.conf import settings
 
 
 class LDAPGenericConnection():
+    """
+    Handler for LDAP connections.
+
+    Define a set of methods that aim to ease LDAP requests with the application.
+    """
+
     def __init__(
             self,
             server_uri,
             bind_dn=None,
             bind_password=None,
             connection=None):
+        """
+        Initialize a new LDAP connection using the given parameters.
+
+        Throws NameError if the project settings are not properly configured.
+        Throws ldap.LDAPError if the connection to the LDAP directory is not successful.
+        """
         self.check_LDAP_configuration()
 
         if connection is None:
@@ -21,6 +33,7 @@ class LDAPGenericConnection():
             self.bind(bind_dn, bind_password)
 
     def check_LDAP_configuration(self):
+        """Ensure that the LDAP settings of the project are correctly defined."""
         if (not settings.LDAP_SERVER_URI
                 or not settings.LDAP_MANAGEMENT_DN
                 or not settings.LDAP_MANAGEMENT_PASSWORD
@@ -59,4 +72,5 @@ class LDAPGenericConnection():
         return self.connection
 
     def __del__(self):
+        """Close the connection to the LDAP directory when the object is destroyed."""
         self.connection.unbind_s()
