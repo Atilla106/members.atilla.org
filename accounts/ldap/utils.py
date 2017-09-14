@@ -1,3 +1,4 @@
+"""Provide a set of useful functions for LDAP related low level operations."""
 import crypt
 import ldap
 
@@ -7,29 +8,27 @@ from .connection.generic import LDAPGenericConnection
 
 
 def generate_crypt_password(password):
+    """Generate a salted hash from the password given in parameter."""
     salt = crypt.mksalt(method=crypt.METHOD_SHA512)
     salt = '$1${}$'.format(salt)
     return '{{CRYPT}}{}'.format(str(crypt.crypt(password, salt)))
 
 
-def test_user_bind(user_dn, password, connection=None):
+def test_user_bind(user_dn, password, server_uri=None):
+    """
+    Using the given user and password, try to establish a connection to an LDAP server.
+
+    If no `server_uri` is provided, use the default LDAP_SERVER_URI from the project configuration.
+    Return True if the connection is successful.
+    """
     try:
         LDAPGenericConnection(
-                settings.LDAP_SERVER_URI,
+                (server_uri if server_uri is not None else settings.LDAP_SERVER_URI),
                 user_dn,
                 password)
         return True
     except (NameError, ldap.LDAPError):
         return False
-
-
-def test_unique(user_id, user_cn, connection):
-    results = connection.search_s(
-            settings.LDAP_USERS_BASE_DN,
-            ldap.SCOPE_SUBTREE,
-            '(|(cn={})(uid={}))'.format(user_cn, user_id))
-
-    return (len(results) == 0)
 
 
 def change_user_password(user_dn, old_password, new_password, connection=None):
@@ -50,37 +49,3 @@ def change_user_password(user_dn, old_password, new_password, connection=None):
         )]
     connection.modify_s(user_dn, mod_attrs)
     return True
-
-
-def get_biggest_LDAP_uid(connection):
-    search_filter = '(objectClass=posixAccount)'
-    search_attribute = ["uidNumber"]
-    search_scope = ldap.SCOPE_SUBTREE
-
-    result_id = connection.search(
-            settings.LDAP_USERS_BASE_DN,
-            search_scope,
-            search_filter,
-            search_attribute)
-
-    max_uid = 0
-    # JPF
-    while 1:
-        try:
-            result_type, result_data = connection.result(result_id, 0)
-        except ldap.NO_SUCH_OBJECT:
-            raise ldap.LDAPError(
-                'Distinguished name ({}) does not exist.'.format(
-                    settings.LDAP_USERS_BASE_DN))
-
-        if result_type == ldap.RES_SEARCH_ENTRY:
-            try:
-                uid = int(result_data[0][1]['uidNumber'][0])
-                if uid > max_uid:
-                    max_uid = uid
-            except:
-                pass
-        else:
-            break
-
-    return max_uid
