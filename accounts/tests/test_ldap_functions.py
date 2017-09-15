@@ -2,6 +2,7 @@ from django.test import TestCase
 from mockldap import MockLdap
 
 from ..ldap.actions import LDAPAccountAdder
+from ..ldap.actions import LDAPAccountUpdater
 from ..ldap import utils
 from ..models import PendingUser
 
@@ -98,11 +99,8 @@ class LDAPFunctionsTestCase(TestCase):
         self.assertFalse(result)
 
     def test_user_password_update(self):
-        utils.change_user_password(
-                'cn=Test User,ou=users,dc=atilla,dc=org',
-                'We love HDM !',
-                'Caniche',
-                self.ldap)
+        account_updater = LDAPAccountUpdater('cn=Test User,ou=users,dc=atilla,dc=org')
+        account_updater.change_password('We love HDM !', 'Caniche', self.ldap)
 
         self.assertEquals(
                 self.ldap.methods_called(),

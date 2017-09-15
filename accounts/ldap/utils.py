@@ -21,23 +21,3 @@ def test_user_bind(user_dn, password, connection=None):
         return True
     except (NameError, ldap.LDAPError):
         return False
-
-
-def change_user_password(user_dn, old_password, new_password, connection=None):
-    try:
-        connection = LDAPGenericConnection(
-                settings.LDAP_SERVER_URI,
-                user_dn,
-                old_password,
-                connection)
-    except (NameError, ldap.LDAPError):
-        return False
-
-    new_crypt_password = generate_crypt_password(new_password)
-    mod_attrs = [(
-        ldap.MOD_REPLACE,
-        'userPassword',
-        [str(new_crypt_password).encode('ascii', 'ignore')]
-        )]
-    connection.modify_s(user_dn, mod_attrs)
-    return True

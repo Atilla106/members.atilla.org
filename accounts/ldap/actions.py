@@ -6,6 +6,7 @@ import translitcodec # noqa
 
 from django.conf import settings
 
+from .connection.generic import LDAPGenericConnection
 from .connection.LDAPManager import LDAPManagerConnection
 from .utils import generate_crypt_password
 
@@ -126,3 +127,38 @@ class LDAPAccountAdder:
                 return False
         else:
             return False
+
+
+class LDAPAccountUpdater:
+    """Perform generic actions on a given LDAP account."""
+
+    def __init__(self, user_dn):
+        self.__user_dn = user_dn
+
+    def change_password(self, old_password, new_password, connection=None):
+        """
+        Update the password of a given user.
+
+        If no LDAP connection is provided, the user old password will be used in a simple bind action.
+        This allows to check if the user's old password is the correct one.
+
+        Returns True if the password has correctly been updated.
+        """
+
+        try:
+            connection = LDAPGenericConnection(
+                    settings.LDAP_SERVER_URI,
+                    self.__user_dn,
+                    old_password,
+                    connection)
+        except (NameError, ldap.LDAPError):
+            return False
+
+        new_crypt_password = generate_crypt_password(new_password)
+        mod_attrs = [(
+                ldap.MOD_REPLACE,
+                'userPassword',
+                [str(new_crypt_password).encode('ascii', 'ignore')]
+            )]
+        connection.modify_s(self.__user_dn, mod_attrs)
+        return True
