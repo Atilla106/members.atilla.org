@@ -66,5 +66,9 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     fields = ['cleaning']
     success_url = reverse_lazy('accounts:profile')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Your cleaning preference was successfully updated')
+        return super(ProfileView, self).form_valid(form)
+
     def get_object(self, queryset=None):
         return self.request.user.account
