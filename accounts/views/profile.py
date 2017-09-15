@@ -1,5 +1,6 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.views.generic.edit import UpdateView
@@ -26,7 +27,7 @@ class UpdatePasswordForm(forms.Form):
 class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
     template_name = 'accounts/update_password.html'
     form_class = UpdatePasswordForm
-    success_url = reverse_lazy('accounts:change_password')
+    success_url = reverse_lazy('accounts:profile')
 
     def form_valid(self, form):
         old_password = form.cleaned_data['old_password']
@@ -50,6 +51,7 @@ class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
                     self.request.user.ldap_user.dn,
                     old_password,
                     new_password):
+                messages.success(self.request, 'Your password was successfully updated')
                 return super(UpdatePasswordView, self).form_valid(form)
             else:
                 form.add_error(
