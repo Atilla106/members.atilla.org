@@ -1,15 +1,18 @@
 from django.test import TestCase
 from mockldap import MockLdap
 
-from ..ldap import migration
+from ..ldap.actions import LDAPAccountAdder
+from ..ldap.actions import LDAPAccountUpdater
 from ..ldap import utils
 from ..models import PendingUser
 
 
 class LDAPFunctionsTestCase(TestCase):
-    ''' Warning : you must update your project settings in order to pass those
+    """
+    Warning : you must update your project settings in order to pass those
     tests : the described LDAP configuration in this class may not match your
-    own config '''
+    own config.
+    """
 
     def setUp(self):
         root = ('dc=org', {'dc': ['org']})
@@ -56,13 +59,12 @@ class LDAPFunctionsTestCase(TestCase):
         password = 'We love HDM !'
 
         # Migrate this user to the LDAP
-        result = migration.migrate_to_LDAP(user, password, self.ldap)
+        result = LDAPAccountAdder(self.ldap).add(user, password)
 
         self.assertTrue(result)
         self.assertEquals(
                 self.ldap.methods_called(),
-                ['simple_bind_s', 'search', 'result',
-                    'search_s', 'add_s', 'unbind_s'])
+                ['search', 'result', 'search_s', 'add_s'])
 
     def test_duplicate_user_cn_migration(self):
         # Create a duplicate user from Test User
@@ -76,7 +78,7 @@ class LDAPFunctionsTestCase(TestCase):
         password = 'We love HDM !'
 
         # Migrate this user to the LDAP
-        result = migration.migrate_to_LDAP(user, password, self.ldap)
+        result = LDAPAccountAdder(self.ldap).add(user, password)
 
         self.assertFalse(result)
 
@@ -92,16 +94,13 @@ class LDAPFunctionsTestCase(TestCase):
         password = 'We love HDM !'
 
         # Migrate this user to the LDAP
-        result = migration.migrate_to_LDAP(user, password, self.ldap)
+        result = LDAPAccountAdder(self.ldap).add(user, password)
 
         self.assertFalse(result)
 
     def test_user_password_update(self):
-        utils.change_user_password(
-                'cn=Test User,ou=users,dc=atilla,dc=org',
-                'We love HDM !',
-                'Caniche',
-                self.ldap)
+        account_updater = LDAPAccountUpdater('cn=Test User,ou=users,dc=atilla,dc=org')
+        account_updater.change_password('We love HDM !', 'Caniche', self.ldap)
 
         self.assertEquals(
                 self.ldap.methods_called(),
