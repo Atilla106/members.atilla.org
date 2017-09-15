@@ -1,3 +1,5 @@
+import ldap
+
 from django.test import TestCase
 from mockldap import MockLdap
 
@@ -63,8 +65,7 @@ class LDAPFunctionsTestCase(TestCase):
         self.assertTrue(result)
         self.assertEquals(
                 self.ldap.methods_called(),
-                ['simple_bind_s', 'search', 'result',
-                    'search_s', 'add_s', 'unbind_s'])
+                ['search', 'result', 'search_s', 'add_s'])
 
     def test_duplicate_user_cn_migration(self):
         # Create a duplicate user from Test User

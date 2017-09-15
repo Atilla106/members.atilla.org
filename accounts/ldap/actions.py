@@ -83,14 +83,18 @@ class LDAPAccountAdder:
 
     def test_unique(self, user_id, user_cn):
         """
-        Test if the given couple of user common name and ID is already present in the LDAP directory.
+        Test if the given user common name or user ID is already present in the LDAP directory.
 
         Return True if no such user can be found in the directory.
         """
+
+        # As we create a byte string, we can't use format() here
+        query_string = b''.join([b'(|(cn=', user_cn, b')(uid=', user_id, b'))'])
+
         results = self.__connection.search_s(
                 settings.LDAP_USERS_BASE_DN,
                 ldap.SCOPE_SUBTREE,
-                '(|(cn={})(uid={}))'.format(user_cn, user_id))
+                query_string.decode('utf-8'))
 
         return (len(results) == 0)
 
