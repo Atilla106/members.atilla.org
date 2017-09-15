@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.views.generic.edit import UpdateView
 
+from ..ldap.actions import LDAPAccountUpdater
 from ..ldap.utils import test_user_bind
-from ..ldap.utils import change_user_password
 from ..models import Account
 
 
@@ -46,10 +46,8 @@ class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
                     'Passwords are not the same')
             return super(UpdatePasswordView, self).form_invalid(form)
         else:
-            if change_user_password(
-                    self.request.user.ldap_user.dn,
-                    old_password,
-                    new_password):
+            account_updater = LDAPAccountUpdater(self.request.user.ldap_user.dn)
+            if account_updater.change_password(old_password, new_password):
                 return super(UpdatePasswordView, self).form_valid(form)
             else:
                 form.add_error(
