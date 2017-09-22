@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'customAuthAdmin.auth.user',
     'network.apps.NetworkConfig',
     'cleaning.apps.CleaningConfig',
+    'ethernet_auth.apps.EthernetAuthConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
