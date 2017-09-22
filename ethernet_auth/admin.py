@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Switch
+from .models import SwitchPort
+from .models import SwitchPortAction
+
+
+admin.site.register(Switch)
+admin.site.register(SwitchPort)
+admin.site.register(SwitchPortAction)
