@@ -11,8 +11,8 @@ CACHE/
 .cache/
 .coverage
 
-localSettings.py
-settings.py
+members/localSettings.py
+members/settings.py
 
 dhcp.conf
 dns.conf
