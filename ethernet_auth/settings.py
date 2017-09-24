@@ -1,4 +1,4 @@
-from django.config import settings
+from django.conf import settings
 
 
 class SwitchSettingsManager:
@@ -36,9 +36,9 @@ class SwitchSettingsManager:
         >>> }
         '''
         if not settings.SWITCHES:
-            SwitchSettingsManager._settings = {}
+            return dict()
         else:
-            SwitchSettingsManager._settings = settings.SWITCHES
+            return settings.SWITCHES
 
 
 class SwitchSettings:
@@ -49,7 +49,8 @@ class SwitchSettings:
         self._switch_configuration = switch_configuration
 
         self.name = switch.name
-        self.adatpater = self._load_parameter('adaptater')
+        self.adaptater_module = self._load_parameter('adaptater_module')
+        self.adaptater_name = self._load_parameter('adaptater_name')
         self.username = self._load_parameter('username', '')
         self.password = self._load_parameter('password', '')
 

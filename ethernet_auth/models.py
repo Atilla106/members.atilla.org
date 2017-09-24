@@ -58,7 +58,10 @@ class SwitchPortAction(models.Model):
     Define an action made on a given switch port.
 
     This model is also responsible for defining expiracy timestamps for actions made on switch ports.
+    Note that for each port, only one action should be active at the time.
     '''
+
+    # TODO: Implement check on save
 
     switch_port = models.ForeignKey(SwitchPort, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
