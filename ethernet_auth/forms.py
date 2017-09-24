@@ -2,6 +2,7 @@ from django.forms import ModelForm
 
 from .models import SwitchPortAction
 
+
 class SwitchPortActionForm(ModelForm):
     class Meta:
         model = SwitchPortAction

@@ -9,21 +9,11 @@
 	<table class="highlight bordered">
 		<thead>
 			<tr>
-				<th width="25%">
-					Nom
-				</th>
-				<th width="25%">
-					Switch associé
-				</th>
-				<th>
-					État par défaut
-				</th>
-				<th>
-					État actuel
-				</th>
-				<th>
-					Actions
-				</th>
+				<th>Nom</th>
+				<th>Switch associé</th>
+				<th>État par défaut</th>
+				<th>État actuel</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,15 +24,9 @@
 						{{ switch_port.label }}
 					</a>
 				</td>
-				<td>
-					{{ switch_port.switch }}
-				</td>
-				<td>
-					{{ switch_port.default_state }}
-				</td>
-				<td>
-					{{ switch_port.current_state }}
-				</td>
+				<td>{{ switch_port.switch }}</td>
+				<td>{{ switch_port.default_state }}</td>
+				<td>{{ switch_port.current_state }}</td>
 				<td>
 					<a href="{% url "ethernet_auth:switch_port_detail" switch_port.id %}" class="btn">
 						Voir
