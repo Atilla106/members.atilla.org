@@ -7,5 +7,5 @@ LDAP_MANAGEMENT_DN = "cn=manager,dc=domain,dc=org"
 LDAP_MANAGEMENT_PASSWORD = ""
 
 """ Switches credentials """
-SWITCH-1-USERNAME = ""
-SWITCH-1-PASSWORD = ""
+SWITCH_1_USERNAME = ""
+SWITCH_1_PASSWORD = ""

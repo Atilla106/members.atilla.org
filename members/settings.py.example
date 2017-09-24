@@ -13,8 +13,8 @@ from .localSettings import (
     LDAP_SERVER_URI,
     LDAP_MANAGEMENT_DN,
     LDAP_MANAGEMENT_PASSWORD,
-    SWITCH-1-USERNAME,
-    SWITCH-1-PASSWORD
+    SWITCH_1_USERNAME,
+    SWITCH_1_PASSWORD
 )
 
 
@@ -240,7 +240,7 @@ SWITCHES = {
     'switch-1': {
         'adaptater_name': 'MyAdaptater',
         'adaptater_module': 'path.to.my.adaptater',
-        'username': SWITCH-1-USERNAME,
-        'password': SWITCH-1-PASSWORD
+        'username': SWITCH_1_USERNAME,
+        'password': SWITCH_1_PASSWORD
     }
 }
