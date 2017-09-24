@@ -1,0 +1,44 @@
+{% extends "base_ethernet_auth.html" %}
+
+{% block title %} Prise {{ object.label }} {% endblock title %}
+
+{% block main %}
+<div class="row">
+	<ul>
+		<li>Nom : {{ object.label }}</li>
+		<li>Switch associé : {{ object.switch }}</li>
+		<li>État par défaut : {{ object.default_state }}</li>
+		<li>État actuel : {{ object.current_state }}</li>
+</div>
+<div class="row">
+	<h4>Historique des actions</h4>
+	{% if object.switchportaction_set.all %}
+	<table class="highlight bordered">
+		<thead>
+			<tr>
+				<th>Créateur</th>
+				<th>Nouvel état</th>
+				<th>Création</th>
+				<th>Expiration</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for action in object.switchportaction_set.all %}
+			<tr>
+				<td>{{ action.user.first_name }} {{ action.user.last_name }}</td>
+				<td>{{ action.new_state }}</td>
+				<td>{{ action.add_date }}</td>
+				<td>{{ action.expiration_date }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+		Aucune action déclarée.
+	{% endif %}
+</div>
+<div class="row">
+	<a href="{% url "ethernet_auth:switch_port_action_create" object.id %}" class="btn">Ajouter une action</a>
+</div>
+
+{% endblock %}

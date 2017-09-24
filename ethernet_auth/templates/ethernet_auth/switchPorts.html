@@ -1,0 +1,60 @@
+{% extends "base_ethernet_auth.html" %}
+{% block title %}
+	Prises réseau disponibles
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	{% if switch_ports_list %}
+	<table class="highlight bordered">
+		<thead>
+			<tr>
+				<th width="25%">
+					Nom
+				</th>
+				<th width="25%">
+					Switch associé
+				</th>
+				<th>
+					État par défaut
+				</th>
+				<th>
+					État actuel
+				</th>
+				<th>
+					Actions
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for switch_port in switch_ports_list %}
+			<tr>
+				<td>
+					<a href="{% url "ethernet_auth:switch_port_detail" switch_port.id %}">
+						{{ switch_port.label }}
+					</a>
+				</td>
+				<td>
+					{{ switch_port.switch }}
+				</td>
+				<td>
+					{{ switch_port.default_state }}
+				</td>
+				<td>
+					{{ switch_port.current_state }}
+				</td>
+				<td>
+					<a href="{% url "ethernet_auth:switch_port_detail" switch_port.id %}" class="btn">
+						Voir
+					</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% else %}
+	<p>Aucune prise réseau disponible</p>
+	{% endif %}
+</div>
+
+{% endblock %}
