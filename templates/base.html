@@ -85,10 +85,15 @@
 							<a href="{% url "accounts:profile" %}">
 								Mon compte
 							</a>
-            </li>
-            <li>
+						</li>
+						<li>
 							<a href="{% url "network:index" %}">
-								Réseau
+								Mes appareils
+							</a>
+						</li>
+						<li>
+							<a href="{% url "ethernet_auth:switch_port_list" %}">
+								Prises réseau
 							</a>
 						</li>
             <li>
@@ -118,7 +123,8 @@
 					<ul class="side-nav" id="mobile-demo">
 						{% if request.user.is_authenticated %}
 						     <li><a href="{% url "accounts:profile" %}">Modifier le mot de passe</a></li>
-						     <li><a href="{% url "network:index" %}">Réseau</a></li>
+						     <li><a href="{% url "network:index" %}">Mes appareils</a></li>
+						     <li><a href="{% url "ethernet_auth:switch_port_list" %}">Prises réseau</a></li>
 						     <li><a href="{% url "accounts:logout" %}">Déconnexion</a></li>
 						{% else %}
 						     <li><a href="{% url "accounts:login" %}">Connexion</a></li>
@@ -153,6 +159,13 @@
 			<script type="text/javascript"
 				src="{% static "js/custom.js" %}">
 			</script>
+
+			{% if messages %}
+				<script type='text/javascript'>
+					{% for message in messages %}Materialize.toast("{{ message }}", 4000);{% endfor %}
+				</script>
+			{% endif %}
+
 			{% block scripts %}
 			{% endblock %}
 		</div>
