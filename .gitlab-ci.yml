@@ -15,6 +15,8 @@ before_script:
   - echo LDAP_AUTHENTICATION_PASSWORD = \'$LDAP_TEST_AUTH_PWD\' >> members/localSettings.py
   - echo LDAP_MANAGEMENT_DN = \'$LDAP_TEST_MGMT_DN\' >> members/localSettings.py
   - echo LDAP_MANAGEMENT_PASSWORD = \'$LDAP_TEST_MGMT_PWD\' >> members/localSettings.py
+  - echo SWITCH_1_USERNAME = \'\' >> members/localSettings.py
+  - echo SWITCH_1_PASSWORD = \'\' >> members/localSettings.py
 
 stages:
   - build
