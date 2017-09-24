@@ -6,9 +6,9 @@ from telnetlib import Telnet
 from ..models import AUTO
 from ..models import AUTHORIZED
 from ..models import UNAUTHORIZED
+from ..settings import SwitchSettingsManager
 
 from .exceptions import TelnetError
-from .settings import SwitchSettingsManager
 
 
 class SwitchTelnetAdaptater:
@@ -43,8 +43,8 @@ class SwitchTelnetAdaptater:
         '''
         raise NotImplementedError('Method not implemeted')
 
-    def set_port_status(self, switch_port, switch_port_status):
-        '''Set the port status of the given model.SwitchPort to the given status.'''
+    def set_port_state(self, switch_port, switch_port_state):
+        '''Set the port state of the given model.SwitchPort to the given state.'''
         raise NotImplementedError('Method not implemeted')
 
     def disconnect(self):
@@ -70,13 +70,13 @@ class DellPowerConnect3424Adaptater(SwitchTelnetAdaptater):
         # Store the configuration of the switch provided by the server configuration.
         self._switch_settings = SwitchSettingsManager.get(switch)
 
-        super(SwitchTelnetAdaptater, self).__init__(switch)
+        super(DellPowerConnect3424Adaptater, self).__init__(switch)
 
     def connect(self):
-        self._connection = Telnet(self._switch.ip_address)
+        self._connection = Telnet(host=self._switch.ip_address, port=23, timeout=3)
 
         for i in range(3):
-            if self._try_connect(True if i == 0 else False):
+            if self._try_connect(False if i == 0 else True):
                 self._is_connected = True
                 return
 
@@ -86,7 +86,7 @@ class DellPowerConnect3424Adaptater(SwitchTelnetAdaptater):
         '''Try to connect to the switch. Return True if the connection is successful.'''
 
         if not skip_user_read:
-            self._connection.read_until(b'User Name:')
+            self._connection.read_until(b'User Name:', 5)
         self._connection.write(self._switch_settings.username.encode('ascii') + b'\n')
 
         self._connection.read_until(b'Password:')
@@ -107,17 +107,18 @@ class DellPowerConnect3424Adaptater(SwitchTelnetAdaptater):
         # e2       Auto               Authorized*   Disabled 3600       myusername
         # e12      Force Authorized   Authorized    Disabled 3600       myotherusername
         # e12      Force Unauthorized Authorized*   Disabled 3600       n/a
-        status_regex = re.compile(switch_port.name + '\s+(?P<state>\w+(\s\w+)?)(\s+\S+){3}\s+(?P<user>\S+)')
+        regex = switch_port.name.encode('ascii') + b'\s+(?P<state>\w+(\s\w+)?)(\s+\S+){3}\s+(?P<user>\S+)'
+        status_regex = re.compile(regex, re.I)
 
         self._connection.write(b'show dot1x ethernet ' + switch_port.name.encode('ascii') + b'\n')
         self._connection.write(b'q\n')
         result = self._connection.expect([status_regex], 3)
 
-        if result[1].group('state') == 'Auto':
+        if result[1].group('state') == b'Auto':
             state = AUTO
-        elif result[1].group('state') == 'Force Authorized':
+        elif result[1].group('state') == b'Force Authorized':
             state = AUTHORIZED
-        elif result[1].group('state') == 'Force Unauthorized':
+        elif result[1].group('state') == b'Force Unauthorized':
             state = UNAUTHORIZED
         else:
             state = None
@@ -126,23 +127,23 @@ class DellPowerConnect3424Adaptater(SwitchTelnetAdaptater):
 
         return (state, user)
 
-    def set_port_status(self, switch_port, switch_port_status):
+    def set_port_state(self, switch_port, switch_port_state):
         if not self._is_connected:
             raise TelnetError('The adaptater is not connected to the switch')
 
-        if not any([switch_port_status is status for status in [AUTO, AUTHORIZED, UNAUTHORIZED]]):
-            raise TelnetError('Invalid port status')
+        if switch_port_state not in [AUTO, AUTHORIZED, UNAUTHORIZED]:
+            raise TelnetError('Invalid port state')
 
         self._connection.write(b'configure\n')
         self._connection.read_until(b'(config)# ')
         self._connection.write(b'interface ethernet ' + switch_port.name.encode('ascii') + b'\n')
         self._connection.read_until(b'(config-if)# ')
 
-        if switch_port_status is AUTO:
+        if switch_port_state == AUTO:
             new_state = b'auto'
-        elif switch_port_status is AUTHORIZED:
+        elif switch_port_state == AUTHORIZED:
             new_state = b'force-authorized'
-        elif switch_port_status is UNAUTHORIZED:
+        elif switch_port_state == UNAUTHORIZED:
             new_state = b'force-unauthorized'
 
         self._connection.write(b'dot1x port-control ' + new_state + b'\n')
@@ -151,6 +152,9 @@ class DellPowerConnect3424Adaptater(SwitchTelnetAdaptater):
         self._connection.read_until(b'(config)# ')
         self._connection.write(b'exit\n')
 
+    def disconnect(self):
+        self._connection.close()
+
     def __del__(self):
-        if self._is_connected is False:
+        if self._is_connected is False and self._connection is not None:
             self.disconnect()
