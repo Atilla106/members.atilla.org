@@ -28,4 +28,5 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(new_sync_status[1])
 
-            sleep(1)
+            if status is SynchronizationStatus.SYNCHRONIZING:
+                sleep(3)
