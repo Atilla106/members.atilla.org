@@ -49,3 +49,45 @@ Synchronize DHCP and DNS configuration
 ----
 
 The script provided in `misc/update-network.sh` allows to update the DHCP and DNS configuration of a server running Debian Stretch. In production, this script should be executed as a cron job.
+
+Update switches configuration
+---
+
+The platform provides an interface to update 802.1x configuration of switches.
+Note that this only works on switches that have a telnet adapater corresponding to their model.
+
+Currently, the platform only provides a telnet adaptater for Dell PowerConnect 3424 switches, but you can build
+your own adatptater for your own switch model too using the `TelnetAdaptater` API defined in the
+`ethernet-auth.telnet.adaptaters` module.
+
+### Server-side switch configuration
+
+#### Configure a new switch
+
+In order to add a new managed switch to the platform, one entry for describing the switch should be created in the
+administration of the platform under the `Switch` model.
+The `name` field of this entry will be used to locate the switch configuration written in the server configuration.
+
+Here is how a switch configuration can be declared:
+
+```
+>>> SWITCHES = {
+>>>     'my-switch-1': {
+>>>         'adaptater_name': 'MySwitchAdaptater',
+>>>         'adaptater_module': 'path.to.my.adaptater',
+>>>         'username': 'myusername',
+>>>         'password': 'mypassword'
+>>>     }
+>>> }
+```
+
+The server has to be restarted when the configuration is updated.
+
+#### Set-up a cron job to synchronize the managed switches
+
+In order for the platform to update the switches configuration regularly, it is adviced to add a cron job to the user
+running the project with the provided script `misc/update-switches.sh`.
+
+Here is one example of a cron-job for switches synchronization:
+
+```30 * * * * <path-to-the-project>/misc/./update-switches.sh```

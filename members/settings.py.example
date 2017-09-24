@@ -12,7 +12,9 @@ from .localSettings import (
     LDAP_AUTHENTICATION_PASSWORD,
     LDAP_SERVER_URI,
     LDAP_MANAGEMENT_DN,
-    LDAP_MANAGEMENT_PASSWORD
+    LDAP_MANAGEMENT_PASSWORD,
+    SWITCH-1-USERNAME,
+    SWITCH-1-PASSWORD
 )
 
 
@@ -231,3 +233,14 @@ REV_DNS_ORIGIN = '253.168.192.in-addr.arpa'
 
 DOMAIN_ROOT_SERVER = '192.168.253.1'
 DOMAIN_MAIL_SERVER = '192.168.253.1'
+
+''' === Settings for the ethernet_auth app === '''
+
+SWITCHES = {
+    'switch-1': {
+        'adaptater_name': 'MyAdaptater',
+        'adaptater_module': 'path.to.my.adaptater',
+        'username': SWITCH-1-USERNAME,
+        'password': SWITCH-1-PASSWORD
+    }
+}
