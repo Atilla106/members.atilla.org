@@ -78,7 +78,7 @@ class SynchronizationManager:
             return_message = 'Synchronizing switches : {} done out of {} ...'.format(
                     thread_count - alive_thread_count, thread_count)
         elif self._sync_status is SynchronizationStatus.DONE:
-            return_message = '{} switches successfully synchronized'.format(len(self._threads))
+            return_message = '{} switche(s) successfully synchronized'.format(len(self._threads))
         elif self._sync_status is SynchronizationStatus.FAILED:
             return_message = 'The synchronization has failed'
 

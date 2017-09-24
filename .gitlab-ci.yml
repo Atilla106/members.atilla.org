@@ -53,13 +53,20 @@ cleaning-test:
   script:
     - python manage.py test cleaning
 
+ethernet-auth-test:
+  stage: test
+  except:
+    - master
+  script:
+    - python manage.py test ethernet_auth
+
 code-coverage-report:
   stage: test
   except:
     - master
   script:
     - coverage run manage.py test
-    - coverage report --include="accounts/*,network/*,cleaning/*"
+    - coverage report --include="accounts/*,network/*,cleaning/*,ethernet_auth/*"
 
 pep8-syntax:
   stage: test

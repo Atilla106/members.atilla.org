@@ -1,6 +1,8 @@
 '''Model definition for the ethernet authentication application.'''
-from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils import timezone
 
 # Constants used to describe a SwitchPort status
 AUTO = 'AUTO'
@@ -61,8 +63,6 @@ class SwitchPortAction(models.Model):
     Note that for each port, only one action should be active at the time.
     '''
 
-    # TODO: Implement check on save
-
     switch_port = models.ForeignKey(SwitchPort, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -70,6 +70,14 @@ class SwitchPortAction(models.Model):
 
     add_date = models.DateTimeField('Date added', auto_now_add=True)
     expiration_date = models.DateTimeField('Expiration date')
+
+    def save(self, *args, **kwargs):
+        concurrent_action = SwitchPortAction.objects.filter(switch_port=self.switch_port,
+                                                            expiration_date__gt=timezone.now()).first()
+        if concurrent_action is not None and concurrent_action != self:
+            raise ValidationError('Another action is currently active on this port')
+
+        return super(SwitchPortAction, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{} - {} ({})'.format(self.switch_port.label, self.user, self.expiration_date)
