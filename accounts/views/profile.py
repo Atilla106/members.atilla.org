@@ -1,11 +1,12 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.views.generic.edit import UpdateView
 
+from ..ldap.actions import LDAPAccountUpdater
 from ..ldap.utils import test_user_bind
-from ..ldap.utils import change_user_password
 from ..models import Account
 
 
@@ -26,7 +27,7 @@ class UpdatePasswordForm(forms.Form):
 class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
     template_name = 'accounts/update_password.html'
     form_class = UpdatePasswordForm
-    success_url = reverse_lazy('accounts:change_password')
+    success_url = reverse_lazy('accounts:profile')
 
     def form_valid(self, form):
         old_password = form.cleaned_data['old_password']
@@ -46,10 +47,8 @@ class UpdatePasswordView(LoginRequiredMixin, generic.FormView):
                     'Passwords are not the same')
             return super(UpdatePasswordView, self).form_invalid(form)
         else:
-            if change_user_password(
-                    self.request.user.ldap_user.dn,
-                    old_password,
-                    new_password):
+            account_updater = LDAPAccountUpdater(self.request.user.ldap_user.dn)
+            if account_updater.change_password(old_password, new_password):
                 return super(UpdatePasswordView, self).form_valid(form)
             else:
                 form.add_error(
@@ -63,6 +62,10 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     model = Account
     fields = ['cleaning']
     success_url = reverse_lazy('accounts:profile')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your cleaning preference was successfully updated')
+        return super(ProfileView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         return self.request.user.account

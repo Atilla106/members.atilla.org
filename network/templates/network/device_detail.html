@@ -1,5 +1,7 @@
 {% extends "base_network.html" %}
 
+{% block title %} Appareil: {{ object.device_name }} {% endblock title %}
+
 {% block main %}
 <div class="row">
 	<ul>
@@ -46,10 +48,12 @@
 			{% endfor %}
 		</tbody>
 	</table>
-        <a href="{% url "network:device_update" device.id%}"
-                        class="btn">
-                Modifier
-        </a>
+</div>
+<div class="row">
+	<a href="{% url "network:device_update" device.id%}"
+			class="btn">
+		Modifier
+	</a>
 	{% else %}
 		Aucune interface enregistrée,
 		<a href="{% url "network:interface_create" device.id %}">

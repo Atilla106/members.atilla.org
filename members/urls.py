@@ -11,6 +11,7 @@ urlpatterns = [
         r'^accounts/',
         include('accounts.urls', namespace='accounts'),
     ),
+    url(r'^captcha/', include('captcha.urls')),
     url(r'^network/', include('network.urls')),
     url(r'^cleaning/', include('cleaning.urls')),
     url(r'^$', device.DeviceView.as_view(), name="portal")
