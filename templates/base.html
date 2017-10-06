@@ -117,12 +117,13 @@
 
 					<ul class="side-nav" id="mobile-demo">
 						{% if request.user.is_authenticated %}
-						     <li><a href="{% url "accounts:profile" %}">Modifier le mot de passe</a></li>
+						     <li><a href="{% url "accounts:profile" %}">Mon compte</a></li>
 						     <li><a href="{% url "network:index" %}">Réseau</a></li>
+						     <li><a href="{% url "cleaning:portal" %}">Ménage</a></li>
 						     <li><a href="{% url "accounts:logout" %}">Déconnexion</a></li>
 						{% else %}
 						     <li><a href="{% url "accounts:login" %}">Connexion</a></li>
-							<li><a href="{% url "accounts:register" %}">Inscription</a></li>
+						     <li><a href="{% url "accounts:register" %}">Inscription</a></li>
 						{% endif %}
 					</ul>
 				</div>
