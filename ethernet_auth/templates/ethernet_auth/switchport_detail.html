@@ -7,8 +7,8 @@
 	<ul>
 		<li>Nom : {{ object.label }}</li>
 		<li>Switch associé : {{ object.switch }}</li>
-		<li>État par défaut : {{ object.default_state }}</li>
-		<li>État actuel : {{ object.current_state }}</li>
+		<li>État par défaut : {{ object.get_default_state_display }}</li>
+		<li>État actuel : {{ object.get_current_state_display }}</li>
 </div>
 <div class="row">
 	<h4>Historique des actions</h4>
@@ -26,7 +26,7 @@
 			{% for action in object.switchportaction_set.all %}
 			<tr>
 				<td>{{ action.user.first_name }} {{ action.user.last_name }}</td>
-				<td>{{ action.new_state }}</td>
+				<td>{{ action.get_new_state_display }}</td>
 				<td>{{ action.add_date }}</td>
 				<td>{{ action.expiration_date }}</td>
 			</tr>

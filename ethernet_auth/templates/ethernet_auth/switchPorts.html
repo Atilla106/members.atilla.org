@@ -25,8 +25,8 @@
 					</a>
 				</td>
 				<td>{{ switch_port.switch }}</td>
-				<td>{{ switch_port.default_state }}</td>
-				<td>{{ switch_port.current_state }}</td>
+				<td>{{ switch_port.get_default_state_display }}</td>
+				<td>{{ switch_port.get_current_state_display }}</td>
 				<td>
 					<a href="{% url "ethernet_auth:switch_port_detail" switch_port.id %}" class="btn">
 						Voir

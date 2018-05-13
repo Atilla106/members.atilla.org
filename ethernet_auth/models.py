@@ -9,9 +9,9 @@ AUTO = 'AUTO'
 AUTHORIZED = 'AUTHORIZED'
 UNAUTHORIZED = 'UNAUTHORIZED'
 SWITCH_PORT_STATE = (
-    (AUTO, 'Auto'),
-    (AUTHORIZED, 'Authorized'),
-    (UNAUTHORIZED, 'Unauthorized')
+    (AUTO, 'Automatique'),
+    (AUTHORIZED, 'Ouvert'),
+    (UNAUTHORIZED, 'Fermé')
 )
 
 
