@@ -183,6 +183,13 @@ LDAP_DEFAULT_USER_OU = 'users'
 LDAP_DEFAULT_GID = 500
 LDAP_DEFAULT_HOME_PATH = '/home/users/'
 
+# Destination where to move users that are not part of the organization anymore
+LDAP_ALUMNI_BASE_DN = 'ou=alumni,dc=atilla,dc=org'
+
+# Should alumni users be restored to the default user group in the LDAP configuration if they have
+# their membership paid?
+RESTORE_ALUMNI_USERS = True
+
 ''' === Settings for the network app === '''
 
 '''Device, Interface and user settings.'''
