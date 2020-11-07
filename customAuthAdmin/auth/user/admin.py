@@ -3,6 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Permission
 from django.db.models import Q
 
+from customAuthAdmin.auth.forms import CustomUserChangeForm
+
 
 def make_publisher(modeladmin, request, queryset):
     users = queryset.all()
@@ -59,6 +61,8 @@ class CustomUserAdmin(UserAdmin):
     is_allowed_publish_device.boolean = True
 
     actions = [make_publisher, remove_publisher]
+
+    form = CustomUserChangeForm
 
     list_display = [
         'username',
