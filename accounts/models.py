@@ -72,7 +72,10 @@ class Account(models.Model):
         verbose_name='default_user',
         on_delete=models.CASCADE,
     )
+
     cleaning = models.BooleanField(default=True)
+
+    has_paid_membership = models.BooleanField(default=False)
 
     def __str__(self):
         return '{} {} ({})'.format(
